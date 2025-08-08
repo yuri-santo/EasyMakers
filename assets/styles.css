@@ -1,6 +1,8 @@
 body {
-  background-color: #dceaf6;
   font-family: 'Montserrat', sans-serif;
+  background: white;
+  color: #333;
+  scroll-padding-top: 72px;
 }
 
 body,
@@ -24,21 +26,23 @@ p {
   .navbar-brand .brand-text { display: none; }
 }
 
-.navbar {
-  background-color: #2f3fa6;
-}
 
-.navbar-brand {
-  color: #fff;
+.navbar-brand .brand-text {
+  color: #1B3AA8;
   font-weight: bold;
 }
 
-.nav-link {
-  color: #fff;
+.navbar-nav .nav-link {
+  color: #1B3AA8 !important;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #B399D4 !important;
 }
 
 .hero {
-  background: linear-gradient(135deg, #6a11cb, #2575fc); padding: 100px 20px;;
   color: white;
   padding: 100px 20px;
   text-align: center;
@@ -53,14 +57,6 @@ p {
 .hero p {
   font-size: 1.2rem;
   animation: fadeInUp 1s;
-}
-
-/* Tonal sections */
-.section.tone-a {
-  background: linear-gradient(180deg, #e9f1ff 0%, #dfeaff 100%);
-}
-.section.tone-b {
-  background: linear-gradient(180deg, #f2f4ff 0%, #e7e9ff 50%, #f7f3ff 100%);
 }
 
 .section {
@@ -101,8 +97,7 @@ p {
 }
 
 footer {
-  background-color: #2f3fa6;
-  color: white;
+  color: black;
   padding: 30px 20px;
 }
 
@@ -203,8 +198,6 @@ footer {
   position: relative;
   overflow: hidden;
   padding: 140px 0 120px;
-  color:#fff;
-  background: #1f2a5a; /* fallback if SVG fails */
 }
 .hero-animated-bg{
   position:absolute;
