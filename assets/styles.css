@@ -9,9 +9,23 @@ p {
   /* Aproximadamente 18px */
   line-height: 1.6;
 }
+@supports not (scroll-padding-top: 72px) {
+  body { padding-top: 72px; }
+}
+
+/* Navbar com logo */
+.navbar-brand .brand-logo {
+  height: 70px;
+  width: auto;
+  display: inline-block;
+  object-fit: contain;
+}
+@media (max-width: 360px) {
+  .navbar-brand .brand-text { display: none; }
+}
 
 .navbar {
-  background-color: #6a5acd;
+  background-color: #2f3fa6;
 }
 
 .navbar-brand {
@@ -39,6 +53,14 @@ p {
 .hero p {
   font-size: 1.2rem;
   animation: fadeInUp 1s;
+}
+
+/* Tonal sections */
+.section.tone-a {
+  background: linear-gradient(180deg, #e9f1ff 0%, #dfeaff 100%);
+}
+.section.tone-b {
+  background: linear-gradient(180deg, #f2f4ff 0%, #e7e9ff 50%, #f7f3ff 100%);
 }
 
 .section {
@@ -79,7 +101,7 @@ p {
 }
 
 footer {
-  background-color: #6a5acd;
+  background-color: #2f3fa6;
   color: white;
   padding: 30px 20px;
 }
@@ -167,6 +189,13 @@ footer {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Melhorias mobile */
+@media (max-width: 576px) {
+  .section { padding: 48px 16px; }
+  .hero-copy h1 { font-size: 1.9rem; }
+  .hero-copy .lead { font-size: 1rem; }
 }
 
 /* ===== Minimal Corporate Animated Background ===== */
