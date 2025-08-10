@@ -21,4 +21,11 @@ const swiper = new Swiper('.mySwiper', {
     },
 });
 
+(() => {
+  const style1 = 'color:#6A5ACD;font-weight:700;font-size:14px';
+  const style2 = 'color:#1B3AA8;font-size:13px';
+  console.log('%cFeito por Yuri Geovane • EasyMakers', style1);
+  console.log('contato@easymakers.com.br', style2);
+})();
+
 

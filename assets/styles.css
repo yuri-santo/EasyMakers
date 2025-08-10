@@ -1,9 +1,7 @@
-/* ===== Reset anti-overflow ===== */
 html { box-sizing: border-box; }
 *, *::before, *::after { box-sizing: inherit; }
 html, body { max-width: 100%; overflow-x: hidden; }
 
-/* Reserva para navbar fixa */
 body { scroll-padding-top: 72px; }
 @supports not (scroll-padding-top: 72px) {
   body { padding-top: 72px; }
@@ -14,9 +12,9 @@ body {
   color: #333;
 }
 
-/* Tipografia base */
+/* ===== Tipografia base ===== */
 body, p {
-  font-size: 20px; /* ~20px */
+  font-size: 20px;
   line-height: 1.6;
 }
 
@@ -69,7 +67,7 @@ body, p {
 .hero-copy{
   margin-inline: auto;
   max-width: 900px;
-  padding-inline: clamp(16px, 4vw, 32px); /* respiro lateral no mobile */
+  padding-inline: clamp(16px, 4vw, 32px);
 }
 .hero-copy h1{
   font-size: clamp(1.8rem, 5.2vw, 3.25rem);
@@ -101,39 +99,6 @@ body, p {
 }
 .swiper-slide:hover { transform: translateY(-4px); }
 
-.blog-card {
-  border: 1px solid #eee;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0,0,0,.05);
-  transition: transform .2s ease, box-shadow .2s ease;
-}
-.blog-card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(0,0,0,.08); }
-
-/* Cards MVV */
-#sobre-mvv .card { transition: transform .25s ease, box-shadow .25s ease; border-radius: 12px; }
-#sobre-mvv .card:hover { transform: translateY(-4px); background:#f5f8fc; }
-
-/* Aplica a todos os botões */
-.btn,
-.btn-primary,
-.btn-secondary,
-button {
-  background-color: #6f42c1; /* cor do botão da hero section */
-  border-color: #6f42c1;
-  color: #fff; /* texto branco */
-}
-
-/* Efeito ao passar o mouse */
-.btn:hover,
-.btn-primary:hover,
-.btn-secondary:hover,
-button:hover {
-  background-color: #5a34a3; /* tom mais escuro no hover */
-  border-color: #5a34a3;
-  color: #fff;
-}
-
-/* Ajuste das setas de navegação do Swiper */
 .mySwiper .swiper-button-next,
 .mySwiper .swiper-button-prev {
   position: absolute;
@@ -147,21 +112,49 @@ button:hover {
   z-index: 10;
 }
 
-/* empurra mais pra fora */
 .mySwiper .swiper-button-prev {
-  left: -5px; /* valor negativo joga pra fora */
+  left: -5px;
 }
 
 .mySwiper .swiper-button-next {
-  right: -5px; /* valor negativo joga pra fora */
+  right: -5px; 
 }
 
-/* opcional: mudar cor das setas internas */
 .mySwiper .swiper-button-next::after,
 .mySwiper .swiper-button-prev::after {
-  color: #5b3cc4; /* sua cor de identidade visual */
+  color: #5b3cc4; 
   font-size: 18px;
   font-weight: bold;
+}
+
+.blog-card {
+  border: 1px solid #eee;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.05);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.blog-card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(0,0,0,.08); }
+
+#sobre-mvv .card { transition: transform .25s ease, box-shadow .25s ease; border-radius: 12px; }
+#sobre-mvv .card:hover { transform: translateY(-4px); background:#f5f8fc; }
+
+/* botões */
+.btn,
+.btn-primary,
+.btn-secondary,
+button {
+  background-color: #6f42c1;
+  border-color: #6f42c1;
+  color: #fff;
+}
+
+.btn:hover,
+.btn-primary:hover,
+.btn-secondary:hover,
+button:hover {
+  background-color: #5a34a3; 
+  border-color: #5a34a3;
+  color: #fff;
 }
 
 /* ===== Ajustes mobile ===== */
@@ -175,12 +168,12 @@ button:hover {
   .mySwiper .swiper-slide {
     padding: 10px;
     font-size: 0.9rem;
-    width: 80% !important; /* deixa mais estreito para caber com margem */
-    margin: 0 auto; /* centraliza */
+    width: 80% !important; 
+    margin: 0 auto;
   }
 
   .mySwiper .swiper-slide img {
-    max-width: 60px; /* reduz o tamanho da imagem */
+    max-width: 60px; 
     height: auto;
   }
   .mySwiper .swiper-button-prev { left: -10px; }
