@@ -1,225 +1,189 @@
-body {
-  font-family: 'Montserrat', sans-serif;
-  background: white;
-  color: #333;
-  scroll-padding-top: 72px;
-}
+/* ===== Reset anti-overflow ===== */
+html { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: inherit; }
+html, body { max-width: 100%; overflow-x: hidden; }
 
-body,
-p {
-  font-size: 20px;
-  /* Aproximadamente 18px */
-  line-height: 1.6;
-}
+/* Reserva para navbar fixa */
+body { scroll-padding-top: 72px; }
 @supports not (scroll-padding-top: 72px) {
   body { padding-top: 72px; }
 }
 
-/* Navbar com logo */
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: #fff;
+  color: #333;
+}
+
+/* Tipografia base */
+body, p {
+  font-size: 20px; /* ~20px */
+  line-height: 1.6;
+}
+
+/* ===== Navbar ===== */
+.navbar.fixed-top { left: 0; right: 0; width: 100%; }
+.navbar .container, .navbar .container-fluid {
+  max-width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+  overflow-x: hidden;
+}
+.navbar {
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+}
 .navbar-brand .brand-logo {
-  height: 70px;
+  height: 56px;
   width: auto;
-  display: inline-block;
   object-fit: contain;
-}
-@media (max-width: 360px) {
-  .navbar-brand .brand-text { display: none; }
+  display: block;
 }
 
+.navbar-brand .brand-text { color: #1B3AA8; font-weight: 700; }
+.navbar-nav .nav-link { color: #1B3AA8 !important; font-weight: 600; transition: color .2s; }
+.navbar-nav .nav-link:hover { color: #6a5acd !important; }
 
-.navbar-brand .brand-text {
-  color: #1B3AA8;
-  font-weight: bold;
-}
+/* ===== Seções ===== */
+.section { padding: clamp(48px, 6vw, 80px) 16px; }
+.section-title { color: #6a5acd; font-weight: 800; margin-bottom: clamp(20px, 4vw, 32px); font-size: clamp(1.4rem, 2.5vw, 2rem); }
 
-.navbar-nav .nav-link {
-  color: #1B3AA8 !important;
-  font-weight: 500;
-  transition: color 0.3s ease;
-}
-
-.navbar-nav .nav-link:hover {
-  color: #B399D4 !important;
-}
-
-.hero {
-  color: white;
-  padding: 100px 20px;
+/* ===== HERO ===== */
+.hero-easy{
+  position: relative;
+  isolation: isolate;            
+  min-height: clamp(60vh, 72vh, 84vh);
+  display: grid;
+  align-items: center;
+  padding: clamp(96px, 12vw, 140px) 0 clamp(64px, 8vw, 100px);
+  color: #fff;
   text-align: center;
 }
-
-.hero h1 {
-  font-size: 3rem;
-  font-weight: bold;
-  animation: fadeInDown 1s;
+.hero-easy::before{
+  content: "";
+  position: absolute;
+  inset: 0;                       
+  background:
+    url("bgAnimated.svg") center/cover no-repeat;
+  z-index: -1;
 }
-
-.hero p {
-  font-size: 1.2rem;
-  animation: fadeInUp 1s;
+.hero-copy{
+  margin-inline: auto;
+  max-width: 900px;
+  padding-inline: clamp(16px, 4vw, 32px); /* respiro lateral no mobile */
 }
-
-.section {
-  padding: 60px 20px;
+.hero-copy h1{
+  font-size: clamp(1.8rem, 5.2vw, 3.25rem);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: .8rem;
 }
-
-.section-title {
-  color: #6a5acd;
-  font-weight: bold;
-  margin-bottom: 30px;
+.hero-copy .lead{
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  opacity: .95;
+  max-width: 720px;
+  margin-inline: auto;
 }
-
-.swiper-slide {
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease;
-}
-
-.swiper-slide:hover {
-  transform: scale(1.05);
-}
-
-.icon-box i {
-  font-size: 2rem;
-  color: #5a9bd4;
-  margin-bottom: 10px;
-}
-
-.btn-primary {
+.hero-copy .btn{
+  padding: .75rem 1.25rem;
+  font-weight: 700;
+  border: 0;
   background-color: #6a5acd;
-  border: none;
-  transition: background-color 0.3s ease-in-out;
 }
+.hero-copy .btn:hover{ background-color: #5a4ad1; }
+.tagline { opacity: .9; }
 
-.btn-primary:hover {
-  background-color: #5a9bd4;
+/* ===== Swiper / Cards ===== */
+.swiper-slide {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 15px rgba(0,0,0,.05);
+  transition: transform .2s ease;
 }
-
-footer {
-  color: black;
-  padding: 30px 20px;
-}
-
-.fade-in {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.6s ease-in-out;
-}
-
-.fade-in.aos-animate {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.blog-post img {
-  height: 200px;
-  object-fit: cover;
-  border-radius: 8px;
-  width: 100%;
-}
+.swiper-slide:hover { transform: translateY(-4px); }
 
 .blog-card {
   border: 1px solid #eee;
-  border-radius: 10px;
-  overflow: hidden;
-  transition: 0.3s;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.05);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.blog-card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(0,0,0,.08); }
+
+/* Cards MVV */
+#sobre-mvv .card { transition: transform .25s ease, box-shadow .25s ease; border-radius: 12px; }
+#sobre-mvv .card:hover { transform: translateY(-4px); background:#f5f8fc; }
+
+/* Aplica a todos os botões */
+.btn,
+.btn-primary,
+.btn-secondary,
+button {
+  background-color: #6f42c1; /* cor do botão da hero section */
+  border-color: #6f42c1;
+  color: #fff; /* texto branco */
 }
 
-.blog-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+/* Efeito ao passar o mouse */
+.btn:hover,
+.btn-primary:hover,
+.btn-secondary:hover,
+button:hover {
+  background-color: #5a34a3; /* tom mais escuro no hover */
+  border-color: #5a34a3;
+  color: #fff;
 }
 
-.blog-post.card:hover {
-  transform: translateY(-5px);
-  transition: 0.3s ease;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+/* Ajuste das setas de navegação do Swiper */
+.mySwiper .swiper-button-next,
+.mySwiper .swiper-button-prev {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 10;
 }
 
-#sobre-mvv .card {
-  transition: transform 0.3s ease;
+/* empurra mais pra fora */
+.mySwiper .swiper-button-prev {
+  left: -5px; /* valor negativo joga pra fora */
 }
 
-#sobre-mvv .card:hover {
-  transform: translateY(-5px);
-  background-color: #f5f8fc;
+.mySwiper .swiper-button-next {
+  right: -5px; /* valor negativo joga pra fora */
 }
 
+/* opcional: mudar cor das setas internas */
+.mySwiper .swiper-button-next::after,
+.mySwiper .swiper-button-prev::after {
+  color: #5b3cc4; /* sua cor de identidade visual */
+  font-size: 18px;
+  font-weight: bold;
+}
 
-@media (max-width: 768px) {
-  .hero h1 {
-    font-size: 2.5rem;
+/* ===== Ajustes mobile ===== */
+@media (max-width: 735px){
+  .hero-easy { padding: clamp(64px, 8vw, 80px) 0; }
+  .hero-copy { padding-inline: 16px; }
+  .navbar-brand .brand-logo { height: 40px; }
+  .navbar-brand .brand-text { font-size: 1rem; }
+  .navbar .container { padding-inline: 12px; }
+  .hero-copy .btn { width: auto; }
+  .mySwiper .swiper-slide {
+    padding: 10px;
+    font-size: 0.9rem;
+    width: 80% !important; /* deixa mais estreito para caber com margem */
+    margin: 0 auto; /* centraliza */
   }
 
-  .hero p {
-    font-size: 1rem;
+  .mySwiper .swiper-slide img {
+    max-width: 60px; /* reduz o tamanho da imagem */
+    height: auto;
   }
-
-  .section-title {
-    font-size: 1.5rem;
-  }
-}
-
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Melhorias mobile */
-@media (max-width: 576px) {
-  .section { padding: 48px 16px; }
-  .hero-copy h1 { font-size: 1.9rem; }
-  .hero-copy .lead { font-size: 1rem; }
-}
-
-/* ===== Minimal Corporate Animated Background ===== */
-.minimal-hero{
-  position: relative;
-  overflow: hidden;
-  padding: 140px 0 120px;
-}
-.hero-animated-bg{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit: cover;
-  z-index:1;
-  pointer-events:none;
-}
-.hero-minimal-grid{
-  position: relative;
-  z-index: 2;
-  display: grid;
-  grid-template-columns: 1fr;
-  place-items: center;
-  text-align: center;
-}
-.hero-copy h1{ font-size: 3rem; font-weight: 800; line-height: 1.2; }
-.hero-copy .tagline{ font-size: 1.1rem; opacity:.9; }
-
-@media (max-width: 992px){
-  .minimal-hero{ padding: 120px 0 80px; }
-  .hero-copy h1{ font-size: 2.2rem; }
+  .mySwiper .swiper-button-prev { left: -10px; }
+  .mySwiper .swiper-button-next { right: -10px; }
 }
