@@ -191,7 +191,6 @@ p {
 #servicos .swiper-slide p,
 #servicos .swiper-slide li {
   text-align: justify;
-  text-justify: inter-word;
   line-height: 1.55;
   margin-bottom: .65rem;
 }
