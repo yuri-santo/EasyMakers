@@ -1,10 +1,3 @@
-/* =========================================================
-   EasyMakers — CSS principal (organizado)
-   Seções: Variáveis & Reset • Base • Navbar • Seções • HERO
-            Cards (padrão) • Serviços (Swiper) • Blog
-            Swiper/Carrossel • Botões • Modal • Footer • MQ
-   ========================================================= */
-
 /* =============== Variáveis & Reset ====================== */
 :root {
   --brand: #6f42c1;
@@ -32,7 +25,6 @@ body {
   font-family: 'Montserrat', sans-serif;
   color: #333;
   scroll-padding-top: 72px;
-  /* compensa header fixo nas âncoras */
 }
 
 @supports not (scroll-padding-top:72px) {
@@ -41,14 +33,12 @@ body {
   }
 }
 
-/* Tipografia base */
 body,
 p {
   font-size: 20px;
   line-height: 1.6;
 }
 
-/* Transições padrão */
 .section,
 .card,
 .blog-card,
@@ -168,7 +158,6 @@ p {
 }
 
 /* =============== Cards — padrão unificado ============== */
-/* aplica a TODOS os cards visuais (cards estáticos, blog e slides) */
 .card,
 .blog-card,
 #servicos .swiper-slide {
@@ -178,9 +167,7 @@ p {
   height: 80%;
   width: 80%;
   max-width: 320px;
-  /* padroniza a largura */
   margin: 0 auto;
-  /* centraliza no grid/slide */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -257,9 +244,7 @@ p {
 #servicos .mySwiper {
   padding-top: 8px;
   padding-bottom: 96px;
-  /* área para botões + mais respiro */
   min-height: 360px;
-  /* aumenta a “altura percebida” do carrossel */
   position: relative;
 }
 
@@ -270,7 +255,6 @@ p {
 #servicos .swiper-slide {
   background: var(--brand);
   color: #fff;
-  /* deixamos largura sob controle do Swiper (slidesPerView) */
 }
 
 #servicos .swiper-slide img {
@@ -286,8 +270,7 @@ p {
 
 /* =============== Cards — Blog ========================== */
 .blog-card {
-  background:url("bgAnimated.svg") center/cover no-repeat;
-  /* cor solicitada */
+  background: url("bgAnimated.svg") center/cover no-repeat;
   color: #fff;
 }
 
@@ -303,21 +286,16 @@ p {
 }
 
 /* =============== Swiper / Carrossel ==================== */
-/* reserva espaço para botões no canto */
 .mySwiper {
   padding-bottom: 64px;
   position: relative;
 }
 
-/* mantém slides com mesma largura dos cards */
 .mySwiper .swiper-slide {
   width: auto !important;
-  /* deixa o conteúdo controlar a largura */
   flex: 0 0 auto;
-  /* evita esticar */
 }
 
-/* botões no canto inferior direito (desktop e mobile) */
 .mySwiper .swiper-button-next,
 .mySwiper .swiper-button-prev {
   top: auto;
@@ -599,25 +577,45 @@ button:hover {
     padding-inline: 12px;
   }
 
-  /* carrossel: espaço extra para botões */
-  .mySwiper {
-    padding-bottom: 72px;
+  #servicos .mySwiper {
+    padding: 0 14px 92px;
+    overflow: visible;
+    min-height: 340px;
+  }
+
+  #servicos .swiper-slide {
+    width: 100% !important;
+    max-width: 520px;
+    margin: 0 auto;
+    border-radius: 16px;
+    padding: 20px 18px;
+    text-align: justify;
+  }
+
+  #servicos .swiper-slide h5 {
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+  }
+
+  #servicos .swiper-slide p {
+    font-size: .95rem;
+    line-height: 1.55;
   }
 
   .mySwiper .swiper-button-prev {
     right: 72px;
-    bottom: 12px;
+    bottom: 14px;
+    z-index: 5;
   }
 
   .mySwiper .swiper-button-next {
     right: 16px;
-    bottom: 12px;
+    bottom: 14px;
+    z-index: 5;
   }
 
-  /* cards: ocupar toda a largura em telas pequenas */
   .card,
-  .blog-card,
-  #servicos .swiper-slide {
+  .blog-card {
     max-width: 100%;
   }
 

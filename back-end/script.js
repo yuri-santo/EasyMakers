@@ -1,25 +1,33 @@
 AOS.init();
-// Evita múltiplas instâncias
-if (window.__servicosSwiper) {
-  window.__servicosSwiper.destroy(true, true);
-}
-
-window.__servicosSwiper = new Swiper('.mySwiper', {
-  slidesPerView: 2,
-  spaceBetween: 20,
+const swiper = new Swiper('.mySwiper', {
   loop: false,
   speed: 500,
-  navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev'
-  },
+  navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+  slidesPerView: 2,
+  spaceBetween: 20,
+  slidesOffsetBefore: 16,
+  slidesOffsetAfter: 16,
+
   breakpoints: {
-    0:   { slidesPerView: 1, spaceBetween: 16 },
-    768: { slidesPerView: 2, spaceBetween: 20 }
+    0: {
+      slidesPerView: 1,
+      spaceBetween: 16,
+      centeredSlides: true,        
+      centeredSlidesBounds: true,  
+      slidesOffsetBefore: 0,       
+      slidesOffsetAfter: 0
+    },
+    768: {
+      slidesPerView: 2,
+      spaceBetween: 20,
+      centeredSlides: false,
+      centeredSlidesBounds: false,
+      slidesOffsetBefore: 16,      
+      slidesOffsetAfter: 16
+    }
   }
 });
 
-// Bloqueia clique duplo muito rápido (caso seu tema dispare 2 eventos)
 (() => {
   let last = 0;
   document.querySelectorAll('.swiper-button-next, .swiper-button-prev')
@@ -34,7 +42,7 @@ window.__servicosSwiper = new Swiper('.mySwiper', {
 
 document.getElementById("current-year").textContent = new Date().getFullYear();
 
-// Blog modal (lógica simples com <template>) — versão corrigida
+// Blog modal (
 (() => {
   const modalEl = document.getElementById('articleModal');
   const titleEl = document.getElementById('articleModalLabel');
@@ -54,7 +62,6 @@ document.getElementById("current-year").textContent = new Date().getFullYear();
     automation: 'tpl-article-automation'
   };
 
-  // abre o modal ao clicar em qualquer .open-article
   document.addEventListener('click', (e) => {
     const btn = e.target.closest('.open-article');
     if (!btn) return;
@@ -74,31 +81,25 @@ document.getElementById("current-year").textContent = new Date().getFullYear();
       titleEl.textContent = 'Artigo';
     }
 
-    // garante que o conteúdo possa receber foco (a11y)
     if (!contentEl.hasAttribute('tabindex')) contentEl.setAttribute('tabindex', '-1');
 
     const modal = window.bootstrap?.Modal.getOrCreateInstance(modalEl);
     modal?.show();
   });
 
-  // ===== Correções de acessibilidade (evita "Blocked aria-hidden...")
-  // foca o conteúdo quando abrir
   modalEl.addEventListener('shown.bs.modal', () => {
     contentEl?.focus?.({ preventScroll: true });
   });
 
-  // desfoca qualquer elemento dentro do modal antes de esconder
   modalEl.addEventListener('hide.bs.modal', () => {
     const active = document.activeElement;
     if (active && modalEl.contains(active)) active.blur();
   });
 
-  // devolve foco para quem abriu
   modalEl.addEventListener('hidden.bs.modal', () => {
     if (lastTrigger?.focus) lastTrigger.focus();
   });
 
-  // links internos dentro do modal (mailto: e #ancora): fecha primeiro, navega depois
   modalEl.addEventListener('click', (e) => {
     const link = e.target.closest('a[href]');
     if (!link) return;
