@@ -128,10 +128,6 @@
     </div>
   </section>
 
-
-
-
-  <!-- Serviços - Carrossel -->
   <!-- Serviços - Carrossel -->
   <section class="section bg-light" id="servicos">
     <div class="container text-center">
@@ -140,22 +136,28 @@
       <!-- Swiper container -->
       <div class="swiper mySwiper mt-5 position-relative">
         <div class="swiper-wrapper">
-          <div class="swiper-slide p-4 text-center">
-            <img src="https://cdn-icons-png.flaticon.com/512/2620/2620627.png" alt="Automação" width="60">
+          <div class="swiper-slide text-center">
+            <img src="https://cdn-icons-png.flaticon.com/512/2620/2620627.png" alt="Automação" width="30">
             <h5 class="mt-3">Automação de Processos</h5>
             <p>Fluxos inteligentes com Make, Power Automate e ferramentas customizadas.</p>
           </div>
 
-          <div class="swiper-slide p-4 text-center">
-            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828911.png" alt="Dashboards" width="60">
+          <div class="swiper-slide text-center">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828911.png" alt="Dashboards" width="30">
             <h5 class="mt-3">Dashboards e BI</h5>
             <p>Análise de dados com dashboards interativos para tomada de decisão.</p>
           </div>
 
-          <div class="swiper-slide p-4 text-center">
-            <img src="https://cdn-icons-png.flaticon.com/512/2721/2721292.png" alt="Sistemas" width="60">
+          <div class="swiper-slide text-center">
+            <img src="https://cdn-icons-png.flaticon.com/512/2721/2721292.png" alt="Sistemas" width="30">
             <h5 class="mt-3">Aplicativos e Sistemas</h5>
             <p>Criação de sistemas sob demanda, landing pages, ERPs e muito mais.</p>
+          </div>
+
+          <div class="swiper-slide text-center">
+            <img src="https://cdn-icons-png.flaticon.com/512/2910/2910791.png" alt="Migração de Planilhas" width="30">
+            <h5 class="mt-3">Migração p/ Web</h5>
+            <p>Transforme planilhas manuais em apps seguros e escaláveis.</p>
           </div>
         </div>
 
@@ -185,34 +187,244 @@
   <section class="section bg-light" id="blog">
     <div class="container" data-aos="fade-up">
       <h2 class="section-title text-center">Últimos Artigos</h2>
+
       <div class="row g-3">
-        <div class="col-md-4">
-          <div class="blog-card p-3">
-            <h5>Título do Post</h5>
-            <p class="text-muted small">10 ago 2025</p>
-            <p>Resumo do artigo ou introdução do conteúdo. Um texto breve para chamar a atenção do leitor.</p>
-            <a href="#" class="btn btn-outline-primary btn-sm">Leia mais</a>
+        <div class="col-md-6 col-lg-3">
+          <div class="blog-card p-3 h-100 d-flex flex-column">
+            <h5>Quando escolher uma planilha com VBA</h5>
+            <p class="text-muted small">Atualizado</p>
+            <p>Automação ágil no Excel para fluxos internos.</p>
+            <button class="btn btn-outline-primary btn-sm mt-auto open-article" data-article="vba">Leia mais</button>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="blog-card p-3">
-            <h5>Outro artigo interessante</h5>
-            <p class="text-muted small">8 ago 2025</p>
-            <p>Descrição curta do conteúdo com chamada atrativa. Indicado para novidades da área.</p>
-            <a href="#" class="btn btn-outline-primary btn-sm">Leia mais</a>
+        <div class="col-md-6 col-lg-3">
+          <div class="blog-card p-3 h-100 d-flex flex-column">
+            <h5>Quando escolher um sistema embarcado</h5>
+            <p class="text-muted small">Atualizado</p>
+            <p>Confiabilidade, tempo real e operação offline.</p>
+            <button class="btn btn-outline-primary btn-sm mt-auto open-article" data-article="embedded">Leia
+              mais</button>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="blog-card p-3">
-            <h5>Nome do terceiro post</h5>
-            <p class="text-muted small">5 ago 2025</p>
-            <p>Resumo introdutório de um conteúdo recente ou relevante para seu público.</p>
-            <a href="#" class="btn btn-outline-primary">Leia mais</a>
+        <div class="col-md-6 col-lg-3">
+          <div class="blog-card p-3 h-100 d-flex flex-column">
+            <h5>Quando escolher um dashboard</h5>
+            <p class="text-muted small">Atualizado</p>
+            <p>KPI certos, dados limpos, decisões rápidas.</p>
+            <button class="btn btn-outline-primary btn-sm mt-auto open-article" data-article="dashboard">Leia
+              mais</button>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="blog-card p-3 h-100 d-flex flex-column">
+            <h5>Quais tarefas podemos automatizar</h5>
+            <p class="text-muted small">Atualizado</p>
+            <p>Guia prático de automações com ROI.</p>
+            <button class="btn btn-outline-primary btn-sm mt-auto open-article" data-article="automation">Leia
+              mais</button>
           </div>
         </div>
       </div>
+
+      <!-- Templates dos artigos -->
+      <template id="tpl-article-vba">
+        <h2 class="h4 mb-3">Quando escolher uma planilha com VBA</h2>
+        <p>O <strong>VBA no Excel</strong> é excelente para <em>operações internas</em>, poucos usuários e processos bem
+          delimitados.</p>
+
+        <h3 class="h6 mt-3">Use quando</h3>
+        <ul>
+          <li>Rotinas financeiras/operacionais repetitivas (fechamento, consolidação, conciliação simples).</li>
+          <li>Geração automática de relatórios, PDFs e e-mails a partir do Excel.</li>
+          <li>Prototipagem rápida de regras de negócio antes de migrar para web/app.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Benefícios</h3>
+        <ul>
+          <li>Baixo custo e entrega rápida.</li>
+          <li>Alta personalização e familiaridade para o usuário.</li>
+          <li>Integração nativa com Word/Outlook/Access.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Limitações</h3>
+        <ul>
+          <li>Colaboração simultânea difícil; controle de versão manual.</li>
+          <li>Dependência do Office/Windows e permissões de macro.</li>
+          <li>Escalabilidade limitada para muitos usuários.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Boas práticas</h3>
+        <ul>
+          <li>Organizar módulos por domínio; nomear variáveis e funções de forma clara.</li>
+          <li>Tratar erros com logs (arquivo .txt) e mensagens objetivas ao usuário.</li>
+          <li>Assinar macros e proteger abas sensíveis.</li>
+          <li>Usar “arquivo-mestre” somente-leitura + “arquivo-de-trabalho” por usuário.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Checklist de decisão</h3>
+        <ol>
+          <li><strong>Até 10 usuários?</strong> Sim → VBA é viável. Não → considerar web/app.</li>
+          <li><strong>Poucas integrações?</strong> Sim → VBA resolve. Não → API/integrações web.</li>
+          <li><strong>Precisa de auditoria/granularidade?</strong> Sim → banco de dados + app.</li>
+        </ol>
+
+        <h3 class="h6 mt-3">Caminho de evolução</h3>
+        <p>Valide com VBA → estabilize o processo → migre para <strong>app web</strong> com banco de dados e API quando
+          o uso crescer.</p>
+
+        <hr>
+        <p class="mb-0"><strong>Queremos te ajudar:</strong> mapeamos o fluxo, estimamos ROI e entregamos o VBA com
+          manual e testes.</p>
+      </template>
+
+
+      <template id="tpl-article-embedded">
+        <h2 class="h4 mb-3">Quando escolher um sistema embarcado</h2>
+        <p>Indicado quando o software precisa rodar <em>no próprio dispositivo</em>, com <strong>resposta
+            imediata</strong>, <strong>robustez</strong> e <strong>operação offline</strong>.</p>
+
+        <h3 class="h6 mt-3">Use quando</h3>
+        <ul>
+          <li>Coleta/controle em campo (totens, sensores, IoT) processando localmente.</li>
+          <li>Automação/controle de máquinas com requisitos de tempo real.</li>
+          <li>Ambientes com internet instável ou inexistente.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Arquitetura na prática</h3>
+        <ul>
+          <li><strong>Hardware:</strong> microcontroladores/SoCs conforme consumo, portas e custo.</li>
+          <li><strong>Software:</strong> firmware otimizado, filas de eventos, watchdog, persistência local.</li>
+          <li><strong>Confiabilidade:</strong> logs e telemetria, <em>update OTA</em> seguro, rollback.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Benefícios</h3>
+        <ul>
+          <li>Desempenho alto e previsível.</li>
+          <li>Operação offline confiável.</li>
+          <li>Controle total sobre hardware e ciclo de vida.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Custo e manutenção</h3>
+        <ul>
+          <li>Investimento inicial maior (P&D, prototipagem, homologação).</li>
+          <li>Atualizações mais controladas; planejamento de suporte de longo prazo.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Checklist de decisão</h3>
+        <ol>
+          <li><strong>Tempo de resposta crítico?</strong> Sim → embarcado.</li>
+          <li><strong>Offline é obrigatório?</strong> Sim → embarcado.</li>
+          <li><strong>Mudanças frequentes e flexibilidade?</strong> Vá de app/web.</li>
+        </ol>
+
+        <hr>
+        <p class="mb-0"><strong>Como entregamos:</strong> PoC de hardware, firmware com logs e painel mínimo de
+          telemetria para suporte.</p>
+      </template>
+
+
+      <template id="tpl-article-dashboard">
+        <h2 class="h4 mb-3">Quando escolher um dashboard</h2>
+        <p>Dashboards transformam dados em ação quando há <strong>KPIs claros</strong> e necessidade de
+          <strong>monitoramento contínuo</strong>.
+        </p>
+
+        <h3 class="h6 mt-3">Use quando</h3>
+        <ul>
+          <li>Precisa acompanhar KPIs (vendas, churn, SLA, produtividade) em tempo quase real.</li>
+          <li>Deseja unificar planilhas, CRMs, ERPs, bancos e APIs em um único lugar.</li>
+          <li>Quer gestão à vista para operação e reuniões executivas.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Pré-requisitos</h3>
+        <ul>
+          <li>Métricas definidas (fórmulas, periodicidade e responsáveis).</li>
+          <li>Qualidade de dados: tipos corretos, chaves únicas, tratamento de nulos/outliers.</li>
+          <li>Layout orientado à decisão: poucos gráficos, contexto e comparativos.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Erros comuns</h3>
+        <ul>
+          <li>“Navio de gráficos”: visualizações demais, foco de menos.</li>
+          <li>Métricas sem dono (sem governança).</li>
+          <li>Latência por integrações mal otimizadas.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Entrega rápida (MVP)</h3>
+        <ol>
+          <li>Escolher 5–7 KPIs críticos.</li>
+          <li>Conectar fontes (planilhas/BD/APIs) e validar dados.</li>
+          <li>Publicar versão 1 e iterar quinzenalmente.</li>
+        </ol>
+
+        <hr>
+        <p class="mb-0"><strong>Nosso pacote:</strong> definição de KPIs, conexão de dados, layout limpo e guia de
+          leitura para o time.</p>
+      </template>
+
+
+      <template id="tpl-article-automation">
+        <h2 class="h4 mb-3">Quais tarefas podemos automatizar</h2>
+        <p>Comece por tarefas <strong>repetitivas</strong>, de <strong>alto volume</strong> e <strong>baixo
+            risco</strong> — o ganho paga o investimento rapidamente.</p>
+
+        <h3 class="h6 mt-3">Exemplos práticos</h3>
+        <ul>
+          <li><strong>Financeiro:</strong> conciliação, emissão fiscal, lembretes de contas, classificação de despesas.
+          </li>
+          <li><strong>Marketing:</strong> fluxos de e-mail, qualificação de leads, posts agendados.</li>
+          <li><strong>Atendimento:</strong> chatbots para FAQs, abertura e roteamento de tickets.</li>
+          <li><strong>Operações:</strong> integrações entre sistemas para eliminar digitação dupla.</li>
+          <li><strong>Relatórios:</strong> PDFs e dashboards enviados automaticamente.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Matriz ICE (priorização)</h3>
+        <ul>
+          <li><strong>Impacto:</strong> horas/mês economizadas, redução de erros.</li>
+          <li><strong>Confiança:</strong> clareza do processo e qualidade dos dados.</li>
+          <li><strong>Esforço:</strong> tempo de desenvolvimento e integrações.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Riscos & mitigação</h3>
+        <ul>
+          <li>Dependência de ferramenta: padronizar conectores e manter <em>fallbacks</em>.</li>
+          <li>Dados sujos: incluir validações e logs de exceções.</li>
+          <li>Mudanças de regra: versionar fluxos e documentar gatilhos.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Plano de 3 passos</h3>
+        <ol>
+          <li>Mapear 3 processos repetitivos e medir tempo atual.</li>
+          <li>Automatizar o mais simples (alto impacto/baixo esforço).</li>
+          <li>Medir ROI após 2–4 semanas e escalar o que funciona.</li>
+        </ol>
+
+        <hr>
+        <p class="mb-0"><strong>Entrega EasyMakers:</strong> mapeamento + automação + monitoramento com alerta e
+          relatório de ganho.</p>
+      </template>
+
     </div>
   </section>
+
+  <!-- Modal de Artigos (apenas 1) -->
+  <div class="modal fade" id="articleModal" tabindex="-1" aria-labelledby="articleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="articleModalLabel">Artigo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <article id="articleContent" class="content-article"></article>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          <a href="mailto:contato@easymakers.com.br" class="btn btn-primary">Falar com a EasyMakers</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
   <!-- Contato -->
