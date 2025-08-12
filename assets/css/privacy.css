@@ -97,42 +97,23 @@ a:hover{ color:var(--blue-hover); text-decoration:underline; }
 .legal-nav a:hover{ color:var(--blue-hover); }
 
 .privacy-footer {
-  background: #f5f5f7;
-  color: #6e6e73;
-  font-size: 0.85rem;
-  padding: 20px 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
-  text-align: center;
+  background:#f5f5f7;color:#6e6e73;font-size:.75rem;line-height:1.4;
+  padding:18px 0 24px;border-top:1px solid var(--divider)
 }
 
 .privacy-footer .container {
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 0 16px;
+  max-width:1200px;margin:0 auto;padding:0 16px;
 }
 
-.privacy-footer a {
-  color: var(--brand);
-  text-decoration: none;
-}
-
-.privacy-footer a:hover {
-  color: var(--brand-hover);
-  text-decoration: underline;
-}
+.privacy-footer a{color:#0066cc;text-decoration:none}
+.privacy-footer a:hover{color:#004999;text-decoration:underline}
 
 .privacy-footer .copyright {
   margin: 0 0 6px;
 }
 
-.privacy-footer .legal-links {
-  margin: 0 0 6px;
-}
-
 .privacy-footer .disclaimer {
   font-size: 0.8rem;
-  color: #8e8e93;
-  margin: 0;
 }
 
 
