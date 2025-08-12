@@ -1,55 +1,197 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Política de Privacidade • EasyMakers</title>
-<link rel="stylesheet" href="../assets/styles.css">
-<style>
-main{max-width:900px;margin:48px auto;padding:0 16px;color:#333}
-h1{color:#111;margin-bottom:12px}
-h2{margin-top:28px}
-small, time{color:#666}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Política de Privacidade • {{Sua Empresa}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <!-- CSS separado -->
+  <link rel="stylesheet" href="../assets/privacy.css">
 </head>
 <body>
-<main>
-  <h1>Política de Privacidade</h1>
-  <p><small>Última atualização: <time datetime="2025-08-12">12/08/2025</time></small></p>
 
-  <p>A EasyMakers valoriza sua privacidade. Esta política explica como coletamos, usamos e protegemos seus dados pessoais.</p>
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="/">Início</a> › <a href="/legal">Legal</a> › Política de Privacidade
+  </nav>
 
-  <h2>1. Dados que coletamos</h2>
-  <ul>
-    <li>Dados de contato (nome, e-mail, telefone).</li>
-    <li>Dados de navegação (cookies, endereço IP, páginas acessadas).</li>
-    <li>Conteúdos que você envia por formulários ou suporte.</li>
-  </ul>
+  <!-- Cabeçalho -->
+  <header class="header wrapper">
+    <h1>Política de Privacidade de Clientes da {{Sua Empresa}}</h1>
+    <div class="lede">
+      <p class="muted">
+        A {{Sua Empresa}} está comprometida com a proteção da sua privacidade.
+        Esta Política explica, de forma clara e objetiva, como coletamos, usamos,
+        divulgamos, transferimos e armazenamos suas informações pessoais.
+      </p>
+      <p>
+        Para exercer seus direitos ou tirar dúvidas, visite
+        <a href="{{URL_GERENCIAR_CONTA}}">Gerenciar sua conta</a>
+        ou <a href="mailto:{{email_privacidade}}">entre em contato com a nossa equipe de privacidade</a>.
+      </p>
+    </div>
+    <hr class="hr">
+  </header>
 
-  <h2>2. Como usamos os dados</h2>
-  <ul>
-    <li>Prestar e melhorar nossos serviços.</li>
-    <li>Responder a solicitações e suporte.</li>
-    <li>Comunicações transacionais e, quando autorizado, marketing.</li>
-  </ul>
+  <!-- Tópicos em cartões (atalhos) -->
+  <section class="topics wrapper">
+    <h2>Escolha um Tópico</h2>
+    <div class="grid">
+      <a class="card" href="#dados-coletados">
+        <div class="icon">🗂️</div>
+        <div class="title">Dados que Coletamos</div>
+        <div class="desc">Quais informações tratamos</div>
+      </a>
+      <a class="card" href="#uso-dos-dados">
+        <div class="icon">⚙️</div>
+        <div class="title">Como Usamos</div>
+        <div class="desc">Finalidades do tratamento</div>
+      </a>
+      <a class="card" href="#base-legal">
+        <div class="icon">📜</div>
+        <div class="title">Bases Legais</div>
+        <div class="desc">LGPD/GDPR aplicáveis</div>
+      </a>
+      <a class="card" href="#compartilhamento">
+        <div class="icon">🔗</div>
+        <div class="title">Compartilhamento</div>
+        <div class="desc">Com quem e por quê</div>
+      </a>
+      <a class="card" href="#seus-direitos">
+        <div class="icon">🧭</div>
+        <div class="title">Seus Direitos</div>
+        <div class="desc">Acesso, correção e etc.</div>
+      </a>
+    </div>
+  </section>
 
-  <h2>3. Cookies</h2>
-  <p>Usamos cookies essenciais e analíticos. Você pode gerenciá-los no seu navegador.</p>
+  <!-- Conteúdo detalhado -->
+  <main class="wrapper legal-content">
+    <section id="introducao">
+      <h2>1. Introdução</h2>
+      <p>
+        Esta Política aplica-se aos sites, aplicativos, produtos e serviços da {{Sua Empresa}} que
+        fazem referência a ela. Ao utilizar nossos serviços, você concorda com as práticas descritas aqui.
+      </p>
+    </section>
 
-  <h2>4. Compartilhamento</h2>
-  <p>Não vendemos dados. Podemos compartilhar com provedores que tratam dados em nosso nome, seguindo esta política.</p>
+    <section id="dados-coletados">
+      <h2>2. Dados que coletamos</h2>
+      <ul>
+        <li><strong>Dados de contato:</strong> nome, e-mail, telefone, empresa e cargo.</li>
+        <li><strong>Dados de uso e técnicos:</strong> páginas acessadas, endereço IP, identificadores de dispositivo, cookies e dados analíticos.</li>
+        <li><strong>Conteúdo fornecido:</strong> mensagens, arquivos e informações inseridas em formulários.</li>
+        <li><strong>Dados contratuais e de faturamento:</strong> quando aplicável, informações necessárias para emissão de documentos fiscais e pagamentos.</li>
+      </ul>
+    </section>
 
-  <h2>5. Direitos do titular</h2>
-  <p>Você pode solicitar acesso, correção, exclusão e portabilidade dos dados. Contato: <a href="mailto:privacidade@easymakers.com">privacidade@easymakers.com</a>.</p>
+    <section id="uso-dos-dados">
+      <h2>3. Como utilizamos os dados</h2>
+      <ul>
+        <li>Prestar, manter e melhorar nossos serviços e suporte.</li>
+        <li>Responder solicitações, prospecção comercial e comunicações transacionais.</li>
+        <li>Configurar segurança, prevenção a fraudes e auditoria.</li>
+        <li>Cumprir obrigações legais e regulatórias.</li>
+        <li>Enviar conteúdos e novidades, quando permitido ou com seu consentimento.</li>
+      </ul>
+    </section>
 
-  <h2>6. Segurança</h2>
-  <p>Adotamos medidas técnicas e organizacionais para proteger os dados.</p>
+    <section id="base-legal">
+      <h2>4. Bases legais</h2>
+      <p>Tratamos dados pessoais com fundamento nas seguintes bases legais, conforme o caso:</p>
+      <ul>
+        <li><strong>Execução de contrato</strong> ou de procedimentos preliminares.</li>
+        <li><strong>Legítimo interesse</strong>, observando seus direitos e expectativas.</li>
+        <li><strong>Cumprimento de obrigação legal/regulatória</strong>.</li>
+        <li><strong>Consentimento</strong>, quando necessário, podendo ser retirado a qualquer momento.</li>
+      </ul>
+    </section>
 
-  <h2>7. Retenção</h2>
-  <p>Guardamos dados pelo tempo necessário para as finalidades declaradas ou exigências legais.</p>
+    <section id="cookies">
+      <h2>5. Cookies e tecnologias semelhantes</h2>
+      <p>
+        Utilizamos cookies essenciais e analíticos para lembrar preferências e melhorar a experiência.
+        Você pode gerenciá-los nas configurações do seu navegador. Para informações detalhadas, veja
+        nossa <a href="{{URL_COOKIES}}">Política de Cookies</a>.
+      </p>
+    </section>
 
-  <h2>8. Alterações</h2>
-  <p>Podemos atualizar esta política. A versão vigente será sempre publicada nesta página.</p>
-</main>
+    <section id="compartilhamento">
+      <h2>6. Compartilhamento de dados</h2>
+      <p>Não vendemos dados pessoais. Podemos compartilhar com:</p>
+      <ul>
+        <li><strong>Prestadores de serviço</strong> que tratam dados em nosso nome (hospedagem, analytics, suporte, e-mail etc.).</li>
+        <li><strong>Parceiros e integrações</strong>, quando necessário para a operação do serviço e com base contratual.</li>
+        <li><strong>Autoridades públicas</strong>, quando exigido por lei ou para proteger direitos.</li>
+      </ul>
+    </section>
+
+    <section id="transferencias">
+      <h2>7. Transferências internacionais</h2>
+      <p>
+        Quando houver transferência internacional, adotamos salvaguardas adequadas (como cláusulas contratuais padrão),
+        garantindo nível de proteção compatível com a legislação aplicável.
+      </p>
+    </section>
+
+    <section id="retencao">
+      <h2>8. Retenção</h2>
+      <p>
+        Guardamos dados pelo tempo necessário ao atendimento das finalidades descritas e para cumprimento de obrigações
+        legais, contratuais e auditoria. Após esse período, excluímos ou anonimizamos as informações.
+      </p>
+    </section>
+
+    <section id="seus-direitos">
+      <h2>9. Seus direitos</h2>
+      <p>
+        Nos termos da LGPD/GDPR, você pode solicitar: confirmação de tratamento, acesso, correção, anonimização,
+        bloqueio, exclusão, portabilidade, informação sobre compartilhamentos e revisão de decisões automatizadas.
+        Para exercer, contate: <a href="mailto:{{email_privacidade}}">{{email_privacidade}}</a>.
+      </p>
+    </section>
+
+    <section id="seguranca">
+      <h2>10. Segurança</h2>
+      <p>
+        Adotamos medidas técnicas e organizacionais de segurança, controle de acesso, criptografia em trânsito e
+        boas práticas de desenvolvimento para proteger seus dados.
+      </p>
+    </section>
+
+    <section id="criancas">
+      <h2>11. Crianças e adolescentes</h2>
+      <p>
+        Nossos serviços não são destinados a menores de 13 anos. Caso identifiquemos dados coletados indevidamente,
+        tomaremos as medidas para removê-los.
+      </p>
+    </section>
+
+    <section id="alteracoes">
+      <h2>12. Alterações nesta Política</h2>
+      <p>
+        Podemos atualizar esta Política periodicamente. Publicaremos a versão vigente nesta página com a data de
+        atualização. Recomendamos a revisão regular.
+      </p>
+    </section>
+
+    <section id="contato">
+      <h2>13. Contato</h2>
+      <p>
+        Controladora: <strong>{{Sua Empresa}} ({{CNPJ_ou_Registro}})</strong><br>
+        Endereço: {{Endereço Completo}}<br>
+        E-mail: <a href="mailto:{{email_privacidade}}">{{email_privacidade}}</a>
+      </p>
+    </section>
+
+    <hr class="hr">
+
+    <nav class="legal-nav">
+      <a href="/politica-de-privacidade.html">Política de Privacidade</a>
+      <a href="/aviso-legal.html">Avisos Legais</a>
+    </nav>
+  </main>
+
 </body>
 </html>
