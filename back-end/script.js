@@ -1,30 +1,43 @@
 AOS.init();
-const swiper = new Swiper('.mySwiper', {
-    slidesPerView: 2.2,
-    spaceBetween: 30,
-    loop: false,
+// Evita múltiplas instâncias
+if (window.__servicosSwiper) {
+  window.__servicosSwiper.destroy(true, true);
+}
 
-    navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-    },
-    autoplay: {
-        delay: 4000,
-        disableOnInteraction: false,
-    },
-    touchRatio: 1, 
-    threshold: 10,   
-    breakpoints: {
-        768: { slidesPerView: 2.2 },
-        576: { slidesPerView: 1.2 },
-        320: { slidesPerView: 1 },
-    },
+window.__servicosSwiper = new Swiper('.mySwiper', {
+  slidesPerView: 2,
+  spaceBetween: 20,
+  loop: false,
+  speed: 500,
+  navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev'
+  },
+  breakpoints: {
+    0:   { slidesPerView: 1, spaceBetween: 16 },
+    768: { slidesPerView: 2, spaceBetween: 20 }
+  }
 });
+
+// Bloqueia clique duplo muito rápido (caso seu tema dispare 2 eventos)
+(() => {
+  let last = 0;
+  document.querySelectorAll('.swiper-button-next, .swiper-button-prev')
+    .forEach(btn => btn.addEventListener('click', e => {
+      const now = Date.now();
+      if (now - last < 350) { e.stopImmediatePropagation(); e.preventDefault(); }
+      last = now;
+    }, true));
+})();
+
+
+
+document.getElementById("current-year").textContent = new Date().getFullYear();
 
 // Blog modal (lógica simples com <template>) — versão corrigida
 (() => {
-  const modalEl   = document.getElementById('articleModal');
-  const titleEl   = document.getElementById('articleModalLabel');
+  const modalEl = document.getElementById('articleModal');
+  const titleEl = document.getElementById('articleModalLabel');
   const contentEl = document.getElementById('articleContent');
 
   if (!modalEl || !titleEl || !contentEl) {
@@ -48,9 +61,9 @@ const swiper = new Swiper('.mySwiper', {
 
     lastTrigger = btn;
 
-    const key   = btn.getAttribute('data-article');
+    const key = btn.getAttribute('data-article');
     const tplId = MAP[key];
-    const tpl   = tplId ? document.getElementById(tplId) : null;
+    const tpl = tplId ? document.getElementById(tplId) : null;
 
     if (tpl) {
       contentEl.innerHTML = tpl.innerHTML.trim();
@@ -92,7 +105,7 @@ const swiper = new Swiper('.mySwiper', {
 
     const href = link.getAttribute('href') || '';
     const isMailto = href.startsWith('mailto:');
-    const isHash   = href.startsWith('#');
+    const isHash = href.startsWith('#');
     if (!isMailto && !isHash) return;
 
     e.preventDefault();
