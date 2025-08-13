@@ -37,8 +37,11 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--brand) !important;
 }
 
-a{ color:var(--blue); text-decoration:none; transition:color .2s ease; }
-a:hover{ color:var(--blue-hover); text-decoration:underline; }
+.navbar.fixed-top{left:0;right:0;width:100%}
+.navbar{padding:.5rem 0;border-bottom:1px solid var(--divider)}
+.navbar .container,.navbar .container-fluid{max-width:100%;padding-left:15px;padding-right:15px;overflow-x:hidden}
+.navbar-brand .brand-logo{height:56px;width:auto;object-fit:contain;display:block}
+.navbar-brand .brand-text{color:#1B3AA8;font-weight:700}
 
 .wrapper{ max-width:980px; margin:0 auto; padding:0 22px; }
 
