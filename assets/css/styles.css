@@ -127,7 +127,7 @@ p { font-size: 18px; line-height: 1.7; }
 #sobre-mvv ul li{margin-bottom:4px}
 #sobre-mvv ul li::marker{color:var(--brand)}
 
-#servicos .mySwiper{padding-top:50px;padding-bottom:50px;min-height:300px;position:relative}
+#servicos .mySwiper{padding:150px;min-height:420px; overflow: hidden;position:relative}
 #servicos .swiper-wrapper{align-items:stretch}
 #servicos .swiper-slide img{margin-bottom:12px;width:30px;height:auto}
 #servicos .swiper-slide p{font-size:.95rem;margin:0}
