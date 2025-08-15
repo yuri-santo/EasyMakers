@@ -1,26 +1,44 @@
-/* =======================================================
-   Vars & Reset
-   ======================================================= */
+/* =============== VARS & RESET =============== */
 :root{
   --brand:#6f42c1;
   --brand-hover:#5a34a3;
   --divider:rgba(0,0,0,.08);
+
+  --trail-color: 111, 66, 193;
+  --trail-alpha: 0.14;
+  --trail-size: 18px;
+
+  --led-rgb: 111, 66, 193;
+
+  --led-strength-1: 0.95; 
+  --led-strength-2: 0.55; 
+  --led-strength-3: 0.28; 
+
+  --led-offset-1: 14px;
+  --led-blur-1: 28px;
+  --led-offset-2: 28px;
+  --led-blur-2: 56px;
+  --led-offset-3: 44px;
+  --led-blur-3: 96px;
+
+  
+  --card-shadow-neutral: 0 6px 18px rgba(0,0,0,.08);
+
+  --sx: 0; 
+  --sy: 0; 
 }
-html{box-sizing:border-box}
-*,*::before,*::after{box-sizing:inherit}
-html,body{max-width:100%;overflow-x:hidden}
-body{
-  font-family:'Montserrat',sans-serif;
-  color:#333;
-  scroll-padding-top:72px;
-}
+
+html { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: inherit; }
+html, body { max-width: 100%; overflow-x: hidden; }
+body { scroll-padding-top: 72px; font-family: 'Montserrat', sans-serif; background:#fff; color:#333; }
+p { font-size: 18px; line-height: 1.7; }
 @supports not (scroll-padding-top:72px){ body{padding-top:72px} }
-body,p{font-size:20px;line-height:1.6}
+
 .section,.card,.blog-card,.swiper-slide,.btn,.navbar-nav .nav-link{transition:all .25s ease}
 
-/* =======================================================
-   Navbar
-   ======================================================= */
+
+/* =============== NAVBAR / SEÇÕES / HERO =============== */
 .navbar.fixed-top{left:0;right:0;width:100%}
 .navbar{padding:.5rem 0;border-bottom:1px solid var(--divider)}
 .navbar .container,.navbar .container-fluid{max-width:100%;padding-left:15px;padding-right:15px;overflow-x:hidden}
@@ -29,15 +47,9 @@ body,p{font-size:20px;line-height:1.6}
 .navbar-nav .nav-link{color:#1B3AA8!important;font-weight:600}
 .navbar-nav .nav-link:hover{color:var(--brand)!important}
 
-/* =======================================================
-   Sections
-   ======================================================= */
 .section{padding:clamp(48px,6vw,80px) 16px}
 .section-title{color:var(--brand);font-weight:800;margin-bottom:clamp(20px,4vw,32px);font-size:clamp(1.4rem,2.5vw,2rem)}
 
-/* =======================================================
-   Hero
-   ======================================================= */
 .hero-easy{
   position:relative;isolation:isolate;
   min-height:clamp(60vh,72vh,84vh);
@@ -45,7 +57,12 @@ body,p{font-size:20px;line-height:1.6}
   padding:clamp(96px,12vw,140px) 0 clamp(64px,8vw,100px);
   color:#fff;text-align:center;
 }
-.hero-easy::before{content:"";position:absolute;inset:0;background:url("../img/bgAnimated.svg") center/cover no-repeat;z-index:-1}
+.hero-easy::before{
+  content:"";
+  position:absolute;inset:0;
+  background:url("../img/bgAnimated.svg") center/cover no-repeat;
+  z-index:-1;
+}
 .hero-copy{margin-inline:auto;max-width:900px;padding-inline:clamp(16px,4vw,32px)}
 .hero-copy h1{font-size:clamp(1.8rem,5.2vw,3.25rem);font-weight:800;line-height:1.15;margin-bottom:.8rem}
 .hero-copy .lead{font-size:clamp(1rem,2.2vw,1.25rem);opacity:.95;max-width:720px;margin-inline:auto}
@@ -53,31 +70,54 @@ body,p{font-size:20px;line-height:1.6}
 .hero-copy .btn:hover{background:var(--brand-hover)}
 .tagline{opacity:.9}
 
-/* =======================================================
-   Cards (unificados em branco)
-   ======================================================= */
+/* =============== CARDS  =============== */
 .card,.blog-card,#servicos .swiper-slide{
   background:#fff;color:#333;border:1px solid #eee;
   border-radius:14px;padding:20px 18px;
   display:flex;flex-direction:column;justify-content:flex-start;align-items:center;
-  text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.06);
+  text-align:center;position: relative;
+  box-shadow: var(--card-shadow-neutral);
+  will-change: box-shadow, transform;
 }
 .card:hover,.blog-card:hover,#servicos .swiper-slide:hover{
-  transform:translateY(-4px);box-shadow:0 10px 28px rgba(0,0,0,.08)
+  transform: translateY(-2px);
 }
+
+#sobre-mvv .card {
+  box-shadow: var(--card-shadow-neutral) !important;
+}
+
+.card:hover,
+.blog-card:hover,
+#servicos .swiper-slide:hover,
+#sobre-mvv .card:hover,
+#sobre-mvv .card.shadow-sm:hover {
+  box-shadow:
+    calc(var(--sx) * var(--led-offset-1)) calc(var(--sy) * var(--led-offset-1)) var(--led-blur-1) rgba(var(--led-rgb), var(--led-strength-1)),
+    calc(var(--sx) * var(--led-offset-2)) calc(var(--sy) * var(--led-offset-2)) var(--led-blur-2) rgba(var(--led-rgb), var(--led-strength-2)),
+    calc(var(--sx) * var(--led-offset-3)) calc(var(--sy) * var(--led-offset-3)) var(--led-blur-3) rgba(var(--led-rgb), var(--led-strength-3)),
+    var(--card-shadow-neutral) !important;
+}
+
 .card p,.card li,.blog-card p,.blog-card li,#servicos .swiper-slide p,#servicos .swiper-slide li{
   text-align:center;line-height:1.55;margin-bottom:.65rem;color:#333
 }
 .card h3,.card h4,.card h5,.blog-card h3,.blog-card h4,.blog-card h5,#servicos .swiper-slide h5{
   font-weight:700;margin-bottom:10px;color:#1d1d1f
 }
-/* largura: cards soltos com limite; slides sem limite para Swiper controlar */
 .card,.blog-card{width:100%;max-width:320px;margin:0 auto}
 #servicos .swiper-slide{max-width:none}
 
-/* =======================================================
-   MVV (agora em branco também)
-   ======================================================= */
+/* ===============CANVAS RASTRO / MVV / SERVIÇOS =============== */
+#trail-canvas{
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
 #sobre-mvv .card{background:#fff;color:#333;border:1px solid #eee}
 #sobre-mvv .card-body{padding:20px 18px}
 #sobre-mvv .card-title{font-weight:700;margin-bottom:12px}
@@ -86,13 +126,11 @@ body,p{font-size:20px;line-height:1.6}
 #sobre-mvv ul li{margin-bottom:4px}
 #sobre-mvv ul li::marker{color:var(--brand)}
 
-/* =======================================================
-   Serviços (Swiper)
-   ======================================================= */
-#servicos .mySwiper{padding-top:8px;padding-bottom:96px;min-height:360px;position:relative}
+#servicos .mySwiper{padding-top:8px;padding-bottom:96px;min-height:560px;position:relative}
 #servicos .swiper-wrapper{align-items:stretch}
 #servicos .swiper-slide img{margin-bottom:12px;width:30px;height:auto}
 #servicos .swiper-slide p{font-size:.95rem;margin:0}
+
 .mySwiper{padding-bottom:64px;position:relative}
 .mySwiper .swiper-slide{width:auto!important;flex:0 0 auto}
 .mySwiper .swiper-button-next,.mySwiper .swiper-button-prev{
@@ -103,15 +141,10 @@ body,p{font-size:20px;line-height:1.6}
 .mySwiper .swiper-button-prev{right:66px}
 .mySwiper .swiper-button-next::after,.mySwiper .swiper-button-prev::after{color:var(--brand);font-size:18px;font-weight:700}
 
-/* =======================================================
-   Buttons
-   ======================================================= */
+/* ===============BOTÕES / MODAL / FOOTER =============== */
 .btn,.btn-primary,.btn-secondary,button{background:var(--brand);border-color:var(--brand);color:#fff}
 .btn:hover,.btn-primary:hover,.btn-secondary:hover,button:hover{background:var(--brand-hover);border-color:var(--brand-hover);color:#fff}
 
-/* =======================================================
-   Modal (Blog)
-   ======================================================= */
 #articleModal .modal-content{border:0;border-radius:16px;box-shadow:0 18px 60px rgba(0,0,0,.18);overflow:hidden}
 #articleModal .modal-header{background:linear-gradient(135deg,var(--brand-hover) 0%,var(--brand) 100%);color:#fff;border-bottom:0;padding:18px 22px}
 #articleModal .modal-title{font-weight:800;letter-spacing:.2px}
@@ -128,19 +161,9 @@ body,p{font-size:20px;line-height:1.6}
 #articleModal .content-article ul li::marker{color:var(--brand-hover)}
 #articleModal .content-article ol li::marker{color:var(--brand-hover);font-weight:700}
 #articleModal .content-article hr{border:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,0,0,.08),transparent);margin:1.1rem 0}
-#articleModal .content-article .callout{border-left:4px solid var(--brand-hover);background:#f6f4ff;padding:.75rem .9rem;border-radius:10px;margin:.85rem 0}
-#articleModal .content-article a{color:var(--brand-hover);text-decoration:underline}
-#articleModal .content-article a:hover{text-decoration:none}
 #articleModal .modal-footer{border-top:1px solid rgba(0,0,0,.06);background:#fafbff;padding:14px 18px}
 #articleModal .modal-footer .btn{border-radius:10px;padding:.6rem 1rem}
-#articleModal .content-article table{width:100%;border-collapse:collapse;margin:.85rem 0 1rem;font-size:.95rem}
-#articleModal .content-article th,#articleModal .content-article td{border:1px solid #eee;padding:.5rem .6rem}
-#articleModal .content-article th{background:#f5f5ff;font-weight:700}
-#articleModal .content-article code{background:#f5f5ff;border:1px solid #e9e9ff;border-radius:6px;padding:.1rem .35rem;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-size:.95em}
 
-/* =======================================================
-   Footer
-   ======================================================= */
 .site-footer{
   background:#f5f5f7;color:#6e6e73;font-size:.75rem;line-height:1.4;
   padding:18px 0 24px;border-top:1px solid var(--divider)
@@ -156,9 +179,7 @@ body,p{font-size:20px;line-height:1.6}
 .footer-links{display:flex;flex-wrap:wrap;gap:10px}
 .footer-links .sep{color:#b0b0b3}
 
-/* =======================================================
-   Mobile ≤735px
-   ======================================================= */
+/* =============== MOBILE =============== */
 @media (max-width:735px){
   .hero-easy{padding:clamp(64px,8vw,80px) 0}
   .hero-copy{padding-inline:16px}
