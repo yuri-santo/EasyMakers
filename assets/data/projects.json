@@ -1,0 +1,44 @@
+[
+  {
+    "id": "auto-01",
+    "title": "Robotização de Propostas",
+    "category": "Automação",
+    "client": "ACME",
+    "stack": ["Make", "Power Automate", "GSheets"],
+    "thumb": "../img/dash.jpg",
+    "media": [
+      "../img/dash.jpg",
+      "../img/dash.jpg"
+    ],
+    "summary": "Fluxo ponta-a-ponta: captação, aprovação e disparos.",
+    "link": "https://exemplo.com/case/auto-01"
+  },
+  {
+    "id": "bi-01",
+    "title": "Painel de Vendas",
+    "category": "Dashboards & BI",
+    "client": "Loja XYZ",
+    "stack": ["Looker/Studio", "BigQuery"],
+    "thumb": "../img/portfolio/bi01.jpg",
+    "media": [
+      "../img/portfolio/bi01.jpg",
+      "../img/portfolio/bi01b.jpg"
+    ],
+    "summary": "KPIs de conversão, cohort e previsões semanais.",
+    "link": "https://exemplo.com/case/bi-01"
+  },
+  {
+    "id": "app-01",
+    "title": "ERP Lite",
+    "category": "Aplicativos & Sistemas",
+    "client": "Distribuidora Alfa",
+    "stack": ["Node", "Postgres", "React"],
+    "thumb": "../img/portfolio/app01.jpg",
+    "media": [
+      "../img/portfolio/app01.jpg",
+      "../img/portfolio/app01b.jpg"
+    ],
+    "summary": "Módulos de estoque, pedidos e faturamento.",
+    "link": "https://exemplo.com/case/app-01"
+  }
+]

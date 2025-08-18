@@ -1,11 +1,3 @@
-/* =======================================================
-   EasyMakers • script.js
-   Atualizações:
-   - LED via box-shadow que segue a direção do mouse (hover)
-   - Sombra neutra fora do hover
-   - Mantidos: AOS, Swiper, Modal do Blog, Rastro (canvas)
-   ======================================================= */
-
 /* =============== AOS =============== */
 AOS.init();
 

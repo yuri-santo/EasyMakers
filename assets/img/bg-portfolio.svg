@@ -1,0 +1,91 @@
+<!-- assets/img/bg-portfolio.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+  <title>EasyMakers background — branco + lilás/azul</title>
+
+  <!-- =================== CORES (ajuste aqui se quiser) =================== -->
+  <!-- Lilás: #6f42c1 | Azul: #1B3AA8 -->
+
+  <defs>
+    <!-- Fundo branco -->
+    <linearGradient id="whiteBase" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#ffffff"/>
+    </linearGradient>
+
+    <!-- Pontos sutis -->
+    <pattern id="dots" x="0" y="0" width="36" height="36" patternUnits="userSpaceOnUse"
+             patternTransform="translate(0,0)">
+      <circle cx="2" cy="2" r="2" fill="#1B3AA8" opacity="0.06"/>
+      <circle cx="20" cy="18" r="1.5" fill="#6f42c1" opacity="0.05"/>
+    </pattern>
+
+    <!-- Gradientes dos blobs -->
+    <radialGradient id="gLilac" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#6f42c1" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#6f42c1" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="gBlue" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1B3AA8" stop-opacity="0.26"/>
+      <stop offset="100%" stop-color="#1B3AA8" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Gradiente das linhas (lilás → azul) -->
+    <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"  stop-color="#6f42c1"/>
+      <stop offset="100%" stop-color="#1B3AA8"/>
+      <animate attributeName="x1" values="0;0.2;0" dur="10s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="1;0.8;1" dur="10s" repeatCount="indefinite"/>
+    </linearGradient>
+  </defs>
+
+  <!-- =================== CAMADAS =================== -->
+
+  <!-- Base branca -->
+  <rect width="100%" height="100%" fill="url(#whiteBase)"/>
+
+  <!-- Textura de pontos (bem sutil) -->
+  <rect width="100%" height="100%" fill="url(#dots)" opacity="1">
+    <animateTransform attributeName="transform" type="translate"
+                      values="0 0; 12 6; 0 0" dur="20s" repeatCount="indefinite"/>
+  </rect>
+
+  <!-- BLOBS LILÁS / AZUL (movimento lento) -->
+  <g opacity="1">
+    <!-- Lilás superior esquerdo -->
+    <circle cx="260" cy="180" r="260" fill="url(#gLilac)">
+      <animateTransform attributeName="transform" type="translate"
+                        values="0 0; 18 -12; 0 0" dur="16s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Azul inferior direito -->
+    <circle cx="1180" cy="720" r="300" fill="url(#gBlue)">
+      <animateTransform attributeName="transform" type="translate"
+                        values="0 0; -22 16; 0 0" dur="18s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Lilás/azul central leve -->
+    <ellipse cx="840" cy="360" rx="280" ry="180" fill="url(#gBlue)" opacity="0.45">
+      <animateTransform attributeName="transform" type="translate"
+                        values="0 0; 0 10; 0 0" dur="14s" repeatCount="indefinite"/>
+    </ellipse>
+  </g>
+
+  <!-- LINHAS ONDULADAS (traço animado, sutil) -->
+  <g fill="none" stroke="url(#lineGrad)" stroke-linecap="round" opacity="0.28">
+    <path d="M-20,220 C180,180 380,260 580,220 780,180 980,260 1180,220 1380,180 1560,260 1640,220"
+          stroke-width="2.4" stroke-dasharray="12 14">
+      <animate attributeName="stroke-dashoffset" values="0;-260" dur="12s" repeatCount="indefinite"/>
+    </path>
+
+    <path d="M-40,520 C120,560 360,500 560,540 760,580 1000,520 1200,560 1400,600 1560,540 1680,560"
+          stroke-width="2.2" stroke-dasharray="10 16" opacity="0.24">
+      <animate attributeName="stroke-dashoffset" values="0;260" dur="14s" repeatCount="indefinite"/>
+    </path>
+
+    <path d="M-30,760 C190,720 420,820 640,760 860,700 1090,800 1310,760 1530,720 1700,800 1780,760"
+          stroke-width="2" stroke-dasharray="8 12" opacity="0.20">
+      <animate attributeName="stroke-dashoffset" values="0;-220" dur="11s" repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg>

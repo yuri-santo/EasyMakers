@@ -1,0 +1,119 @@
+/* Aplica o SVG animado como plano de fundo de tela inteira */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: url("../img/bg-portfolio.svg") center/cover no-repeat;
+  /* leve overlay para contraste */
+  box-shadow: inset 0 0 0 200vmax rgba(0,0,0,.04);
+}
+
+/* =========================
+   LAYOUT DO CATÁLOGO + PAINEL
+   ========================= */
+/* Wrapper que contém grid de cards e painel lateral */
+.catalog { 
+  display: flex; 
+  gap: 24px; 
+  align-items: flex-start; 
+}
+
+/* Grid de cards (ajusta naturalmente quando o painel abre) */
+.cards-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  transition: transform .25s ease;
+}
+
+/* Cada card (reaproveita seu padrão e LED direcional) */
+.tile {
+  background:#fff; border:1px solid #eee; border-radius:14px;
+  padding:14px; text-align:center; position:relative;
+  box-shadow: var(--card-shadow-neutral); /* neutro */
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.tile:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    calc(var(--sx) * var(--led-offset-1)) calc(var(--sy) * var(--led-offset-1)) var(--led-blur-1) rgba(var(--led-rgb), var(--led-strength-1)),
+    calc(var(--sx) * var(--led-offset-2)) calc(var(--sy) * var(--led-offset-2)) var(--led-blur-2) rgba(var(--led-rgb), var(--led-strength-2)),
+    calc(var(--sx) * var(--led-offset-3)) calc(var(--sy) * var(--led-offset-3)) var(--led-blur-3) rgba(var(--led-rgb), var(--led-strength-3)),
+    var(--card-shadow-neutral);
+}
+.tile.is-selected {
+  outline: 2px solid rgba(111,66,193,.45);
+  box-shadow:
+    0 0 0 3px rgba(111,66,193,.08),
+    0 10px 30px rgba(0,0,0,.12);
+}
+
+/* Miniatura do projeto */
+.tile .thumb {
+  width:100%; height:160px; border-radius:10px; margin-bottom:10px;
+  object-fit: cover; background:#f6f6f6;
+}
+.tile h6 { font-weight:800; color:#1d1d1f; margin:8px 0 2px; }
+.tile .meta { font-size:.875rem; color:#666; }
+
+/* =========================
+   PAINEL LATERAL RESPONSIVO
+   ========================= */
+/* Painel fechado por padrão */
+.project-panel {
+  width: 420px;
+  max-width: 38vw;
+  background:#fff; border:1px solid #eee; border-radius:16px;
+  box-shadow: 0 18px 60px rgba(0,0,0,.18);
+  position: sticky; top: 96px;
+  height: calc(100vh - 120px);
+  overflow: auto;
+  transform: translateX(16px);
+  opacity: 0; pointer-events: none;
+  transition: .25s ease;
+}
+
+/* Quando um card é selecionado, abrimos o painel */
+.panel-open .project-panel {
+  opacity: 1; pointer-events: auto; transform: none;
+}
+
+/* Cabeçalho do painel */
+.project-panel .pp-head {
+  padding: 18px 20px;
+  background: linear-gradient(135deg, var(--brand-hover) 0%, var(--brand) 100%);
+  color: #fff; border-top-left-radius: 16px; border-top-right-radius: 16px;
+  position: sticky; top: 0; z-index: 2;
+}
+.project-panel .pp-head h5 { margin: 0; font-weight: 800; }
+.project-panel .pp-head .pp-close {
+  border: 0; background: #fff; color: var(--brand);
+  padding: .25rem .55rem; border-radius: 8px; font-weight: 800;
+}
+
+/* Corpo do painel */
+.project-panel .pp-body { padding: 16px 20px 20px; }
+.pp-body .pp-thumb { width: 100%; height: 240px; object-fit: cover; border-radius: 12px; margin-bottom: 12px; }
+.pp-body .pp-meta p { margin: .35rem 0; }
+.pp-body .pp-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+
+/* Botão branco com texto roxo (seu padrão) */
+.btn-outline-brand {
+  background: #fff; color: var(--brand); border:1px solid var(--brand);
+  font-weight: 800; border-radius: 12px; padding:.65rem 1.05rem;
+  box-shadow: 0 6px 18px rgba(0,0,0,.08);
+}
+.btn-outline-brand:hover {
+  color: #fff; background: var(--brand);
+  box-shadow:
+    0 0 18px rgba(111,66,193,.45),
+    0 10px 28px rgba(0,0,0,.14);
+}
+
+/* Mobile: painel vira “drawer” abaixo dos cards */
+@media (max-width: 991px) {
+  .catalog { flex-direction: column; }
+  .project-panel { width: 100%; max-width: 100%; height: auto; position: relative; top:auto; }
+}
