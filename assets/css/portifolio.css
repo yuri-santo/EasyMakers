@@ -1,119 +1,198 @@
-/* Aplica o SVG animado como plano de fundo de tela inteira */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background: url("../img/bg-portfolio.svg") center/cover no-repeat;
-  /* leve overlay para contraste */
-  box-shadow: inset 0 0 0 200vmax rgba(0,0,0,.04);
+/* ==========================
+   PORTFÓLIO • EasyMakers
+   ========================== */
+
+:root{
+  --brand:#6f42c1;             
+  --brand-2:#3e6ae1;          
+  --ink:#231f20;               
+  --muted:#6b6b6b;
+  --bg:#ffffff;                
+  --card:#ffffff;
+  --divider:rgba(0,0,0,.08);
+
+  --radius:16px;
+  --shadow-1:0 10px 24px rgba(0,0,0,.08);
+  --shadow-2:0 18px 42px rgba(0,0,0,.12);
+  --shadow-strong:0 30px 60px rgba(58, 34, 110, .25);
+
+  --grid-gap:24px;
+  --details-span:2;            
+  --details-min-h: 460px;
 }
 
-/* =========================
-   LAYOUT DO CATÁLOGO + PAINEL
-   ========================= */
-/* Wrapper que contém grid de cards e painel lateral */
-.catalog { 
-  display: flex; 
-  gap: 24px; 
-  align-items: flex-start; 
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:"Montserrat", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  color:var(--ink);
+  background: var(--bg);
+  /* ---- BG SVG animado aplicado aqui ---- */
+  background-image: url("../img/bg-portfolio.svg");
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
 }
 
-/* Grid de cards (ajusta naturalmente quando o painel abre) */
-.cards-grid {
-  flex: 1;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 16px;
-  transition: transform .25s ease;
+/* ======= Header ======= */
+.pf-header{
+  position:sticky; top:0; z-index:10;
+  background:linear-gradient(180deg,rgba(255,255,255,.86),rgba(255,255,255,.65));
+  backdrop-filter:saturate(120%) blur(8px);
+  border-bottom:1px solid var(--divider);
+  padding:14px clamp(14px,3vw,24px);
+  display:grid;
+  grid-template-columns: 1fr minmax(240px,680px) 1fr;
+  align-items:center;
+  gap:14px;
+}
+.brand{
+  display:flex; align-items:center; gap:10px;
+  text-decoration:none; color:var(--ink); font-weight:800;
+}
+.brand img{ height:36px; width:auto; object-fit:contain }
+.brand span{ font-size:1.05rem }
+
+.pf-search{ display:flex; justify-content:center }
+.pf-search input{
+  width:100%;
+  padding:.85rem 1.1rem;
+  border:1px solid var(--divider);
+  border-radius:100px;
+  outline:none;
+  font-size:1rem;
+  box-shadow:var(--shadow-1);
 }
 
-/* Cada card (reaproveita seu padrão e LED direcional) */
-.tile {
-  background:#fff; border:1px solid #eee; border-radius:14px;
-  padding:14px; text-align:center; position:relative;
-  box-shadow: var(--card-shadow-neutral); /* neutro */
-  transition: transform .18s ease, box-shadow .18s ease;
+.pf-filters{
+  display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px;
 }
-.tile:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    calc(var(--sx) * var(--led-offset-1)) calc(var(--sy) * var(--led-offset-1)) var(--led-blur-1) rgba(var(--led-rgb), var(--led-strength-1)),
-    calc(var(--sx) * var(--led-offset-2)) calc(var(--sy) * var(--led-offset-2)) var(--led-blur-2) rgba(var(--led-rgb), var(--led-strength-2)),
-    calc(var(--sx) * var(--led-offset-3)) calc(var(--sy) * var(--led-offset-3)) var(--led-blur-3) rgba(var(--led-rgb), var(--led-strength-3)),
-    var(--card-shadow-neutral);
+.chip{
+  border:1px solid var(--divider);
+  background:#fff;
+  color:#3a2e57;
+  font-weight:600;
+  padding:.5rem .8rem;
+  border-radius:100px;
+  cursor:pointer;
 }
-.tile.is-selected {
-  outline: 2px solid rgba(111,66,193,.45);
-  box-shadow:
-    0 0 0 3px rgba(111,66,193,.08),
-    0 10px 30px rgba(0,0,0,.12);
+.chip.is-active{ border-color:var(--brand); color:#fff; background:linear-gradient(135deg,var(--brand),var(--brand-2)) }
+
+/* ======= Main / Grid ======= */
+.pf-main{ padding:clamp(18px,3vw,28px) clamp(14px,3vw,26px) 56px }
+
+.portfolio-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill,minmax(260px,1fr));
+  grid-auto-rows: auto;
+  gap: var(--grid-gap);
+  transition:grid-template-columns .3s ease;
 }
 
-/* Miniatura do projeto */
-.tile .thumb {
-  width:100%; height:160px; border-radius:10px; margin-bottom:10px;
-  object-fit: cover; background:#f6f6f6;
+/* ======= Cards ======= */
+.project-card{
+  background:var(--card);
+  border:1px solid var(--divider);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-1);
+  padding:14px;
+  display:flex; flex-direction:column; gap:10px;
+  transition:transform .18s ease, box-shadow .18s ease;
+  cursor:pointer;
 }
-.tile h6 { font-weight:800; color:#1d1d1f; margin:8px 0 2px; }
-.tile .meta { font-size:.875rem; color:#666; }
-
-/* =========================
-   PAINEL LATERAL RESPONSIVO
-   ========================= */
-/* Painel fechado por padrão */
-.project-panel {
-  width: 420px;
-  max-width: 38vw;
-  background:#fff; border:1px solid #eee; border-radius:16px;
-  box-shadow: 0 18px 60px rgba(0,0,0,.18);
-  position: sticky; top: 96px;
-  height: calc(100vh - 120px);
-  overflow: auto;
-  transform: translateX(16px);
-  opacity: 0; pointer-events: none;
-  transition: .25s ease;
+.project-card:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow-2);
 }
-
-/* Quando um card é selecionado, abrimos o painel */
-.panel-open .project-panel {
-  opacity: 1; pointer-events: auto; transform: none;
+.project-card .thumb{
+  height:160px; border-radius:12px; overflow:hidden;
+  background:linear-gradient(135deg,rgba(111,66,193,.08),rgba(62,106,225,.08));
+  border:1px dashed rgba(111,66,193,.15);
 }
-
-/* Cabeçalho do painel */
-.project-panel .pp-head {
-  padding: 18px 20px;
-  background: linear-gradient(135deg, var(--brand-hover) 0%, var(--brand) 100%);
-  color: #fff; border-top-left-radius: 16px; border-top-right-radius: 16px;
-  position: sticky; top: 0; z-index: 2;
+.project-card .thumb img{
+  width:100%; height:100%; object-fit:cover; display:block;
 }
-.project-panel .pp-head h5 { margin: 0; font-weight: 800; }
-.project-panel .pp-head .pp-close {
-  border: 0; background: #fff; color: var(--brand);
-  padding: .25rem .55rem; border-radius: 8px; font-weight: 800;
+.project-card h3{
+  margin:.35rem 0 .1rem; font-size:1.05rem; font-weight:800; color:#1f142f;
+}
+.project-card .meta{
+  margin:0; color:var(--muted); font-size:.9rem;
 }
 
-/* Corpo do painel */
-.project-panel .pp-body { padding: 16px 20px 20px; }
-.pp-body .pp-thumb { width: 100%; height: 240px; object-fit: cover; border-radius: 12px; margin-bottom: 12px; }
-.pp-body .pp-meta p { margin: .35rem 0; }
-.pp-body .pp-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
-
-/* Botão branco com texto roxo (seu padrão) */
-.btn-outline-brand {
-  background: #fff; color: var(--brand); border:1px solid var(--brand);
-  font-weight: 800; border-radius: 12px; padding:.65rem 1.05rem;
-  box-shadow: 0 6px 18px rgba(0,0,0,.08);
+/* ======= Painel de Detalhes (inline no grid - DESKTOP) ======= */
+.project-details{
+  background:#fff;
+  border:1px solid var(--divider);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-strong);
+  padding:18px;
+  min-height: var(--details-min-h);
+  display:grid;
+  grid-template-columns: 1.2fr 1.6fr;
+  gap:18px;
+  position:relative;
+  opacity:0; transform:translateY(8px); transition:opacity .2s ease, transform .2s ease;
+  grid-column: span var(--details-span);
 }
-.btn-outline-brand:hover {
-  color: #fff; background: var(--brand);
-  box-shadow:
-    0 0 18px rgba(111,66,193,.45),
-    0 10px 28px rgba(0,0,0,.14);
-}
+.project-details.is-visible{ opacity:1; transform:none; }
 
-/* Mobile: painel vira “drawer” abaixo dos cards */
-@media (max-width: 991px) {
-  .catalog { flex-direction: column; }
-  .project-panel { width: 100%; max-width: 100%; height: auto; position: relative; top:auto; }
+.close-details{
+  position:absolute; top:10px; right:12px;
+  width:36px;height:36px;border-radius:50%;
+  background:#fff;border:1px solid var(--divider); cursor:pointer;
+  font-size:20px; line-height:0; display:grid; place-items:center;
+}
+.close-details:hover{ background:#faf7ff; border-color:rgba(111,66,193,.32) }
+
+.details-media{
+  border-radius:12px; overflow:hidden; border:1px solid var(--divider);
+  background:linear-gradient(135deg,rgba(111,66,193,.08),rgba(62,106,225,.08));
+}
+.details-img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+.details-info h2{ margin:.4rem 0 .6rem; font-weight:800; color:#29185c; }
+.details-info p{ margin:.25rem 0; color:#3f3f3f }
+.details-desc{ margin-top:.5rem; line-height:1.6 }
+
+.details-actions{ display:flex; gap:10px; margin-top:14px }
+.btn{
+  background:linear-gradient(135deg,var(--brand),var(--brand-2));
+  color:#fff; border:none; border-radius:12px; padding:.7rem 1rem; font-weight:800; cursor:pointer;
+}
+.btn:hover{ filter:saturate(115%) brightness(105%) }
+.btn-outline{
+  background:#fff; color:var(--brand);
+  border:1px solid rgba(111,66,193,.35);
+}
+.btn-outline:hover{ background:#faf7ff }
+
+/* ======= Modal (MOBILE) ======= */
+.pf-modal{ position:fixed; inset:0; display:none; }
+.pf-modal.is-open{ display:block; }
+.pf-modal__backdrop{
+  position:absolute; inset:0; background:rgba(0,0,0,.28); backdrop-filter: blur(2px);
+}
+.pf-modal__dialog{
+  position:absolute; left:50%; top:6%; transform:translateX(-50%);
+  width:min(720px,92%); background:#fff; border-radius:20px; box-shadow:var(--shadow-strong); overflow:hidden;
+}
+.pf-modal__close{
+  position:absolute; right:10px; top:10px;
+  width:38px;height:38px;border-radius:50%;border:1px solid var(--divider);
+  background:#fff; cursor:pointer; font-size:22px; display:grid;place-items:center;
+}
+.pf-modal__content{ padding:16px }
+.pf-modal .modal-body > *{ margin:0 }
+
+/* ======= Responsivo ======= */
+@media (max-width: 1024px){
+  :root{ --details-span: 2; } /* mantém 2 colunas em tablets largos */
+  .project-details{ grid-template-columns: 1fr; }
+}
+@media (max-width: 768px){
+  /* No mobile, NÃO usamos painel inline; JS abre o modal. */
+  .project-details{ display:none!important }
+  .portfolio-grid{ grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap:18px }
+  .project-card .thumb{ height:140px }
 }

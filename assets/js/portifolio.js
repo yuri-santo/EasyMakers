@@ -1,138 +1,217 @@
-/* =======================================================
-   Portfólio com PAINEL LATERAL EasyMakers
-   - Carrega assets/data/projects.json
-   - Renderiza GRID de cards
-   - Ao clicar em um card, abre painel lateral com infos
-   - Reaproveita o LED/box-shadow direcional do script global
-   ======================================================= */
+/* ==========================================================
+   Portfólio • EasyMakers
+   - Desktop: painel inline empurra/redimensiona o grid
+   - Mobile: abre um modal
+   ========================================================== */
 
-(function () {
-  const cardsEl  = document.getElementById('cards');     // grid
-  const catalog  = document.getElementById('catalog');   // wrapper (para classe .panel-open)
-  const panel    = document.getElementById('panel');     // painel lateral
-  const qEl      = document.getElementById('q');         // busca
-  const filters  = document.getElementById('filters');   // chips (opcional)
+/* util */
+const qs  = (s, el=document) => el.querySelector(s);
+const qsa = (s, el=document) => [...el.querySelectorAll(s)];
 
-  let DATA = [];
-  let ACTIVE = new Set();
-  let QUERY = '';
-  let SELECTED_ID = null;
+/* elementos base */
+const grid         = qs('#portfolioGrid');
+const chips        = qsa('.chip');
+const searchInput  = qs('#searchInput');
+const modal        = qs('#projectModal');
+const modalBody    = qs('#projectModal .modal-body');
+const detailsTpl   = qs('#detailsTemplate');
 
-  // --- fetch JSON ---
-  fetch('assets/data/projects.json')
-    .then(r => r.json())
-    .then(json => { DATA = json; buildFilters(); render(); })
-    .catch(() => { cardsEl.innerHTML = '<p>Não foi possível carregar o portfólio.</p>'; });
+/* estado */
+let currentDetailsEl = null;
+let currentOpenCard  = null;
 
-  // --- filtros por categoria (chips) ---
-  function buildFilters(){
-    const cats = [...new Set(DATA.map(d => d.category))].sort();
-    filters.innerHTML = [
-      `<button class="chip active" data-cat="__all">Tudo</button>`,
-      ...cats.map(c => `<button class="chip" data-cat="${c}">${c}</button>`)
-    ].join('');
+/* ----------------------------
+   Build / Preenche painel
+---------------------------- */
+function buildDetailsFromCard(card) {
+  const frag = detailsTpl.content.cloneNode(true);
+  const el   = frag.querySelector('.project-details');
 
-    filters.addEventListener('click', (e)=>{
-      const b = e.target.closest('.chip'); if (!b) return;
-      [...filters.querySelectorAll('.chip')].forEach(x => x.classList.remove('active'));
-      const cat = b.getAttribute('data-cat');
-      if (cat === '__all') { ACTIVE.clear(); } else { ACTIVE = new Set([cat]); }
-      b.classList.add('active');
-      closePanel();
-      render();
-    });
+  // popula
+  const img  = frag.querySelector('.details-img');
+  const t    = frag.querySelector('.details-title');
+  const cl   = frag.querySelector('.details-client');
+  const cat  = frag.querySelector('.details-category');
+  const tech = frag.querySelector('.details-tech');
+  const desc = frag.querySelector('.details-desc');
+  const btn  = frag.querySelector('.btn-outline');
 
-    qEl?.addEventListener('input', () => { QUERY = qEl.value.trim().toLowerCase(); closePanel(); render(); });
+  const title = card.dataset.title || '';
+  const client = card.dataset.client || '-';
+  const category = mapCategory(card.dataset.category);
+  const techs = card.dataset.tech || '-';
+  const description = card.dataset.description || '';
+  const link = card.dataset.link || '#';
+
+  // tenta usar a imagem do card
+  const cardImg = qs('img', card);
+  if (cardImg && cardImg.src && cardImg.style.opacity !== '0') {
+    img.src = cardImg.src;
+    img.alt = title;
+  } else {
+    img.remove(); // se não tiver imagem, remove o container
+    const media = frag.querySelector('.details-media');
+    media.style.display = 'none';
   }
 
-  // --- render do GRID ---
-  function render(){
-    const list = DATA.filter(p => {
-      const byCat = ACTIVE.size ? ACTIVE.has(p.category) : true;
-      const hay = [p.title, p.client, p.category, ...(p.stack||[])].join(' ').toLowerCase();
-      const byQ  = QUERY ? hay.includes(QUERY) : true;
-      return byCat && byQ;
-    });
+  t.textContent = title;
+  cl.textContent = client;
+  cat.textContent = category;
+  tech.textContent = techs;
+  desc.textContent = description;
+  btn.href = link;
 
-    cardsEl.innerHTML = list.map(cardHTML).join('') || '<p class="mt-4">Nenhum resultado encontrado.</p>';
+  // fecha (inline)
+  frag.querySelector('.close-details').addEventListener('click', () => closeDetails());
 
-    // LED direcional – reaproveita suas regras adicionando classe .card
-    cardsEl.querySelectorAll('.tile').forEach(el => el.classList.add('card'));
+  return el;
+}
 
-    // Click de seleção
-    cardsEl.addEventListener('click', onCardClick);
+/* ----------------------------
+   Abrir/Fechar painel inline
+---------------------------- */
+function openDetailsInline(card) {
+  closeDetails(); // fecha qualquer aberto
+
+  const detailsEl = buildDetailsFromCard(card);
+
+  // injeta painel imediatamente depois do card clicado
+  card.insertAdjacentElement('afterend', detailsEl);
+
+  // guarda referências
+  currentDetailsEl = detailsEl;
+  currentOpenCard  = card;
+
+  // anima entrada
+  requestAnimationFrame(() => detailsEl.classList.add('is-visible'));
+
+  // rola suavemente até o painel (se estiver fora de vista)
+  const rect = detailsEl.getBoundingClientRect();
+  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+  if (rect.bottom > vh - 40 || rect.top < 100) {
+    detailsEl.scrollIntoView({behavior:'smooth', block:'center'});
   }
+}
 
-  // --- HTML do card ---
-  function cardHTML(p){
-    const stack = (p.stack||[]).slice(0,3).join(' • ');
-    return `
-      <article class="tile" data-id="${p.id}">
-        <img class="thumb" src="${p.thumb}" alt="${p.title}" loading="lazy">
-        <h6>${p.title}</h6>
-        <div class="meta">${p.client || ''}${p.client ? ' • ' : ''}${stack}</div>
-      </article>
-    `;
+function closeDetails() {
+  if (!currentDetailsEl) return;
+  currentDetailsEl.classList.remove('is-visible');
+  const el = currentDetailsEl;
+  currentDetailsEl = null;
+  currentOpenCard  = null;
+  setTimeout(() => el.remove(), 180);
+}
+
+/* ----------------------------
+   Modal (para mobile)
+---------------------------- */
+function openModal(card) {
+  // limpa modal
+  modalBody.innerHTML = '';
+
+  // reaproveita o mesmo template
+  const detailsEl = buildDetailsFromCard(card);
+  detailsEl.classList.add('is-visible');
+  detailsEl.style.display = 'block';
+  modalBody.appendChild(detailsEl);
+
+  modal.classList.add('is-open');
+  modal.setAttribute('aria-hidden','false');
+}
+
+function closeModal() {
+  modal.classList.remove('is-open');
+  modal.setAttribute('aria-hidden','true');
+  modalBody.innerHTML = '';
+}
+
+// fechar modal ao clicar backdrop ou botão
+qsa('[data-close-modal]', modal).forEach(btn=>{
+  btn.addEventListener('click', closeModal);
+});
+
+/* ----------------------------
+   Filtros por chip/categoria
+---------------------------- */
+chips.forEach(chip=>{
+  chip.addEventListener('click', ()=>{
+    chips.forEach(c=>c.classList.remove('is-active'));
+    chip.classList.add('is-active');
+
+    const filter = chip.dataset.filter;
+    filterGrid({ category: filter, query: searchInput.value });
+  });
+});
+
+/* ----------------------------
+   Busca (texto)
+---------------------------- */
+searchInput.addEventListener('input', ()=>{
+  const active = qs('.chip.is-active');
+  const filter = active ? active.dataset.filter : 'all';
+  filterGrid({ category: filter, query: searchInput.value });
+});
+
+/* aplica filtro */
+function filterGrid({category='all', query=''}) {
+  const q = (query || '').toLowerCase().trim();
+
+  qsa('.project-card', grid).forEach(card=>{
+    const cat = card.dataset.category || '';
+    const title= (card.dataset.title||'').toLowerCase();
+    const client=(card.dataset.client||'').toLowerCase();
+    const tech=(card.dataset.tech||'').toLowerCase();
+
+    const catOk = (category === 'all') || (cat === category);
+    const textOk = !q || title.includes(q) || client.includes(q) || tech.includes(q);
+
+    card.style.display = (catOk && textOk) ? '' : 'none';
+  });
+
+  // se havia um painel aberto cujo card sumiu, fecha
+  if (currentOpenCard && currentOpenCard.style.display === 'none') {
+    closeDetails();
   }
+}
 
-  // --- Ao clicar em um card, abre o painel e “move” o layout ---
-  function onCardClick(e){
-    const tile = e.target.closest('.tile'); if (!tile) return;
-    const id   = tile.getAttribute('data-id');
-    const proj = DATA.find(x => x.id === id); if (!proj) return;
+/* ----------------------------
+   Clique nos cards
+---------------------------- */
+grid.addEventListener('click', (ev)=>{
+  const card = ev.target.closest('.project-card');
+  if (!card) return;
 
-    SELECTED_ID = id;
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
-    // marca visual no card
-    cardsEl.querySelectorAll('.tile').forEach(t => t.classList.toggle('is-selected', t === tile));
-
-    // abre o painel e popula
-    openPanel(proj);
-
-    // garante foco para acessibilidade
-    panel.focus({ preventScroll: true });
+  if (isMobile) {
+    openModal(card);
+  } else {
+    // reabrir em outro card
+    if (currentOpenCard === card) {
+      closeDetails();
+    } else {
+      openDetailsInline(card);
+    }
   }
+});
 
-  // --- abre painel com dados do projeto ---
-  function openPanel(p){
-    catalog.classList.add('panel-open');
+/* fecha painel inline ao clicar fora dele */
+document.addEventListener('click', (ev)=>{
+  if (!currentDetailsEl) return;
+  const clickedInsidePanel = ev.target.closest('.project-details');
+  const clickedCard = ev.target.closest('.project-card');
+  if (!clickedInsidePanel && !clickedCard) closeDetails();
+});
 
-    panel.innerHTML = `
-      <div class="pp-head d-flex align-items-center justify-content-between">
-        <h5 class="m-0">${p.title}</h5>
-        <button class="pp-close" aria-label="Fechar painel">&times;</button>
-      </div>
-
-      <div class="pp-body">
-        <img class="pp-thumb" src="${(p.media && p.media[0]) || p.thumb}" alt="${p.title}">
-        <div class="pp-meta">
-          <p><strong>Cliente:</strong> ${p.client || '—'}</p>
-          <p><strong>Categoria:</strong> ${p.category}</p>
-          <p><strong>Tecnologias:</strong> ${(p.stack||[]).join(', ') || '—'}</p>
-          <p><strong>Descrição:</strong> ${p.summary || '—'}</p>
-        </div>
-
-        <div class="pp-actions">
-          ${p.link ? `<a class="btn-outline-brand" href="${p.link}" target="_blank" rel="noopener">Ver projeto</a>` : ''}
-          <button class="btn-outline-brand" id="btn-orc">Solicitar orçamento</button>
-        </div>
-      </div>
-    `;
-
-    // fechar painel
-    panel.querySelector('.pp-close').addEventListener('click', closePanel);
-    document.getElementById('btn-orc')?.addEventListener('click', ()=>location.href='index.php#contato');
-
-    // ESC fecha
-    document.addEventListener('keydown', escClose);
+/* ajuda: converte slug da categoria para rótulo humano */
+function mapCategory(slug) {
+  switch(slug){
+    case 'automation': return 'Automação';
+    case 'apps':       return 'Aplicativos & Sistemas';
+    case 'bi':         return 'Dashboards & BI';
+    default:           return 'Geral';
   }
+}
 
-  function closePanel(){
-    catalog.classList.remove('panel-open');
-    SELECTED_ID = null;
-    cardsEl.querySelectorAll('.tile').forEach(t => t.classList.remove('is-selected'));
-    document.removeEventListener('keydown', escClose);
-  }
-
-  function escClose(e){ if (e.key === 'Escape') closePanel(); }
-})();
+/* inicialização: aplica “Tudo” + busca vazia */
+filterGrid({category:'all', query:''});

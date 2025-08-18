@@ -19,10 +19,10 @@
     "category": "Dashboards & BI",
     "client": "Loja XYZ",
     "stack": ["Looker/Studio", "BigQuery"],
-    "thumb": "../img/portfolio/bi01.jpg",
+    "thumb": "../img/painel.jpg",
     "media": [
-      "../img/portfolio/bi01.jpg",
-      "../img/portfolio/bi01b.jpg"
+      "../img/painel.jpg",
+      "../img/painel.jpg"
     ],
     "summary": "KPIs de conversão, cohort e previsões semanais.",
     "link": "https://exemplo.com/case/bi-01"
@@ -33,10 +33,10 @@
     "category": "Aplicativos & Sistemas",
     "client": "Distribuidora Alfa",
     "stack": ["Node", "Postgres", "React"],
-    "thumb": "../img/portfolio/app01.jpg",
+    "thumb": "../img/erp.jpg",
     "media": [
-      "../img/portfolio/app01.jpg",
-      "../img/portfolio/app01b.jpg"
+      "../img/erp.jpg",
+      "../img/erp.jpg"
     ],
     "summary": "Módulos de estoque, pedidos e faturamento.",
     "link": "https://exemplo.com/case/app-01"
