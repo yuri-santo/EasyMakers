@@ -112,7 +112,7 @@ if (yrEl) yrEl.textContent = new Date().getFullYear();
   });
 })();
 
-/* =============== Rastro (Canvas) – opcional, já usado por você =============== */
+/* =============== Rastro (Canvas) =============== */
 (function () {
   const canvas = document.getElementById('trail-canvas');
   if (!canvas) return;
@@ -179,13 +179,7 @@ if (yrEl) yrEl.textContent = new Date().getFullYear();
 })();
 
 /* =============== LED via BOX-SHADOW DIRECIONAL (hover) =============== */
-/*
-  Para cada card, calculamos o vetor direção (sx, sy) apontando do centro
-  do card para o mouse. Esses valores (normalizados) alimentam o CSS:
-  - no hover, as camadas de box-shadow usam offsets proporcionais a (sx, sy),
-    criando a sensação de “neon” mais forte no lado para onde o cursor aponta.
-  - fora do hover, a sombra volta para a neutra (definida no CSS).
-*/
+
 (function () {
   const SELECTOR = '.card, .blog-card, #servicos .swiper-slide';
   const items = document.querySelectorAll(SELECTOR);
@@ -202,7 +196,6 @@ if (yrEl) yrEl.textContent = new Date().getFullYear();
 
     function onEnter(){ computeCenter(); }
     function onLeave(){
-      // reseta os vetores para “centro” → LED some e fica só a sombra neutra
       el.style.setProperty('--sx', '0');
       el.style.setProperty('--sy', '0');
     }
@@ -212,19 +205,12 @@ if (yrEl) yrEl.textContent = new Date().getFullYear();
       const y = e.clientY ?? (e.touches && e.touches[0]?.clientY);
       if (x == null || y == null) return;
       if (!rect) computeCenter();
-
-      // vetor do centro até o mouse
       let dx = x - cx;
       let dy = y - cy;
-
-      // normaliza para [-1..1] mantendo proporção do card
       const len = Math.hypot(dx, dy) || 1;
       dx /= len; dy /= len;
-
-      // aplica (limita) para evitar sombras muito longas em telas gigantes
       const sx = Math.max(-1, Math.min(1, dx));
       const sy = Math.max(-1, Math.min(1, dy));
-
       el.style.setProperty('--sx', sx.toFixed(3));
       el.style.setProperty('--sy', sy.toFixed(3));
     }
@@ -232,15 +218,13 @@ if (yrEl) yrEl.textContent = new Date().getFullYear();
     el.addEventListener('pointerenter', onEnter, { passive: true });
     el.addEventListener('pointerleave', onLeave, { passive: true });
     el.addEventListener('pointermove',  onMove,  { passive: true });
-
-    // recalcula centro se a janela rolar/redimensionar enquanto está em hover
     const recalc = () => { if (el.matches(':hover')) computeCenter(); };
     window.addEventListener('scroll', recalc, { passive: true });
     window.addEventListener('resize', recalc);
   });
 })();
 
-/* =============== Assinatura (opcional) =============== */
+/* =============== Assinatura =============== */
 (() => {
   const style = 'color:#6f42c1;font-weight:700;font-size:14px';
   console.log('%cEasyMakers • LED (box-shadow) by Yuri Geovane 🦉', style);

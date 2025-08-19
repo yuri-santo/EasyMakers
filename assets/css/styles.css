@@ -194,7 +194,7 @@ p { font-size: 18px; line-height: 1.7; }
 .footer-help{margin:0 0 8px}
 .footer-divider{border:0;border-top:1px solid rgba(0,0,0,.12);margin:12px 0 14px}
 .footer-meta{display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap;margin-bottom:8px}
-.footer-meta .locale{white-space:nowrap}
+.footer-meta .locale{height:100px;width:100px;display:flex}
 .footer-links{display:flex;flex-wrap:wrap;gap:10px}
 .footer-links .sep{color:#b0b0b3}
 
