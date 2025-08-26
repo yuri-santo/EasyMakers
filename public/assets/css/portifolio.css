@@ -1,0 +1,249 @@
+:root{
+  --brand:#6f42c1;             
+  --brand-2:#3e6ae1;          
+  --ink:#231f20;               
+  --muted:#6b6b6b;
+  --bg:#ffffff;                
+  --card:#ffffff;
+  --divider:rgba(0,0,0,.08);
+  --text: var(--ink);
+  --transition: .25s ease;
+  --brand-light:#c7b3f5;  
+  --brand-blue:#3e6ae1;
+  --radius:16px;
+  --shadow-1:0 10px 24px rgba(0,0,0,.08);
+  --shadow-2:0 18px 42px rgba(0,0,0,.12);
+  --shadow-strong:0 30px 60px rgba(58, 34, 110, .25);
+
+  --grid-gap:24px;
+  --details-span:2;            
+  --details-min-h: 460px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:"Montserrat", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  color:var(--ink);
+  background: var(--brand-2);
+  color: var(--text);
+  transition: background var(--transition), color var(--transition);
+}
+
+/* Background animado SVG */
+.bg-pulse{
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;          /* não captura cliques */
+  background-color: var(--bg);   /* base clara */
+  background-image:
+    radial-gradient(circle at 20% 30%, var(--brand-light) 0%, transparent 55%),
+    radial-gradient(circle at 80% 70%, var(--brand-blue)  0%, transparent 55%);
+  background-repeat: no-repeat;
+  background-size: 60% 60%, 60% 60%;     /* tamanhos iniciais dos blobs */
+  background-position: 20% 30%, 80% 70%; /* posições iniciais */
+  animation: pulse 10s infinite alternate ease-in-out;
+  will-change: background-size, background-position, opacity, filter;
+}
+
+/* Animação “respirar” suave */
+@keyframes pulse{
+  0%{
+    background-size: 60% 60%, 60% 60%;
+    background-position: 20% 30%, 80% 70%;
+    opacity: .95;
+    filter: saturate(100%);
+  }
+  100%{
+    background-size: 75% 75%, 70% 70%;
+    background-position: 22% 32%, 78% 68%;
+    opacity: 1;
+    filter: saturate(112%);
+  }
+}
+
+/* Acessibilidade: respeita redução de movimento */
+@media (prefers-reduced-motion: reduce){
+  .bg-pulse{ animation: none; }
+}
+
+/* Dica: em mobile, deixar o efeito um pouco mais suave */
+@media (max-width: 768px){
+  .bg-pulse{
+    background-size: 70% 70%, 70% 70%;
+    opacity: .98;
+  }
+}
+
+/* Glassmorphism */
+.glass {
+  background: rgba(255,255,255,0.25);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius);
+}
+
+/* ======= Header ======= */
+.pf-header{
+  position:sticky; top:0; z-index:10;
+  background:linear-gradient(180deg,rgba(255,255,255,.86),rgba(255,255,255,.65));
+  backdrop-filter:saturate(120%) blur(8px);
+  border-bottom:1px solid var(--divider);
+  padding:14px clamp(14px,3vw,24px);
+  display:grid;
+  grid-template-columns: 1fr minmax(240px,680px) 1fr;
+  align-items:center;
+  gap:14px;
+}
+.brand{
+  display:flex; align-items:center; gap:10px;
+  text-decoration:none; color:var(--ink); font-weight:800;
+}
+.brand img{ height:56px; width:auto; object-fit:contain }
+
+.brand-text{color:#1B3AA8;font-weight:700;font-size:1.15rem;}
+
+.pf-search{ display:flex; justify-content:center }
+.pf-search input{
+  width:100%;
+  padding:.85rem 1.1rem;
+  border:1px solid var(--divider);
+  border-radius:100px;
+  outline:none;
+  font-size:1rem;
+  box-shadow:var(--shadow-1);
+}
+
+.pf-filters{
+  display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px;
+}
+.chip{
+  border:1px solid var(--divider);
+  background:#fff;
+  color:#3a2e57;
+  font-weight:600;
+  padding:.5rem .8rem;
+  border-radius:100px;
+  cursor:pointer;
+}
+.chip.is-active{ border-color:var(--brand); color:#fff; background:linear-gradient(135deg,var(--brand),var(--brand-2)) }
+
+/* ======= Main / Grid ======= */
+.pf-main{ padding:clamp(18px,3vw,28px) clamp(14px,3vw,26px) 56px }
+
+.portfolio-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill,minmax(260px,1fr));
+  grid-auto-rows: auto;
+  gap: var(--grid-gap);
+  transition:grid-template-columns .3s ease;
+}
+
+/* ======= Cards ======= */
+.project-card{
+  background:var(--card);
+  border:1px solid var(--divider);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-1);
+  padding:14px;
+  display:flex; flex-direction:column; gap:10px;
+  transition:transform .18s ease, box-shadow .18s ease;
+  cursor:pointer;
+}
+.project-card:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow-2);
+}
+.project-card .thumb{
+  height:160px; border-radius:12px; overflow:hidden;
+  background:linear-gradient(135deg,rgba(111,66,193,.08),rgba(62,106,225,.08));
+  border:1px dashed rgba(111,66,193,.15);
+}
+.project-card .thumb img{
+  width:100%; height:100%; object-fit:cover; display:block;
+}
+.project-card h3{
+  margin:.35rem 0 .1rem; font-size:1.05rem; font-weight:800; color:#1f142f;
+}
+.project-card .meta{
+  margin:0; color:var(--muted); font-size:.9rem;
+}
+
+/* ======= Painel de Detalhes (inline no grid - DESKTOP) ======= */
+.project-details{
+  background:#fff;
+  border:1px solid var(--divider);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-strong);
+  padding:18px;
+  min-height: var(--details-min-h);
+  display:grid;
+  grid-template-columns: 1.2fr 1.6fr;
+  gap:18px;
+  position:relative;
+  opacity:0; transform:translateY(8px); transition:opacity .2s ease, transform .2s ease;
+  grid-column: span var(--details-span);
+}
+.project-details.is-visible{ opacity:1; transform:none; }
+
+.close-details{
+  position:absolute; top:10px; right:12px;
+  width:36px;height:36px;border-radius:50%;
+  background:#fff;border:1px solid var(--divider); cursor:pointer;
+  font-size:20px; line-height:0; display:grid; place-items:center;
+}
+.close-details:hover{ background:#faf7ff; border-color:rgba(111,66,193,.32) }
+
+.details-media{
+  border-radius:12px; overflow:hidden; border:1px solid var(--divider);
+  background:linear-gradient(135deg,rgba(111,66,193,.08),rgba(62,106,225,.08));
+}
+.details-img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+.details-info h2{ margin:.4rem 0 .6rem; font-weight:800; color:#29185c; }
+.details-info p{ margin:.25rem 0; color:#3f3f3f }
+.details-desc{ margin-top:.5rem; line-height:1.6 }
+
+.details-actions{ display:flex; gap:10px; margin-top:14px }
+.btn{
+  background:linear-gradient(135deg,var(--brand),var(--brand-2));
+  color:#fff; border:none; border-radius:12px; padding:.7rem 1rem; font-weight:800; cursor:pointer;
+}
+.btn:hover{ filter:saturate(115%) brightness(105%) }
+.btn-outline{
+  background:#fff; color:var(--brand);
+  border:1px solid rgba(111,66,193,.35);
+}
+.btn-outline:hover{ background:#faf7ff }
+
+/* ======= Modal (MOBILE) ======= */
+.pf-modal{ position:fixed; inset:0; display:none; }
+.pf-modal.is-open{ display:block; }
+.pf-modal__backdrop{
+  position:absolute; inset:0; background:rgba(0,0,0,.28); backdrop-filter: blur(2px);
+}
+.pf-modal__dialog{
+  position:absolute; left:50%; top:6%; transform:translateX(-50%);
+  width:min(720px,92%); background:#fff; border-radius:20px; box-shadow:var(--shadow-strong); overflow:hidden;
+}
+.pf-modal__close{
+  position:absolute; right:10px; top:10px;
+  width:38px;height:38px;border-radius:50%;border:1px solid var(--divider);
+  background:#fff; cursor:pointer; font-size:22px; display:grid;place-items:center;
+}
+.pf-modal__content{ padding:16px }
+.pf-modal .modal-body > *{ margin:0 }
+
+/* ======= Responsivo ======= */
+@media (max-width: 1024px){
+  :root{ --details-span: 2; } /* mantém 2 colunas em tablets largos */
+  .project-details{ grid-template-columns: 1fr; }
+}
+@media (max-width: 768px){
+  /* No mobile, NÃO usamos painel inline; JS abre o modal. */
+  .project-details{ display:none!important }
+  .portfolio-grid{ grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap:18px }
+  .project-card .thumb{ height:140px }
+}

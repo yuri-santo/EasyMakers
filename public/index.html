@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="assets/img/logo.ico"/>
+  <title>EasyMakers</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+        <img src="assets/img/logo.png" alt="EasyMakers" class="brand-logo" />
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-label="Abrir menu de navegação" title="Abrir menu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="portifolio.html">Portifolio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#sobre">Sobre</a></li>
+          <li class="nav-item"><a class="nav-link" href="#servicos">Serviços</a></li>
+          <li class="nav-item"><a class="nav-link" href="#diferenciais">Diferenciais</a></li>
+          <li class="nav-item"><a class="nav-link" href="#blog">Blog</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
+          <li class="nav-item"><a class="nav-link" href="admin.html">Painel</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <canvas id="trail-canvas" aria-hidden="true"></canvas>
+  <!-- Hero -->
+  <section class="hero-easy">
+    <div class="container">
+      <div class="hero-copy text-center">
+        <h1>Transformamos tecnologia em soluções simples, acessíveis e automatizadas.</h1>
+        <p class="lead mt-3 mb-4">Consultoria em TI para negócios que querem escalar com inteligência e eficiência.</p>
+        <a href="#contato" class="btn btn-easy btn-lg mt-2">Ative o modo <strong>Easy</strong></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sobre -->
+  <section class="section bg-light" id="sobre">
+    <div class="container text-center" data-aos="fade-right">
+      <h2 class="section-title">Sobre a EasyMakers</h2>
+
+      <p>
+        A <strong>EasyMakers</strong> é uma startup brasileira especializada em consultoria e soluções tecnológicas
+        inteligentes, com foco na transformação digital de pequenas e médias empresas.
+      </p>
+
+      <p>
+        Unimos agilidade, inovação e personalização para facilitar o dia a dia de negócios, oferecendo ferramentas que
+        otimizam processos, automatizam tarefas repetitivas e tornam a tecnologia mais acessível a todos os níveis da
+        organização.
+      </p>
+
+      <p>
+        Nosso trabalho é construir pontes entre o desafio e a solução — com uma abordagem centrada no cliente,
+        combinamos metodologias ágeis, plataformas no-code/low-code, integração de sistemas e inteligência artificial
+        para entregar resultados reais.
+      </p>
+    </div>
+  </section>
+
+  <!-- Missão, Visão e Valores como Cards -->
+  <section class="section bg-light" id="sobre-mvv">
+    <div class="container text-center">
+      <h2 class="section-title">Nossa Essência</h2>
+      <div class="row justify-content-center mt-4 g-3">
+
+        <!-- Card Missão -->
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm border-0">
+            <div class="card-body">
+              <h5 class="card-title"><span class="me-2">🎯</span> Missão</h5>
+              <p class="card-text">
+                Facilitar a transformação digital por meio de soluções tecnológicas simples, eficazes e acessíveis.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Visão -->
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm border-0">
+            <div class="card-body">
+              <h5 class="card-title"><span class="me-2">🌟</span> Visão</h5>
+              <p class="card-text">
+                Ser referência em automação, chatbots e soluções digitais inteligentes no Brasil, democratizando o uso
+                da tecnologia nas empresas.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Valores -->
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm border-0">
+            <div class="card-body">
+              <h5 class="card-title"><span class="me-2">🧭</span> Valores</h5>
+              <ul class="text-start ps-3">
+                <li>Inovação contínua</li>
+                <li>Foco no cliente</li>
+                <li>Transparência e confiança</li>
+                <li>Eficiência e resultados</li>
+                <li>Simplicidade como diferencial</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <a href="#contato" class="btn btn-primary btn-lg mt-5">Fale Conosco</a>
+    </div>
+  </section>
+
+  <!-- Serviços - Carrossel -->
+  <section class="section bg-light" id="servicos">
+    <div class="container text-center">
+      <h2 class="section-title" data-aos="fade-up">Nossos Serviços</h2>
+
+      <div class="swiper mySwiper mt-5 position-relative">
+        <div class="swiper-wrapper">
+          <!-- 1 -->
+          <div class="swiper-slide">
+            <img src="https://cdn-icons-png.flaticon.com/512/2620/2620627.png" alt="Automação" width="30">
+            <h5 class="mt-3">Automação de Processos</h5>
+            <p>Fluxos com Make/Power Automate, logs e monitoramento para ROI rápido.</p>
+          </div>
+
+          <!-- 2 -->
+          <div class="swiper-slide">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828911.png" alt="Dashboards" width="30">
+            <h5 class="mt-3">Dashboards e BI</h5>
+            <p>KPIs claros e dados unificados em painéis para decisão ágil.</p>
+          </div>
+
+          <!-- 3 -->
+          <div class="swiper-slide">
+            <img src="https://cdn-icons-png.flaticon.com/512/2721/2721292.png" alt="Apps" width="30">
+            <h5 class="mt-3">Aplicativos & Sistemas</h5>
+            <p>Apps web e ERPs sob demanda, com entrega iterativa.</p>
+          </div>
+
+          <!-- 4 -->
+          <div class="swiper-slide">
+            <img src="https://cdn-icons-png.flaticon.com/512/2910/2910791.png" alt="Migração" width="30">
+            <h5 class="mt-3">Migração p/ Web</h5>
+            <p>Planilhas → apps seguros, multiusuário e escaláveis.</p>
+          </div>
+
+          <!-- 5 -->
+          <div class="swiper-slide">
+            <img src="https://cdn-icons-png.flaticon.com/512/4712/4712027.png" alt="Chatbots" width="30">
+            <h5 class="mt-3">Chatbots & IA</h5>
+            <p>Assistentes para atendimento e processos internos, integrados ao seu stack.</p>
+          </div>
+
+          <!-- 6 -->
+          <div class="swiper-slide">
+            <img src="https://cdn-icons-png.flaticon.com/512/3194/3194732.png" alt="APIs" width="30">
+            <h5 class="mt-3">Integrações & APIs</h5>
+            <p>Conexões entre CRM, ERP, bancos e APIs; arquitetura de dados robusta.</p>
+          </div>
+
+          <!-- 7 -->
+          <div class="swiper-slide">
+            <img src="https://cdn-icons-png.flaticon.com/512/2995/2995101.png" alt="No-code" width="30">
+            <h5 class="mt-3">No-code / Low-code</h5>
+            <p>Entrega rápida usando plataformas visuais, com governança e padrões.</p>
+          </div>
+
+          <!-- 8 -->
+          <div class="swiper-slide">
+            <img src="https://cdn-icons-png.flaticon.com/512/1041/1041916.png" alt="Segurança" width="30">
+            <h5 class="mt-3">LGPD & Segurança</h5>
+            <p>Práticas de segurança, controles de acesso e conformidade de dados.</p>
+          </div>
+
+          <!-- 9 -->
+          <div class="swiper-slide">
+            <img src="https://cdn-icons-png.flaticon.com/512/2103/2103658.png" alt="MVP" width="30">
+            <h5 class="mt-3">Prototipagem & MVP</h5>
+            <p>Versão mínima validada com usuários para acelerar o “go-to-market”.</p>
+          </div>
+
+          <!-- 10 -->
+          <div class="swiper-slide">
+            <img src="https://cdn-icons-png.flaticon.com/512/639/639365.png" alt="Dados" width="30">
+            <h5 class="mt-3">ETL & Qualidade de Dados</h5>
+            <p>Pipelines, validação e tratamento de nulos/outliers para decisões confiáveis.</p>
+          </div>
+
+          <!-- 11 -->
+          <div class="swiper-slide">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828673.png" alt="Treinamentos" width="30">
+            <h5 class="mt-3">Onboarding & Treinamentos</h5>
+            <p>Capacitação de times para adoção de soluções e ganho de produtividade.</p>
+          </div>
+
+          <!-- 12 -->
+          <div class="swiper-slide">
+            <img src="https://cdn-icons-png.flaticon.com/512/3103/3103446.png" alt="Suporte" width="30">
+            <h5 class="mt-3">Suporte & Manutenção</h5>
+            <p>Correções, melhorias contínuas e monitoramento pós-go-live.</p>
+          </div>
+        </div>
+
+        <!-- Navegação -->
+        <div class="swiper-button-prev" aria-label="Anterior"></div>
+        <div class="swiper-button-next" aria-label="Próximo"></div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <!-- Diferenciais -->
+  <section class="section bg-light" id="diferenciais">
+    <div class="container text-center" data-aos="fade-left">
+      <h2 class="section-title">Por que escolher a EasyMakers?</h2>
+      <ul class="list-unstyled">
+        <li>+ Atendimento especializado e consultivo</li>
+        <li>+ Integração com ferramentas existentes (ERP, CRM, etc.)</li>
+        <li>+ Foco na entrega rápida e na facilidade de uso</li>
+        <li>+ Custos sob medida e escalonáveis</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Blog -->
+  <section class="section bg-light" id="blog">
+    <div class="container" data-aos="fade-up">
+      <h2 class="section-title text-center">Últimos Artigos</h2>
+
+      <div class="row g-3">
+        <div class="col-md-6 col-lg-3">
+          <div class="blog-card p-3 h-100 d-flex flex-column">
+            <h5>Quando escolher uma planilha com VBA</h5>
+            <hr />
+            <p>Automação ágil no Excel para fluxos internos.</p>
+            <button class="btn btn-outline-primary btn-sm mt-auto open-article" data-article="vba">Leia mais</button>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="blog-card p-3 h-100 d-flex flex-column">
+            <h5>Quando escolher um sistema embarcado</h5>
+            <hr />
+            <p>Confiabilidade, tempo real e operação offline.</p>
+            <button class="btn btn-outline-primary btn-sm mt-auto open-article" data-article="embedded">Leia
+              mais</button>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="blog-card p-3 h-100 d-flex flex-column">
+            <h5>Quando escolher um dashboard</h5>
+            <hr />
+            <p>KPI certos, dados limpos, decisões rápidas.</p>
+            <button class="btn btn-outline-primary btn-sm mt-auto open-article" data-article="dashboard">Leia
+              mais</button>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="blog-card p-3 h-100 d-flex flex-column">
+            <h5>Quais tarefas podemos automatizar</h5>
+            <hr />
+            <p>Guia prático de automações com ROI.</p>
+            <button class="btn btn-outline-primary btn-sm mt-auto open-article" data-article="automation">Leia
+              mais</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Templates dos artigos -->
+      <template id="tpl-article-vba">
+        <h2 class="h4 mb-3">Quando escolher uma planilha com VBA</h2>
+        <p>O <strong>VBA no Excel</strong> é excelente para <em>operações internas</em>, poucos usuários e processos bem
+          delimitados.</p>
+
+        <h3 class="h6 mt-3">Use quando</h3>
+        <ul>
+          <li>Rotinas financeiras/operacionais repetitivas (fechamento, consolidação, conciliação simples).</li>
+          <li>Geração automática de relatórios, PDFs e e-mails a partir do Excel.</li>
+          <li>Prototipagem rápida de regras de negócio antes de migrar para web/app.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Benefícios</h3>
+        <ul>
+          <li>Baixo custo e entrega rápida.</li>
+          <li>Alta personalização e familiaridade para o usuário.</li>
+          <li>Integração nativa com Word/Outlook/Access.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Limitações</h3>
+        <ul>
+          <li>Colaboração simultânea difícil; controle de versão manual.</li>
+          <li>Dependência do Office/Windows e permissões de macro.</li>
+          <li>Escalabilidade limitada para muitos usuários.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Boas práticas</h3>
+        <ul>
+          <li>Organizar módulos por domínio; nomear variáveis e funções de forma clara.</li>
+          <li>Tratar erros com logs (arquivo .txt) e mensagens objetivas ao usuário.</li>
+          <li>Assinar macros e proteger abas sensíveis.</li>
+          <li>Usar “arquivo-mestre” somente-leitura + “arquivo-de-trabalho” por usuário.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Checklist de decisão</h3>
+        <ol>
+          <li><strong>Até 10 usuários?</strong> Sim → VBA é viável. Não → considerar web/app.</li>
+          <li><strong>Poucas integrações?</strong> Sim → VBA resolve. Não → API/integrações web.</li>
+          <li><strong>Precisa de auditoria/granularidade?</strong> Sim → banco de dados + app.</li>
+        </ol>
+
+        <h3 class="h6 mt-3">Caminho de evolução</h3>
+        <p>Valide com VBA → estabilize o processo → migre para <strong>app web</strong> com banco de dados e API quando
+          o uso crescer.</p>
+
+        <hr>
+        <p class="mb-0"><strong>Queremos te ajudar:</strong> mapeamos o fluxo, estimamos ROI e entregamos o VBA com
+          manual e testes.</p>
+      </template>
+
+
+      <template id="tpl-article-embedded">
+        <h2 class="h4 mb-3">Quando escolher um sistema embarcado</h2>
+        <p>Indicado quando o software precisa rodar <em>no próprio dispositivo</em>, com <strong>resposta
+            imediata</strong>, <strong>robustez</strong> e <strong>operação offline</strong>.</p>
+
+        <h3 class="h6 mt-3">Use quando</h3>
+        <ul>
+          <li>Coleta/controle em campo (totens, sensores, IoT) processando localmente.</li>
+          <li>Automação/controle de máquinas com requisitos de tempo real.</li>
+          <li>Ambientes com internet instável ou inexistente.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Arquitetura na prática</h3>
+        <ul>
+          <li><strong>Hardware:</strong> microcontroladores/SoCs conforme consumo, portas e custo.</li>
+          <li><strong>Software:</strong> firmware otimizado, filas de eventos, watchdog, persistência local.</li>
+          <li><strong>Confiabilidade:</strong> logs e telemetria, <em>update OTA</em> seguro, rollback.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Benefícios</h3>
+        <ul>
+          <li>Desempenho alto e previsível.</li>
+          <li>Operação offline confiável.</li>
+          <li>Controle total sobre hardware e ciclo de vida.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Custo e manutenção</h3>
+        <ul>
+          <li>Investimento inicial maior (P&D, prototipagem, homologação).</li>
+          <li>Atualizações mais controladas; planejamento de suporte de longo prazo.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Checklist de decisão</h3>
+        <ol>
+          <li><strong>Tempo de resposta crítico?</strong> Sim → embarcado.</li>
+          <li><strong>Offline é obrigatório?</strong> Sim → embarcado.</li>
+          <li><strong>Mudanças frequentes e flexibilidade?</strong> Vá de app/web.</li>
+        </ol>
+
+        <hr>
+        <p class="mb-0"><strong>Como entregamos:</strong> PoC de hardware, firmware com logs e painel mínimo de
+          telemetria para suporte.</p>
+      </template>
+
+
+      <template id="tpl-article-dashboard">
+        <h2 class="h4 mb-3">Quando escolher um dashboard</h2>
+        <p>Dashboards transformam dados em ação quando há <strong>KPIs claros</strong> e necessidade de
+          <strong>monitoramento contínuo</strong>.
+        </p>
+
+        <h3 class="h6 mt-3">Use quando</h3>
+        <ul>
+          <li>Precisa acompanhar KPIs (vendas, churn, SLA, produtividade) em tempo quase real.</li>
+          <li>Deseja unificar planilhas, CRMs, ERPs, bancos e APIs em um único lugar.</li>
+          <li>Quer gestão à vista para operação e reuniões executivas.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Pré-requisitos</h3>
+        <ul>
+          <li>Métricas definidas (fórmulas, periodicidade e responsáveis).</li>
+          <li>Qualidade de dados: tipos corretos, chaves únicas, tratamento de nulos/outliers.</li>
+          <li>Layout orientado à decisão: poucos gráficos, contexto e comparativos.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Erros comuns</h3>
+        <ul>
+          <li>“Navio de gráficos”: visualizações demais, foco de menos.</li>
+          <li>Métricas sem dono (sem governança).</li>
+          <li>Latência por integrações mal otimizadas.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Entrega rápida (MVP)</h3>
+        <ol>
+          <li>Escolher 5–7 KPIs críticos.</li>
+          <li>Conectar fontes (planilhas/BD/APIs) e validar dados.</li>
+          <li>Publicar versão 1 e iterar quinzenalmente.</li>
+        </ol>
+
+        <hr>
+        <p class="mb-0"><strong>Nosso pacote:</strong> definição de KPIs, conexão de dados, layout limpo e guia de
+          leitura para o time.</p>
+      </template>
+
+
+      <template id="tpl-article-automation">
+        <h2 class="h4 mb-3">Quais tarefas podemos automatizar</h2>
+        <p>Comece por tarefas <strong>repetitivas</strong>, de <strong>alto volume</strong> e <strong>baixo
+            risco</strong> — o ganho paga o investimento rapidamente.</p>
+
+        <h3 class="h6 mt-3">Exemplos práticos</h3>
+        <ul>
+          <li><strong>Financeiro:</strong> conciliação, emissão fiscal, lembretes de contas, classificação de despesas.
+          </li>
+          <li><strong>Marketing:</strong> fluxos de e-mail, qualificação de leads, posts agendados.</li>
+          <li><strong>Atendimento:</strong> chatbots para FAQs, abertura e roteamento de tickets.</li>
+          <li><strong>Operações:</strong> integrações entre sistemas para eliminar digitação dupla.</li>
+          <li><strong>Relatórios:</strong> PDFs e dashboards enviados automaticamente.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Matriz ICE (priorização)</h3>
+        <ul>
+          <li><strong>Impacto:</strong> horas/mês economizadas, redução de erros.</li>
+          <li><strong>Confiança:</strong> clareza do processo e qualidade dos dados.</li>
+          <li><strong>Esforço:</strong> tempo de desenvolvimento e integrações.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Riscos & mitigação</h3>
+        <ul>
+          <li>Dependência de ferramenta: padronizar conectores e manter <em>fallbacks</em>.</li>
+          <li>Dados sujos: incluir validações e logs de exceções.</li>
+          <li>Mudanças de regra: versionar fluxos e documentar gatilhos.</li>
+        </ul>
+
+        <h3 class="h6 mt-3">Plano de 3 passos</h3>
+        <ol>
+          <li>Mapear 3 processos repetitivos e medir tempo atual.</li>
+          <li>Automatizar o mais simples (alto impacto/baixo esforço).</li>
+          <li>Medir ROI após 2–4 semanas e escalar o que funciona.</li>
+        </ol>
+
+        <hr>
+        <p class="mb-0"><strong>Entrega EasyMakers:</strong> mapeamento + automação + monitoramento com alerta e
+          relatório de ganho.</p>
+      </template>
+
+    </div>
+  </section>
+
+  <!-- Modal de Artigos (apenas 1) -->
+  <div class="modal fade" id="articleModal" tabindex="-1" aria-labelledby="articleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="articleModalLabel">Artigo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <article id="articleContent" class="content-article"></article>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          <a href="mailto:contato@easymakers.com.br" class="btn btn-primary">Falar com a EasyMakers</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Contato -->
+  <section class="section bg-light" id="contato">
+    <div class="container text-center" data-aos="fade-up">
+      <h2 class="section-title">Fale conosco</h2>
+      <p>Pronto para facilitar a tecnologia na sua empresa?</p>
+      <a href="mailto:contato@easymakers.com.br" class="btn btn-primary">Enviar E-mail</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-meta">
+        <p class="copyright">
+          Copyright © <span id="current-year"></span> EasyMakers.<br/>Todos os direitos reservados.<br/>
+          EasyMakers. <span class="sep">|</span> CNPJ: 00.000.000/0000-00
+        </p>
+        <div class="locale"><img src="/assets/img/coruja_voo.ico" alt="Brasil"></div>
+      </div>
+
+      <nav class="footer-links">
+        <a href="politica-de-privacidade.html">Política de Privacidade</a>
+      </nav>
+    </div>
+  </footer>
+
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="assets/js/script.js"></script>
+</body>
+
+</html>

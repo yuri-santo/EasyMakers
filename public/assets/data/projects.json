@@ -1,0 +1,50 @@
+[
+  {
+    "title": "App de Vendas Online",
+    "description": "Plataforma de e-commerce responsiva com carrinho inteligente.",
+    "image": "painel.jpg",
+    "category": "web",
+    "tech": ["React", "Node.js", "MongoDB", "Stripe"],
+    "link": "https://meuprojeto.com/app-vendas"
+  },
+  {
+    "title": "Dashboard Financeiro",
+    "description": "Painel BI com relatórios e KPIs financeiros em tempo real.",
+    "image": "dash.jpg",
+    "category": "bi",
+    "tech": ["Power BI", "SQL Server", "Azure"],
+    "link": "https://meuprojeto.com/dashboard-financeiro"
+  },
+  {
+    "title": "Gestão de Estoque",
+    "description": "Sistema web para controle de estoque e integração com ERP.",
+    "image": "erp.jpg",
+    "category": "web",
+    "tech": ["Laravel", "MySQL", "Bootstrap"],
+    "link": "https://meuprojeto.com/estoque"
+  },
+  {
+    "title": "Aplicativo de Saúde",
+    "description": "App mobile para acompanhamento de treinos e nutrição.",
+    "image": "assets/img/mobile01.jpg",
+    "category": "mobile",
+    "tech": ["Flutter", "Firebase"],
+    "link": "https://meuprojeto.com/saude-app"
+  },
+  {
+    "title": "CRM Inteligente",
+    "description": "Ferramenta de CRM com automação de vendas e chat integrado.",
+    "image": "assets/img/app03.jpg",
+    "category": "web",
+    "tech": ["Vue.js", "Django", "PostgreSQL"],
+    "link": "https://meuprojeto.com/crm"
+  },
+  {
+    "title": "Análise de Produção",
+    "description": "Dashboard BI com análise de produção industrial em tempo real.",
+    "image": "assets/img/bi02.jpg",
+    "category": "bi",
+    "tech": ["Tableau", "Python"],
+    "link": "https://meuprojeto.com/analise-producao"
+  }
+]
