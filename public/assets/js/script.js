@@ -179,7 +179,6 @@ if (yrEl) yrEl.textContent = new Date().getFullYear();
 })();
 
 /* =============== LED via BOX-SHADOW DIRECIONAL (hover) =============== */
-
 (function () {
   const SELECTOR = '.card, .blog-card, #servicos .swiper-slide';
   const items = document.querySelectorAll(SELECTOR);
@@ -224,8 +223,7 @@ if (yrEl) yrEl.textContent = new Date().getFullYear();
   });
 })();
 
-/* =============== Assinatura =============== */
 (() => {
   const style = 'color:#6f42c1;font-weight:700;font-size:14px';
-  console.log('%cEasyMakers • LED (box-shadow) by Yuri Geovane 🦉', style);
+  console.log('%cEasyMakers 🦉', style);
 })();

@@ -1,24 +1,13 @@
-// src/services/calendar.js
 import ical from "node-ical";
 import { DateTime } from "luxon";
 
 const TZ = "America/Sao_Paulo";
 
-/**
- * Normaliza campos de string (evita undefined/null).
- */
 function asText(v) {
   return typeof v === "string" ? v : v == null ? "" : String(v);
 }
 
-/**
- * Converte um VEVENT do node-ical em JSON consumível pelo front.
- * - Normaliza start/end em ISO (TZ configurada)
- * - Marca allDay quando for date-only
- */
 function eventToJson(ev) {
-  // node-ical costuma expor { start: Date, end: Date, ... }
-  // Em date-only, há casos com flag interna isDate = true
   const isDateOnly =
     (ev.start && ev.start.isDate === true) ||
     (ev.end && ev.end.isDate === true);
@@ -46,16 +35,9 @@ function eventToJson(ev) {
     source: "ics"
   };
 }
-
-/**
- * Baixa e parseia um ICS remoto.
- * - Se URL for vazia/inválida ou der erro de rede/DNS, retorna []
- * - Timeout defensivo para não travar o servidor
- */
 export async function fetchIcsFrom(url) {
   try {
     if (!url || !/^https?:\/\//i.test(url)) return [];
-    // node-ical aceita opções; usamos timeout para evitar travas
     const data = await ical.async.fromURL(url, { timeout: 15000 });
     const out = [];
     for (const key in data) {
@@ -66,24 +48,16 @@ export async function fetchIcsFrom(url) {
     }
     return out;
   } catch (err) {
-    // Não propaga erro — apenas registra e segue
     const code = err?.code || err?.name || "ICS_ERROR";
     console.warn(`[ICS] Falha ao buscar ${url} :: ${code} :: ${err?.message}`);
     return [];
   }
 }
-
-/**
- * Faz a união dos eventos de Google e Outlook ICS
- * - Remove duplicados por `id`
- */
 export async function unifiedIcs({ googleUrl, outlookUrl }) {
   const [g, o] = await Promise.all([fetchIcsFrom(googleUrl), fetchIcsFrom(outlookUrl)]);
-  // Dedupe
   const map = new Map();
   for (const ev of [...g, ...o]) {
     if (!ev?.id) continue;
-    // Se colidir, mantém o primeiro (ou preferir o "mais recente" se quiser)
     if (!map.has(ev.id)) map.set(ev.id, ev);
   }
   return Array.from(map.values());

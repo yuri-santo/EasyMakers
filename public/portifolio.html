@@ -1,99 +1,103 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Portfólio interativo estilo Netflix - projetos, tecnologias e cases." />
-  <meta property="og:title" content="Portfólio Yuri Santos" />
-  <meta property="og:description" content="Explore meus projetos em um catálogo interativo." />
-  <title>Portfólio - Yuri Santos</title>
-  <link rel="shortcut icon" href="/assets/img/logo.ico"/>
-  <!-- CSS -->
+  <meta charset="utf-8" />
+  <title>Portfólio — EasyMakers</title>
+  <link rel="shortcut icon" href="logo.ico"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/portifolio.css" />
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <!-- Background animado SVG -->
   <div class="bg-pulse" aria-hidden="true"></div>
 
-  <header class="pf-header">
-    <a class="brand d-flex align-items-center gap-2" href="/index.html">
-      <img src="/assets/img/logo.png" alt="EasyMakers">
+  <!-- Header fixo -->
+  <header class="sc-header">
+    <a class="brand" href="/">
+      <img src="/assets/img/logo.png" alt="EasyMakers" width="100" height="100" />
+      <div class="brand-txt">
+        <strong>EasyMakers</strong>
+        <span>Projetos & Cases</span>
+      </div>
     </a>
 
-    <div class="pf-search">
-      <input type="search" id="searchInput" placeholder="Buscar por nome, stack, cliente…" aria-label="Buscar no portfólio">
-    </div>
+    <form class="search" role="search" aria-label="Buscar projetos" onsubmit="return false;">
+      <input id="q" type="search" placeholder="Buscar por título, cliente ou tecnologia…" autocomplete="off" />
+    </form>
 
-    <nav class="pf-filters" aria-label="Categorias">
-      <button class="chip is-active" data-filter="all">Tudo</button>
-      <button class="chip" data-filter="apps">Aplicativos & Sistemas</button>
-      <button class="chip" data-filter="automation">Automação</button>
-      <button class="chip" data-filter="bi">Dashboards & BI</button>
+    <nav class="chips" aria-label="Categorias">
+      <button class="chip is-active" data-filter="all" type="button">Tudo</button>
+      <button class="chip" data-filter="apps" type="button">Apps & Sistemas</button>
+      <button class="chip" data-filter="automation" type="button">Automação</button>
+      <button class="chip" data-filter="bi" type="button">Dashboards & BI</button>
     </nav>
   </header>
 
-  <main class="pf-main">
-    <!-- GRID de cards (o JS injeta/filtra por aqui) -->
-    <section class="portfolio-grid" id="portfolioGrid" aria-live="polite">
+  <!-- Conteúdo -->
+  <main class="sc-main">
+    <section class="intro">
+      <h1>Resultados, não só telas.</h1>
+      <p>Selecionamos projetos que combinam UX simples, performance e integrações reais (calendários, automações e analytics).</p>
+    </section>
 
-      <!-- EXEMPLOS de cards (adicione mais à vontade).
-           Os dados do painel vêm dos data-* do card. -->
-      <article class="project-card"
-        data-id="p1"
+    <section id="grid" class="cards" aria-live="polite">
+      <!-- Exemplo 1 -->
+      <article class="card"
+        data-title="FlowMaster Pro"
+        data-client="EasyMakers"
+        data-category="apps"
+        data-tech="React, Node.js, Firebase"
+        data-description="Plataforma de produtividade com Kanban, calendário (ICS) e notas integradas. Sincronização bidirecional e painel com métricas de equipe."
+        data-link="https://seu-case-link.com">
+        <div class="card-media">
+          <img src="/assets/img/painel.jpg" alt="FlowMaster Pro preview">
+        </div>
+        <div class="card-body">
+          <h3>FlowMaster Pro</h3>
+          <p class="meta">EasyMakers • React, Node.js, Firebase</p>
+        </div>
+      </article>
+
+      <!-- Exemplo 2 -->
+      <article class="card"
+        data-title="Dashboard de Vendas"
+        data-client="Mercado XYZ"
+        data-category="bi"
+        data-tech="Next.js, Supabase, ECharts"
+        data-description="KPIs em tempo real, coortes e previsão. Exportação de relatórios e alertas automáticos por período."
+        data-link="https://seu-case-link.com">
+        <div class="card-media">
+          <img src="/assets/img/dash.jpg" alt="Dashboard de Vendas preview">
+        </div>
+        <div class="card-body">
+          <h3>Dashboard de Vendas</h3>
+          <p class="meta">Mercado XYZ • Next.js, Supabase, ECharts</p>
+        </div>
+      </article>
+
+      <!-- Exemplo 3 -->
+      <article class="card"
+        data-title="ERP Compacto"
+        data-client="Indústria Alpha"
         data-category="automation"
-        data-title="Robotização de Propostas"
-        data-client="ACME"
-        data-tech="Make, Power Automate, GSheets"
-        data-description="Fluxo ponta-a-ponta: captação, aprovação e disparos."
-        data-link="https://exemplo.com/projeto-1">
-        <div class="thumb">
-          <img src="/assets/img/dash.jpg" alt="Robotização de Propostas" onerror="this.style.opacity=0">
+        data-tech="Laravel, MySQL, Queue Workers"
+        data-description="Rotinas fiscais, conciliação e integração com marketplaces. Orquestração de filas e monitoramento."
+        data-link="https://seu-case-link.com">
+        <div class="card-media">
+          <img src="/assets/img/erp.jpg" alt="ERP Compacto preview">
         </div>
-        <h3>Robotização de Propostas</h3>
-        <p class="meta">ACME • Make • Power Automate • GSheets</p>
-      </article>
-
-      <article class="project-card"
-        data-id="p2"
-        data-category="apps"
-        data-title="Painel de Vendas"
-        data-client="Loja XYZ"
-        data-tech="Looker Studio, BigQuery"
-        data-description="KPIs e acompanhamento diário de vendas por canal."
-        data-link="https://exemplo.com/projeto-2">
-        <div class="thumb">
-          <img src="/assets/img/painel.jpg" alt="Painel de Vendas" onerror="this.style.opacity=0">
+        <div class="card-body">
+          <h3>ERP Compacto</h3>
+          <p class="meta">Indústria Alpha • Laravel, MySQL</p>
         </div>
-        <h3>Painel de Vendas</h3>
-        <p class="meta">Loja XYZ • Looker Studio • BigQuery</p>
       </article>
-
-      <article class="project-card"
-        data-id="p3"
-        data-category="apps"
-        data-title="ERP Lite"
-        data-client="Distribuidora Alfa"
-        data-tech="Node, React, Postgres"
-        data-description="ERP leve com cadastros, pedidos e relatórios essenciais."
-        data-link="https://exemplo.com/projeto-3">
-        <div class="thumb">
-          <img src="/assets/img/erp.jpg" alt="ERP Lite" onerror="this.style.opacity=0">
-        </div>
-        <h3>ERP Lite</h3>
-        <p class="meta">Distribuidora Alfa • Node • Postgres • React</p>
-      </article>
-
-      <!-- O painel de detalhes é injetado via JS logo após o card clicado -->
     </section>
   </main>
 
-  <!-- TEMPLATE do painel inline (desktop). O JS clona e preenche. -->
-  <template id="detailsTemplate">
-    <aside class="project-details" role="region" aria-label="Detalhes do projeto">
-      <button class="close-details" aria-label="Fechar detalhes">×</button>
+  <!-- Template do detalhe -->
+  <template id="tpl-details">
+    <section class="details" role="dialog" aria-label="Detalhes do projeto">
+      <button class="details-close" type="button" aria-label="Fechar">×</button>
       <div class="details-media">
         <img class="details-img" alt="">
       </div>
@@ -104,26 +108,21 @@
         <p><strong>Tecnologias:</strong> <span class="details-tech"></span></p>
         <p class="details-desc"></p>
         <div class="details-actions">
-          <a class="btn btn-outline" target="_blank" rel="noopener">Ver projeto</a>
-          <a class="btn" href="/index.html#contato">Solicitar orçamento</a>
+          <a class="btn-outline" target="_blank" rel="noopener">Ver projeto</a>
         </div>
       </div>
-    </aside>
+    </section>
   </template>
 
-  <!-- MODAL (mobile) -->
-  <div class="pf-modal" id="projectModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Detalhes do projeto">
-    <div class="pf-modal__backdrop" data-close-modal></div>
-    <div class="pf-modal__dialog" role="document">
-      <button class="pf-modal__close" aria-label="Fechar" data-close-modal>×</button>
-      <div class="pf-modal__content">
-        <!-- O JS reaproveita o mesmo template acima para preencher aqui -->
-        <div class="modal-body"></div>
-      </div>
-    </div>
+  <!-- Drawer/Sheet-->
+  <div id="drawer" class="drawer" aria-hidden="true">
+    <div class="drawer__backdrop" data-close></div>
+    <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Detalhes do projeto">
+      <button class="drawer__close" type="button" aria-label="Fechar">×</button>
+      <div class="drawer__body"></div>
+    </aside>
   </div>
 
-  <!-- JS -->
-  <script src="/assets/js/portifolio.js"></script>
+  <script type="module" src="/assets/js/portifolio.js"></script>
 </body>
 </html>

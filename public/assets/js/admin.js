@@ -1,4 +1,4 @@
-// Painel refinado: Kanban + DnD + Fórum de notas + Modais + Toasts + Calendar
+// Painel refinado: Kanban + DnD + Fórum de notas + Modais + Toasts + Calendar + CSRF
 const api = {
   tasks: "/api/tasks",
   tasksReorder: "/api/tasks/reorder",
@@ -11,16 +11,29 @@ const api = {
 const qs = (s, el = document) => el.querySelector(s);
 const qsa = (s, el = document) => [...el.querySelectorAll(s)];
 
+function readCookie(name){
+  return document.cookie.split("; ").find(row => row.startsWith(name + "="))?.split("=")[1];
+}
+function csrf() {
+  try { return decodeURIComponent(readCookie("XSRF-TOKEN") || ""); } catch { return ""; }
+}
+
 /* ---------------- Utils ---------------- */
-async function fetchJSON(url, options){
-  const res = await fetch(url, options);
+async function fetchJSON(url, options = {}){
+  const headers = Object.assign({}, options.headers || {}, { "X-CSRF-Token": csrf() });
+  const res = await fetch(url, {
+    credentials: "same-origin",     // garante envio dos cookies da sessão
+    ...options,
+    headers
+  });
   const txt = await res.text();
   if (!res.ok) throw new Error(`HTTP ${res.status} @ ${url}\n${txt.slice(0,500)}`);
-  try { return JSON.parse(txt); }
-  catch { throw new Error(`Resposta não-JSON @ ${url}\n${txt.slice(0,500)}`); }
+  try { return JSON.parse(txt); } catch { throw new Error(`Resposta não-JSON @ ${url}\n${txt.slice(0,500)}`); }
 }
 function toast(msg, type="ok"){
-  const stack = qs("#toast-stack");
+  const stack = qs("#toast-stack") || (() => {
+    const d = document.createElement("div"); d.id = "toast-stack"; document.body.appendChild(d); return d;
+  })();
   const el = document.createElement("div");
   el.className = `toast ${type}`;
   el.textContent = msg;
@@ -36,6 +49,12 @@ function fmtDate(d){
   } catch { return "—"; }
 }
 
+/* ---------------- Logout ---------------- */
+qs("#logout")?.addEventListener("click", async () => {
+  try { await fetchJSON("/api/auth/logout", { method:"POST" }); } catch {}
+  window.location.href = "/login";
+});
+
 /* ---------------- Tabs (left) ---------------- */
 qsa(".nav-btn[data-leftpanel]").forEach(btn => {
   btn.addEventListener("click", () => {
@@ -43,7 +62,7 @@ qsa(".nav-btn[data-leftpanel]").forEach(btn => {
     btn.classList.add("is-active");
     const target = btn.getAttribute("data-leftpanel");
     qsa(".left-panels .panel").forEach(p => p.classList.remove("is-active"));
-    qs(`#panel-${target}`).classList.add("is-active");
+    qs(`#panel-${target}`)?.classList.add("is-active");
   });
 });
 
@@ -56,15 +75,14 @@ const els = {
   quickAdd: qs("#quick-add"),
 };
 
-els.addTodo.addEventListener("click", () => newTask("todo"));
-els.addDoing.addEventListener("click", () => newTask("doing"));
-els.addDone.addEventListener("click", () => newTask("done"));
-els.quickAdd.addEventListener("click", () => newTask("todo"));
+els.addTodo?.addEventListener("click", () => newTask("todo"));
+els.addDoing?.addEventListener("click", () => newTask("doing"));
+els.addDone?.addEventListener("click", () => newTask("done"));
+els.quickAdd?.addEventListener("click", () => newTask("todo"));
 
 async function loadTasks() {
-  // skeleton
   for (const k of ["todo","doing","done"]) {
-    els.lists[k].innerHTML = `<li class="skel" style="height:44px"></li><li class="skel" style="height:44px"></li>`;
+    if (els.lists[k]) els.lists[k].innerHTML = `<li class="skel" style="height:44px"></li><li class="skel" style="height:44px"></li>`;
   }
   const tasks = await fetchJSON(api.tasks);
   const by = { todo: [], doing: [], done: [] };
@@ -74,8 +92,8 @@ async function loadTasks() {
 }
 
 function renderTasks(by){
-  for (const k of ["todo","doing","done"]) els.lists[k].innerHTML = "";
-  Object.keys(by).forEach(status => by[status].forEach(t => els.lists[status].append(taskItem(t))));
+  for (const k of ["todo","doing","done"]) if (els.lists[k]) els.lists[k].innerHTML = "";
+  Object.keys(by).forEach(status => by[status].forEach(t => els.lists[status]?.append(taskItem(t))));
 }
 function taskItem(t){
   const li = document.createElement("li");
@@ -188,13 +206,11 @@ function enableDnD(){
   });
 }
 
-/* ---------------- Notas (editor + preview + fórum) ---------------- */
+/* ---------------- Notas ---------------- */
 const notesEl = qs("#notes");
 const notesPreview = qs("#notes-preview");
 const saveNotesBtn = qs("#save-notes");
 const notesStatus = qs("#notes-status");
-const feedEl = qs("#notes-feed");
-const emptyEl = qs("#notes-empty");
 
 function escapeHtml(s){ return (s ?? "").replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;" }[m])); }
 function mdToHtml(src){
@@ -212,61 +228,27 @@ function mdToHtml(src){
   out = out.replace(/^(?!<h\d|<ul|<li|<p|<code|<strong|<em|<a)(.+)$/gm, "<p>$1</p>");
   return out;
 }
-function applyToolbar(action){
-  const el = notesEl;
-  const start = el.selectionStart ?? 0;
-  const end   = el.selectionEnd ?? 0;
-  const text = el.value;
-  const sel = text.slice(start, end);
-
-  const wrap = (pre, suf, placeholder) => {
-    const content = sel || placeholder || "";
-    const before = text.slice(0,start);
-    const after  = text.slice(end);
-    el.value = before + pre + content + suf + after;
-    el.focus();
-    el.selectionStart = start + pre.length;
-    el.selectionEnd = start + pre.length + content.length;
-    notesPreview.innerHTML = mdToHtml(el.value);
-  };
-
-  if (action === "h1") return wrap("# ", "", "Título");
-  if (action === "h2") return wrap("## ", "", "Subtítulo");
-  if (action === "bold") return wrap("**", "**", "negrito");
-  if (action === "italic") return wrap("_", "_", "itálico");
-  if (action === "code") return wrap("`", "`", "code");
-  if (action === "list") return wrap("- ", "", "item");
-  if (action === "link") {
-    const url = prompt("URL do link (https://)");
-    if (!url) return;
-    const label = sel || "link";
-    const before = notesEl.value.slice(0,start);
-    const after  = notesEl.value.slice(end);
-    notesEl.value = `${before}[${label}](${url})${after}`;
-    notesPreview.innerHTML = mdToHtml(notesEl.value);
-    return;
-  }
-}
-qsa(".md-btn").forEach(b => b.addEventListener("click", () => applyToolbar(b.dataset.md)));
 
 async function loadNotesLive(){
   const data = await fetchJSON(api.notes);
   const md = data.markdown || data.html || "";
-  notesEl.value = md;
-  notesPreview.innerHTML = mdToHtml(md);
+  if (notesEl) notesEl.value = md;
+  if (notesPreview) notesPreview.innerHTML = mdToHtml(md);
 }
-notesEl.addEventListener("input", () => {
-  notesStatus.className = "status-dot saving";
-  notesPreview.innerHTML = mdToHtml(notesEl.value);
+notesEl?.addEventListener("input", () => {
+  if (notesStatus) notesStatus.className = "status-dot saving";
+  if (notesPreview) notesPreview.innerHTML = mdToHtml(notesEl.value);
 });
 
-saveNotesBtn.addEventListener("click", async () => {
+saveNotesBtn?.addEventListener("click", async () => {
   try {
-    const markdown = notesEl.value;
+    const markdown = notesEl?.value || "";
     await fetchJSON(api.notes, { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ markdown }) });
     await fetchJSON(api.notesFeed, { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ markdown }) });
-    notesStatus.className = "status-dot saved";
-    setTimeout(() => notesStatus.className = "status-dot", 1500);
+    if (notesStatus) {
+      notesStatus.className = "status-dot saved";
+      setTimeout(() => notesStatus.className = "status-dot", 1500);
+    }
     toast("Nota publicada");
     await loadNotesFeed();
   } catch (e) {
@@ -275,15 +257,16 @@ saveNotesBtn.addEventListener("click", async () => {
   }
 });
 
+const feedEl = qs("#notes-feed");
 async function loadNotesFeed(){
-  feedEl.innerHTML = `<div class="skel" style="height:72px"></div><div class="skel" style="height:72px"></div>`;
+  if (feedEl) feedEl.innerHTML = `<div class="skel" style="height:72px"></div><div class="skel" style="height:72px"></div>`;
   const posts = await fetchJSON(api.notesFeed);
+  if (!feedEl) return;
   feedEl.innerHTML = "";
-  if (!posts.length) { qs("#notes-empty").hidden = false; return; }
-  qs("#notes-empty").hidden = true;
+  if (!posts.length) { const empty = qs("#notes-empty"); if (empty) empty.hidden = false; return; }
+  const empty = qs("#notes-empty"); if (empty) empty.hidden = true;
   posts.forEach(p => feedEl.append(noteCard(p)));
 }
-
 function noteCard(p){
   const wrap = document.createElement("div"); wrap.className = "note-card";
   const header = document.createElement("div"); header.className = "header";
@@ -311,8 +294,6 @@ function noteCard(p){
   wrap.append(header, body, actions);
   return wrap;
 }
-
-/* ---- Modal de Nota ---- */
 function openNoteModal(note){
   const tpl = qs("#note-modal-tpl");
   const node = tpl.content.cloneNode(true);
@@ -347,23 +328,24 @@ let calendar;
 async function initCalendar(){
   const events = await fetchJSON(api.calAll);
   const el = document.getElementById("calendar");
+  if (!el || !window.FullCalendar) return;
   if (calendar) calendar.destroy();
   calendar = new FullCalendar.Calendar(el, { initialView:"dayGridMonth", height:700, events });
   calendar.render();
 }
 qs("#add-local-event")?.addEventListener("click", async () => {
-  const title = qs("#evt-title").value || "Evento";
-  const start = qs("#evt-start").value;
-  const end   = qs("#evt-end").value || start;
+  const title = qs("#evt-title")?.value || "Evento";
+  const start = qs("#evt-start")?.value;
+  const end   = qs("#evt-end")?.value || start;
   if(!start) return alert("Informe a data/hora inicial");
   await fetchJSON(api.calMy, { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ title, start, end }) });
   toast("Evento adicionado");
   await initCalendar();
-  qs("#evt-title").value = "";
+  const t = qs("#evt-title"); if (t) t.value = "";
 });
 
 /* ---------------- Refresh ---------------- */
-qs("#refresh-data").addEventListener("click", async () => {
+qs("#refresh-data")?.addEventListener("click", async () => {
   await Promise.all([loadTasks(), loadNotesLive(), loadNotesFeed(), initCalendar()]);
   toast("Atualizado");
 });
@@ -371,4 +353,9 @@ qs("#refresh-data").addEventListener("click", async () => {
 /* ---------------- Boot ---------------- */
 (async function(){
   await Promise.all([loadTasks(), loadNotesLive(), loadNotesFeed(), initCalendar()]);
+})();
+
+(() => {
+  const style = 'color:#6f42c1;font-weight:700;font-size:14px';
+  console.log('%cEasyMakers 🦉', style);
 })();
