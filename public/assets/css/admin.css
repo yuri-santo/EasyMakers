@@ -185,11 +185,6 @@ a:focus-visible,button:focus-visible{box-shadow:0 0 0 3px rgba(111,66,193,.28);b
   .workspace{gap:22px;padding:24px 26px}
   .kanban{gap:18px}
 }
-@media (min-width:2560px){
-  .app{grid-template-columns:320px 1fr}
-  html{font-size:18px}
-  .workspace{max-width:2200px;margin:0 auto}
-}
 
 /* ========== HD (1200–1536) ============== */
 @media (min-width:1200px) and (max-width:1536px){
