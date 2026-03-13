@@ -217,6 +217,11 @@ body.site-shell-body[data-page="home"] {
   padding: 1.08rem;
 }
 
+.process-card {
+  padding-bottom: 1.32rem;
+  min-height: 262px;
+}
+
 .service-card h3,
 .process-card h3,
 .community-note h3,
@@ -270,7 +275,7 @@ body.site-shell-body[data-page="home"] {
 
 .metric-card {
   padding: 0.95rem;
-  min-height: 156px;
+  min-height: 232px;
   display: flex;
   flex-direction: column;
 }
@@ -278,15 +283,12 @@ body.site-shell-body[data-page="home"] {
 .metric-card strong {
   display: block;
   color: #1d1d27;
-  font-size: 1.02rem;
-  margin-bottom: 0.55rem;
+  font-size: 1.06rem;
+  margin-bottom: 0.6rem;
 }
 
 .metric-card span {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
-  overflow: hidden;
+  display: block;
 }
 
 .delivery-shell {
@@ -335,6 +337,8 @@ body.site-shell-body[data-page="home"] {
 .process-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.85rem;
+  align-items: stretch;
+  align-content: start;
 }
 
 .community-head {
@@ -463,6 +467,11 @@ body.site-shell-body[data-page="home"] {
   .contact-box {
     padding: 1rem;
     border-radius: 16px;
+  }
+
+  .process-card {
+    padding-bottom: 1.18rem;
+    min-height: 0;
   }
 
   .section {
