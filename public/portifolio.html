@@ -89,9 +89,12 @@
       <button class="portfolio-modal__close" type="button" aria-label="Fechar" data-close="true">&times;</button>
       <div class="portfolio-modal__media">
         <img id="portfolio-modal-image" alt="" />
+        <div class="portfolio-modal__media-overlay" aria-hidden="true"></div>
+        <div class="portfolio-modal__media-badge">
+          <span id="portfolio-modal-category" class="portfolio-modal__badge"></span>
+        </div>
       </div>
       <div class="portfolio-modal__body">
-        <span id="portfolio-modal-category" class="portfolio-modal__badge"></span>
         <h2 id="portfolio-modal-title"></h2>
         <p id="portfolio-modal-client" class="portfolio-modal__client"></p>
         <p id="portfolio-modal-summary" class="portfolio-modal__summary"></p>

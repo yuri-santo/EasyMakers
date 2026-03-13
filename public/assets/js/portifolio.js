@@ -161,6 +161,8 @@ function renderModal(project) {
   const modal = qs("#portfolio-modal");
   if (!modal) return;
 
+  modal.__lastFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+
   qs("#portfolio-modal-image").src = imageUrl(project);
   qs("#portfolio-modal-image").alt = project.title;
   qs("#portfolio-modal-category").textContent = categoryLabel(project.category);
@@ -184,7 +186,9 @@ function renderModal(project) {
 
   modal.classList.add("is-open");
   modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("is-modal-open");
   document.documentElement.style.overflow = "hidden";
+  modal.querySelector(".portfolio-modal__close")?.focus?.();
 }
 
 function closeModal() {
@@ -193,7 +197,10 @@ function closeModal() {
 
   modal.classList.remove("is-open");
   modal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("is-modal-open");
   document.documentElement.style.overflow = "";
+  modal.__lastFocus?.focus?.();
+  modal.__lastFocus = null;
 }
 
 function initFilters() {
