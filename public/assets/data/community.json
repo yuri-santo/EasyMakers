@@ -1,0 +1,94 @@
+{
+  "testimonials": [
+    {
+      "id": "testimonial-1",
+      "name": "Marina Costa",
+      "role": "Operacoes",
+      "company": "Studio Verde",
+      "score": "ROI em 45 dias",
+      "quote": "A EasyMakers organizou nosso fluxo comercial e reduziu retrabalho logo na primeira sprint. Hoje todo mundo entende o que precisa fazer e onde estao os gargalos."
+    },
+    {
+      "id": "testimonial-2",
+      "name": "Leandro Nunes",
+      "role": "Diretor",
+      "company": "Alpha Service",
+      "score": "Atendimento 4.9/5",
+      "quote": "O time entregou uma estrutura simples de usar, com automacoes reais e um painel que finalmente conversa com a operacao. A implantacao foi rapida e sem trauma."
+    },
+    {
+      "id": "testimonial-3",
+      "name": "Bianca Ramos",
+      "role": "Financeiro",
+      "company": "Mercado Orion",
+      "score": "-38% de tarefas manuais",
+      "quote": "Paramos de depender de planilhas soltas. Hoje temos visibilidade, alertas e uma rotina muito mais confiavel para cobranca, agenda e acompanhamento."
+    },
+    {
+      "id": "testimonial-4",
+      "name": "Caio Pires",
+      "role": "Product Owner",
+      "company": "FlowHub",
+      "score": "Go-live em 3 semanas",
+      "quote": "Gostei da combinacao entre produto, design e automacao. Cada entrega ja entrava no nosso processo com cara de algo pronto para operar."
+    }
+  ],
+  "faqs": [
+    {
+      "id": "faq-1",
+      "category": "Automacao",
+      "tags": ["make", "fluxo", "integracao"],
+      "question": "Por onde comecar uma automacao sem travar a operacao?",
+      "answer": "Comece por um processo repetitivo, de alto volume e com poucas excecoes. A melhor primeira automacao costuma ser aquela que economiza tempo sem exigir mudanca radical no time."
+    },
+    {
+      "id": "faq-2",
+      "category": "Dashboards",
+      "tags": ["bi", "dados", "kpi"],
+      "question": "Como saber se a empresa precisa mesmo de um dashboard?",
+      "answer": "Se voces tomam decisoes olhando varias planilhas, conversas ou sistemas desconectados, um dashboard ja tem valor. O ponto nao e ter muitos graficos, e sim centralizar os indicadores que movem a operacao."
+    },
+    {
+      "id": "faq-3",
+      "category": "Apps",
+      "tags": ["sistema", "web", "mvp"],
+      "question": "Vale criar um sistema novo ou adaptar o que ja existe?",
+      "answer": "Depende do nivel de friccao atual. Quando a ferramenta existente bloqueia o crescimento ou exige gambiarra diaria, criar um sistema sob medida tende a sair mais barato no medio prazo."
+    },
+    {
+      "id": "faq-4",
+      "category": "Automacao",
+      "tags": ["ia", "chatbot", "faq"],
+      "question": "Chatbot com IA serve para toda empresa?",
+      "answer": "Nao para toda empresa, mas serve muito bem quando existem perguntas repetidas, roteiros claros e necessidade de resposta rapida. O ideal e combinar IA com regras de negocio e escape para humanos."
+    },
+    {
+      "id": "faq-5",
+      "category": "Integracoes",
+      "tags": ["erp", "crm", "api"],
+      "question": "Como evitar quebrar uma integracao entre sistemas?",
+      "answer": "Mapeando origem, destino, validacoes e rotas de falha antes de construir. Integracao robusta precisa de logs, alertas, tratamento de erro e um plano de contingencia simples."
+    },
+    {
+      "id": "faq-6",
+      "category": "Dashboards",
+      "tags": ["operacao", "tempo real", "analytics"],
+      "question": "O dashboard precisa estar em tempo real?",
+      "answer": "Nem sempre. Em muitos cenarios, atualizar a cada 15 minutos ou uma vez por dia ja resolve. O importante e a frequencia fazer sentido para a decisao que o time precisa tomar."
+    },
+    {
+      "id": "faq-7",
+      "category": "Apps",
+      "tags": ["ux", "sistema", "equipe"],
+      "question": "Como garantir que o time vai usar o sistema novo?",
+      "answer": "Com uma interface simples, fluxos enxutos e testes com usuarios reais desde cedo. Adocao quase sempre falha quando a ferramenta chega pronta demais e validada de menos."
+    },
+    {
+      "id": "faq-8",
+      "category": "Integracoes",
+      "tags": ["seguranca", "dados", "lgpd"],
+      "question": "O que nao pode faltar numa integracao com dados sensiveis?",
+      "answer": "Controle de acesso, rastreabilidade, politicas claras de armazenamento e criptografia em transito. Tambem vale limitar o minimo de dados trafegados entre os sistemas."
+    }
+  ]
+}

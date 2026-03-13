@@ -1,50 +1,98 @@
 [
   {
-    "title": "App de Vendas Online",
-    "description": "Plataforma de e-commerce responsiva com carrinho inteligente.",
+    "id": 1,
+    "title": "FlowOps Control",
+    "client": "EasyMakers Labs",
+    "category": "apps",
     "image": "painel.jpg",
-    "category": "web",
-    "tech": ["React", "Node.js", "MongoDB", "Stripe"],
-    "link": "https://meuprojeto.com/app-vendas"
+    "summary": "Uma plataforma unica para tarefas, agenda, notas e acompanhamento operacional.",
+    "description": "Estruturamos um painel web para concentrar rotinas internas, reduzir retrabalho e manter a operacao visivel em um unico fluxo. O projeto combinou organizacao, rastreabilidade e visual direto para uso diario.",
+    "tech": ["React", "Node.js", "Firebase", "Kanban"],
+    "metrics": [
+      "Centralizacao das tarefas e notas em um unico ambiente.",
+      "Rotina operacional com menos troca de contexto.",
+      "Acompanhamento de entregas e agenda em tempo real."
+    ],
+    "link": "/#contato"
   },
   {
-    "title": "Dashboard Financeiro",
-    "description": "Painel BI com relatórios e KPIs financeiros em tempo real.",
+    "id": 2,
+    "title": "Vendas Radar BI",
+    "client": "Mercado Orion",
+    "category": "bi",
     "image": "dash.jpg",
-    "category": "bi",
-    "tech": ["Power BI", "SQL Server", "Azure"],
-    "link": "https://meuprojeto.com/dashboard-financeiro"
+    "summary": "Painel de KPIs para comercial e financeiro com leitura clara e alertas de desempenho.",
+    "description": "Criamos um dashboard com indicadores de venda, previsao e metas para reduzir dependencia de relatorios manuais. O foco foi transformar dado disperso em leitura acionavel para reunioes e operacao.",
+    "tech": ["Next.js", "Supabase", "ECharts", "Analytics"],
+    "metrics": [
+      "KPIs principais reunidos em uma mesma visao.",
+      "Menos tempo gasto consolidando numeros toda semana.",
+      "Leitura executiva com foco em decisao rapida."
+    ],
+    "link": "/#contato"
   },
   {
-    "title": "Gestão de Estoque",
-    "description": "Sistema web para controle de estoque e integração com ERP.",
+    "id": 3,
+    "title": "ERP Compact",
+    "client": "Industria Alpha",
+    "category": "automation",
     "image": "erp.jpg",
-    "category": "web",
-    "tech": ["Laravel", "MySQL", "Bootstrap"],
-    "link": "https://meuprojeto.com/estoque"
+    "summary": "Rotinas fiscais, estoque e integracoes operando em uma camada mais simples.",
+    "description": "Desenhamos uma camada de operacao para conectar etapas criticas de estoque, conciliacao e faturamento, reduzindo friccao entre processos internos e tarefas repetitivas.",
+    "tech": ["Laravel", "MySQL", "Filas", "Integracoes"],
+    "metrics": [
+      "Automacao de tarefas de backoffice com menos erro manual.",
+      "Melhor acompanhamento das etapas criticas de operacao.",
+      "Base pronta para evoluir com novas integracoes."
+    ],
+    "link": "/#contato"
   },
   {
-    "title": "Aplicativo de Saúde",
-    "description": "App mobile para acompanhamento de treinos e nutrição.",
-    "image": "assets/img/mobile01.jpg",
+    "id": 4,
+    "title": "Agenda Mobile Care",
+    "client": "Health Move",
     "category": "mobile",
-    "tech": ["Flutter", "Firebase"],
-    "link": "https://meuprojeto.com/saude-app"
+    "image": "painel.jpg",
+    "summary": "Experiencia mobile para agenda, notificacoes e acompanhamento de rotina.",
+    "description": "Prototipamos uma experiencia mobile focada em agenda e acompanhamento, com notificacoes e leitura simples para usuarios finais. O objetivo foi reduzir abandono e melhorar a recorrencia de uso.",
+    "tech": ["Flutter", "Firebase", "Push", "UX"],
+    "metrics": [
+      "Fluxo mobile desenhado para uso rapido.",
+      "Notificacoes e acompanhamento com menos atrito.",
+      "Camada visual preparada para novas jornadas do produto."
+    ],
+    "link": "/#contato"
   },
   {
-    "title": "CRM Inteligente",
-    "description": "Ferramenta de CRM com automação de vendas e chat integrado.",
-    "image": "assets/img/app03.jpg",
-    "category": "web",
-    "tech": ["Vue.js", "Django", "PostgreSQL"],
-    "link": "https://meuprojeto.com/crm"
+    "id": 5,
+    "title": "Support Automation Hub",
+    "client": "Studio Verde",
+    "category": "automation",
+    "image": "dash.jpg",
+    "summary": "Automacoes para atendimento, triagem e respostas repetitivas com mais cadencia.",
+    "description": "Montamos uma estrutura de automacao para atendimento inicial, FAQ e distribuicao de demanda entre equipes. O ganho veio da reducao de passos manuais e do tempo de resposta mais previsivel.",
+    "tech": ["Make", "APIs", "Chatbot", "CRM"],
+    "metrics": [
+      "Fluxo de triagem e encaminhamento com menos gargalo.",
+      "Respostas frequentes tratadas com consistencia.",
+      "Operacao mais pronta para escalar sem sobrecarga."
+    ],
+    "link": "/#contato"
   },
   {
-    "title": "Análise de Produção",
-    "description": "Dashboard BI com análise de produção industrial em tempo real.",
-    "image": "assets/img/bi02.jpg",
-    "category": "bi",
-    "tech": ["Tableau", "Python"],
-    "link": "https://meuprojeto.com/analise-producao"
+    "id": 6,
+    "title": "Insight Board",
+    "client": "FlowHub",
+    "category": "apps",
+    "image": "erp.jpg",
+    "summary": "Ambiente visual para acompanhar squads, backlog e sinais de risco do projeto.",
+    "description": "Desenvolvemos um painel de acompanhamento para produto e operacao com foco em status, prioridades e risco. A proposta foi unir visibilidade gerencial e uso pratico do time em um layout unico.",
+    "tech": ["TypeScript", "Node.js", "Dashboards", "Produto"],
+    "metrics": [
+      "Melhor leitura do backlog e da capacidade do time.",
+      "Menos dependencia de status disperso em chats.",
+      "Base visual consistente para reunioes e decisao."
+    ],
+    "link": "/#contato"
   }
 ]

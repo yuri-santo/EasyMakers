@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog e Comunidade - EasyMakers</title>
+  <link rel="shortcut icon" href="logo.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/site-shell.css" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+<body data-page="blog">
+  <div id="site-shell-nav"></div>
+  <div id="page-transition-layer" class="page-transition-layer" aria-hidden="true"></div>
+
+  <main class="community-page">
+    <section class="community-hero public-page-hero">
+      <div class="page-container">
+        <h1 class="public-page-title" data-reveal>BLOG, DUVIDAS E COMENTARIOS</h1>
+        <p class="public-page-lead" data-reveal data-reveal-delay="60">
+          Um espaco simples para respostas frequentes, depoimentos e comentarios de quem usa a EasyMakers.
+        </p>
+      </div>
+    </section>
+
+    <section class="community-section">
+      <div class="page-container">
+        <div class="section-head public-section-head" data-reveal>
+          <h2>Filtrar duvidas</h2>
+          <p>Busque por assunto ou escolha uma categoria.</p>
+        </div>
+
+        <div class="filter-bar" data-reveal data-reveal-delay="80">
+          <input id="faq-search" type="search" placeholder="Buscar por pergunta, resposta ou tag..." />
+          <div id="faq-tags" class="filter-tags"></div>
+        </div>
+
+        <div id="faq-list" class="faq-grid"></div>
+      </div>
+    </section>
+
+    <section class="community-section section-soft">
+      <div class="page-container">
+        <div class="section-head public-section-head" data-reveal>
+          <h2>Depoimentos</h2>
+          <p>Comentarios de clientes sobre implantacao, operacao e resultado.</p>
+        </div>
+
+        <div id="testimonial-list" class="content-grid cards-4"></div>
+      </div>
+    </section>
+
+    <section class="community-section">
+      <div class="page-container comments-layout">
+        <div>
+          <div class="section-head section-head-left public-section-head public-section-head--left" data-reveal>
+            <h2>Comunidade</h2>
+            <p>Clientes podem deixar comentarios, duvidas e observacoes livremente.</p>
+          </div>
+
+          <form id="comment-form" class="comment-form" data-reveal data-reveal-delay="80">
+            <div class="field-row">
+              <input id="comment-author" type="text" placeholder="Seu nome" maxlength="80" required />
+              <input id="comment-company" type="text" placeholder="Empresa (opcional)" maxlength="80" />
+            </div>
+            <textarea id="comment-message" rows="5" placeholder="Escreva seu comentario ou duvida..." maxlength="600" required></textarea>
+            <div class="form-actions">
+              <button class="btn btn-easy" type="submit"><span>Publicar comentario</span></button>
+              <span id="comment-status" class="status-text"></span>
+            </div>
+          </form>
+        </div>
+
+        <div>
+          <div class="section-head section-head-left public-section-head public-section-head--left" data-reveal>
+            <h2>Comentarios recentes</h2>
+            <p id="comments-count">0 comentario(s)</p>
+          </div>
+
+          <div id="comments-list" class="comments-list"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="page-container footer-shell">
+      <p class="footer-copy">
+        Copyright &copy; <span id="current-year">2026</span> EasyMakers.
+        <br />
+        Todos os direitos reservados. CNPJ: 35.704.031/0001-08
+      </p>
+      <nav class="footer-links">
+        <a href="/portfolio">Portfolio</a>
+        <a href="/blog">Blog</a>
+        <a href="/politica-de-privacidade">Politica de Privacidade</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script type="module" src="/assets/js/site-shell.js"></script>
+  <script type="module" src="/assets/js/blog.js"></script>
+</body>
+</html>

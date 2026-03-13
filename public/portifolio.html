@@ -2,127 +2,110 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
-  <title>Portfólio — EasyMakers</title>
-  <link rel="shortcut icon" href="logo.ico"/>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/portifolio.css" />
+  <title>Portfolio - EasyMakers</title>
+  <link rel="shortcut icon" href="logo.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/site-shell.css" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
 </head>
-<body>
-  <div class="bg-pulse" aria-hidden="true"></div>
+<body data-page="portfolio">
+  <div id="site-shell-nav"></div>
+  <div id="page-transition-layer" class="page-transition-layer" aria-hidden="true"></div>
 
-  <!-- Header fixo -->
-  <header class="sc-header">
-    <a class="brand" href="/">
-      <img src="/assets/img/logo.png" alt="EasyMakers" width="100" height="100" />
-      <div class="brand-txt">
-        <strong>EasyMakers</strong>
-        <span>Projetos & Cases</span>
+  <main class="portfolio-page">
+    <section class="portfolio-hero public-page-hero">
+      <div class="page-container">
+        <h1 class="public-page-title" data-reveal data-reveal-delay="70">PROJETOS SIMPLES, CLAROS E FEITOS PARA OPERAR.</h1>
+        <p class="public-page-lead" data-reveal data-reveal-delay="130">
+          Uma selecao enxuta de cases com apps, automacoes, dashboards e experiencias mobile no mesmo padrao visual da EasyMakers.
+        </p>
       </div>
-    </a>
-
-    <form class="search" role="search" aria-label="Buscar projetos" onsubmit="return false;">
-      <input id="q" type="search" placeholder="Buscar por título, cliente ou tecnologia…" autocomplete="off" />
-    </form>
-
-    <nav class="chips" aria-label="Categorias">
-      <button class="chip is-active" data-filter="all" type="button">Tudo</button>
-      <button class="chip" data-filter="apps" type="button">Apps & Sistemas</button>
-      <button class="chip" data-filter="automation" type="button">Automação</button>
-      <button class="chip" data-filter="bi" type="button">Dashboards & BI</button>
-    </nav>
-  </header>
-
-  <!-- Conteúdo -->
-  <main class="sc-main">
-    <section class="intro">
-      <h1>Resultados, não só telas.</h1>
-      <p>Selecionamos projetos que combinam UX simples, performance e integrações reais (calendários, automações e analytics).</p>
     </section>
 
-    <section id="grid" class="cards" aria-live="polite">
-      <!-- Exemplo 1 -->
-      <article class="card"
-        data-title="FlowMaster Pro"
-        data-client="EasyMakers"
-        data-category="apps"
-        data-tech="React, Node.js, Firebase"
-        data-description="Plataforma de produtividade com Kanban, calendário (ICS) e notas integradas. Sincronização bidirecional e painel com métricas de equipe."
-        data-link="https://seu-case-link.com">
-        <div class="card-media">
-          <img src="/assets/img/painel.jpg" alt="FlowMaster Pro preview">
-        </div>
-        <div class="card-body">
-          <h3>FlowMaster Pro</h3>
-          <p class="meta">EasyMakers • React, Node.js, Firebase</p>
-        </div>
-      </article>
+    <section class="portfolio-shell">
+      <div class="page-container">
+        <div class="portfolio-panel portfolio-panel--filters" data-reveal>
+          <div class="portfolio-panel__intro">
+            <div>
+              <h2>Busque por cliente, tecnologia, categoria ou contexto do projeto.</h2>
+            </div>
+            <p>Uma navegacao mais completa, no estilo do seu portfolio de referencia, mas preservando a identidade da EasyMakers.</p>
+          </div>
 
-      <!-- Exemplo 2 -->
-      <article class="card"
-        data-title="Dashboard de Vendas"
-        data-client="Mercado XYZ"
-        data-category="bi"
-        data-tech="Next.js, Supabase, ECharts"
-        data-description="KPIs em tempo real, coortes e previsão. Exportação de relatórios e alertas automáticos por período."
-        data-link="https://seu-case-link.com">
-        <div class="card-media">
-          <img src="/assets/img/dash.jpg" alt="Dashboard de Vendas preview">
-        </div>
-        <div class="card-body">
-          <h3>Dashboard de Vendas</h3>
-          <p class="meta">Mercado XYZ • Next.js, Supabase, ECharts</p>
-        </div>
-      </article>
+          <div class="portfolio-filters">
+            <label class="portfolio-search" for="portfolio-search-input">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </svg>
+              <input id="portfolio-search-input" type="search" placeholder="Buscar por cliente, titulo, descricao, tecnologia ou destaque..." />
+            </label>
 
-      <!-- Exemplo 3 -->
-      <article class="card"
-        data-title="ERP Compacto"
-        data-client="Indústria Alpha"
-        data-category="automation"
-        data-tech="Laravel, MySQL, Queue Workers"
-        data-description="Rotinas fiscais, conciliação e integração com marketplaces. Orquestração de filas e monitoramento."
-        data-link="https://seu-case-link.com">
-        <div class="card-media">
-          <img src="/assets/img/erp.jpg" alt="ERP Compacto preview">
+            <div class="portfolio-chip-row" aria-label="Filtros do portfolio">
+              <button class="portfolio-chip is-active" type="button" data-filter="all">Todos</button>
+              <button class="portfolio-chip" type="button" data-filter="apps">Apps</button>
+              <button class="portfolio-chip" type="button" data-filter="automation">Automacao</button>
+              <button class="portfolio-chip" type="button" data-filter="bi">Dashboards</button>
+              <button class="portfolio-chip" type="button" data-filter="mobile">Mobile</button>
+            </div>
+          </div>
+
+          <div class="portfolio-summary">
+            <span class="portfolio-summary-pill">Cards padronizados</span>
+            <span class="portfolio-summary-pill">Busca avancada</span>
+            <span id="portfolio-active-tech" class="portfolio-summary-pill">Tecnologia: todas</span>
+            <span id="portfolio-count" class="portfolio-summary-pill">0 case(s)</span>
+          </div>
+
+          <div id="portfolio-tech-tags" class="portfolio-tech-tags" aria-label="Filtro por tecnologias"></div>
         </div>
-        <div class="card-body">
-          <h3>ERP Compacto</h3>
-          <p class="meta">Indústria Alpha • Laravel, MySQL</p>
-        </div>
-      </article>
+
+        <section id="portfolio-grid" class="portfolio-grid" aria-live="polite"></section>
+      </div>
     </section>
   </main>
 
-  <!-- Template do detalhe -->
-  <template id="tpl-details">
-    <section class="details" role="dialog" aria-label="Detalhes do projeto">
-      <button class="details-close" type="button" aria-label="Fechar">×</button>
-      <div class="details-media">
-        <img class="details-img" alt="">
+  <footer class="site-footer">
+    <div class="page-container footer-shell">
+      <p class="footer-copy">
+        Copyright &copy; <span id="current-year">2026</span> EasyMakers.
+        <br />
+        Todos os direitos reservados. CNPJ: 35.704.031/0001-08
+      </p>
+      <nav class="footer-links">
+        <a href="/portfolio">Portfolio</a>
+        <a href="/blog">Blog</a>
+        <a href="/politica-de-privacidade">Politica de Privacidade</a>
+      </nav>
+    </div>
+  </footer>
+
+  <div id="portfolio-modal" class="portfolio-modal" aria-hidden="true">
+    <div class="portfolio-modal__backdrop" data-close="true"></div>
+    <div class="portfolio-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="portfolio-modal-title">
+      <button class="portfolio-modal__close" type="button" aria-label="Fechar" data-close="true">&times;</button>
+      <div class="portfolio-modal__media">
+        <img id="portfolio-modal-image" alt="" />
       </div>
-      <div class="details-info">
-        <h2 class="details-title"></h2>
-        <p><strong>Cliente:</strong> <span class="details-client"></span></p>
-        <p><strong>Categoria:</strong> <span class="details-category"></span></p>
-        <p><strong>Tecnologias:</strong> <span class="details-tech"></span></p>
-        <p class="details-desc"></p>
-        <div class="details-actions">
-          <a class="btn-outline" target="_blank" rel="noopener">Ver projeto</a>
+      <div class="portfolio-modal__body">
+        <span id="portfolio-modal-category" class="portfolio-modal__badge"></span>
+        <h2 id="portfolio-modal-title"></h2>
+        <p id="portfolio-modal-client" class="portfolio-modal__client"></p>
+        <p id="portfolio-modal-summary" class="portfolio-modal__summary"></p>
+        <p id="portfolio-modal-description" class="portfolio-modal__description"></p>
+        <div id="portfolio-modal-tech" class="portfolio-modal__tags"></div>
+        <ul id="portfolio-modal-metrics" class="portfolio-modal__metrics"></ul>
+        <div class="portfolio-modal__actions">
+          <a id="portfolio-modal-link" class="btn btn-easy portfolio-modal__cta" href="/#contato">Falar sobre este case</a>
         </div>
       </div>
-    </section>
-  </template>
-
-  <!-- Drawer/Sheet-->
-  <div id="drawer" class="drawer" aria-hidden="true">
-    <div class="drawer__backdrop" data-close></div>
-    <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Detalhes do projeto">
-      <button class="drawer__close" type="button" aria-label="Fechar">×</button>
-      <div class="drawer__body"></div>
-    </aside>
+    </div>
   </div>
 
+  <script type="module" src="/assets/js/site-shell.js"></script>
   <script type="module" src="/assets/js/portifolio.js"></script>
 </body>
 </html>

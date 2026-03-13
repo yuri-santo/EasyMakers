@@ -1,78 +1,71 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+const $ = (selector) => document.querySelector(selector);
 
-const $ = (s) => document.querySelector(s);
-const showErr = (m="") => { const el=$("#err"); if (el) el.textContent=m; };
-const setLoading = (v) => { const b=$("#login"); if (b){ b.disabled=!!v; b.textContent = v ? "Entrando..." : "Entrar"; } };
-
-async function loadFirebaseConfig(){
-  const r = await fetch("/firebase_config.json", { credentials:"same-origin" });
-  if (!r.ok) throw new Error("firebase_config.json não encontrado");
-  return r.json();
-}
-function mapFirebaseError(code){
-  const m = String(code || "");
-  if (m.includes("auth/invalid-credential") || m.includes("auth/invalid-login-credentials")) return "Credenciais inválidas.";
-  if (m.includes("auth/user-not-found")) return "Usuário não encontrado.";
-  if (m.includes("auth/wrong-password")) return "Senha incorreta.";
-  if (m.includes("auth/too-many-requests")) return "Muitas tentativas. Tente novamente em instantes.";
-  if (m.includes("auth/network-request-failed")) return "Falha de rede. Verifique sua conexão.";
-  if (m.includes("api-key-not-valid")) return "Chave de API inválida. Verifique a configuração do Firebase.";
-  return "Não foi possível entrar. Verifique as credenciais.";
+function showErr(message = "") {
+  const element = $("#err");
+  if (element) element.textContent = message;
 }
 
-(async function boot(){
-  try{
-    const cfg = await loadFirebaseConfig();
-    const app = initializeApp(cfg);
-    const auth = getAuth(app);
-    onAuthStateChanged(auth, (user) => {
-      if (user && document.visibilityState !== "hidden") {
-      }
-    });
+function setLoading(isLoading) {
+  const button = $("#login");
+  if (!button) return;
+  button.disabled = Boolean(isLoading);
+  button.textContent = isLoading ? "Entrando..." : "Entrar";
+}
 
-    async function doLogin(){
-      showErr(""); setLoading(true);
-      const email = $("#email")?.value.trim();
-      const password = $("#password")?.value || "";
-      if (!email || !password){ showErr("Informe email e senha."); setLoading(false); return; }
-      try{
-        const creds = await signInWithEmailAndPassword(auth, email, password);
-        const idToken = await creds.user.getIdToken(true);
-        const res = await fetch("/api/auth/session", {
-          method:"POST",
-          credentials:"same-origin",
-          headers:{ "Content-Type":"application/json" },
-          body:JSON.stringify({ idToken })
-        });
-        if (!res.ok){
-          const t = await res.text();
-          throw new Error(t || `Falha ao criar sessão (HTTP ${res.status})`);
-        }
-        window.location.assign("/admin");
-      }catch(err){
-        console.error(err);
-        showErr(mapFirebaseError(err?.code || err?.message));
-      }finally{
-        setLoading(false);
-      }
-    }
-    $("#login")?.addEventListener("click", doLogin);
-    $("#email")?.addEventListener("keydown", e => { if (e.key === "Enter") doLogin(); });
-    $("#password")?.addEventListener("keydown", e => { if (e.key === "Enter") doLogin(); });
-    $("#togglePass")?.addEventListener("click", () => {
-      const i=$("#password");
-      if (!i) return;
-      i.type = i.type === "password" ? "text" : "password";
-    });
+function mapLoginError(message) {
+  const text = String(message || "");
+  if (text.includes("Invalid email or password")) return "Email ou senha invalidos.";
+  if (text.includes("INIT_ADMIN_EMAIL/INIT_ADMIN_PASSWORD")) return "Credenciais iniciais nao configuradas no servidor.";
+  return "Nao foi possivel entrar agora.";
+}
 
-  }catch(e){
-    console.error(e);
-    showErr("Falha ao carregar configuração do Firebase.");
+async function doLogin() {
+  showErr("");
+  setLoading(true);
+
+  const email = $("#email")?.value.trim();
+  const password = $("#password")?.value || "";
+  if (!email || !password) {
+    showErr("Informe email e senha.");
+    setLoading(false);
+    return;
   }
-})();
 
-(() => {
-  const style = 'color:#6f42c1;font-weight:700;font-size:14px';
-  console.log('%cEasyMakers 🦉', style);
-})();
+  try {
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (!response.ok) {
+      const payload = await response.json().catch(() => ({}));
+      throw new Error(payload.error || `HTTP ${response.status}`);
+    }
+
+    window.location.assign("/admin");
+  } catch (error) {
+    console.error(error);
+    showErr(mapLoginError(error?.message));
+  } finally {
+    setLoading(false);
+  }
+}
+
+function boot() {
+  $("#login")?.addEventListener("click", doLogin);
+  $("#email")?.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") doLogin();
+  });
+  $("#password")?.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") doLogin();
+  });
+  $("#togglePass")?.addEventListener("click", () => {
+    const input = $("#password");
+    if (!input) return;
+    input.type = input.type === "password" ? "text" : "password";
+  });
+}
+
+boot();

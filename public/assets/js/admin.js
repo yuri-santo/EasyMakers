@@ -1,361 +1,847 @@
-// Painel refinado: Kanban + DnD + Fórum de notas + Modais + Toasts + Calendar + CSRF
+const state = {
+  bundle: {
+    site: { hero: {}, about: {}, contact: {} },
+    community: { faqs: [], testimonials: [] },
+    comments: [],
+    projects: [],
+  },
+  panel: "dashboard",
+  selectedProjectId: "",
+  selectedFaqId: "",
+  selectedTestimonialId: "",
+  projectQuery: "",
+};
+
+const PANEL_META = {
+  dashboard: {
+    title: "Central administrativa",
+    subtitle: "Edite textos, portfolio e comunidade sem perder o estilo minimalista do site.",
+  },
+  portfolio: {
+    title: "Portfolio",
+    subtitle: "Gerencie os cases que aparecem na pagina publica.",
+  },
+  community: {
+    title: "Comunidade",
+    subtitle: "FAQ e depoimentos editaveis pela area administrativa.",
+  },
+  comments: {
+    title: "Comentarios da comunidade",
+    subtitle: "Comentarios publicados livremente pelos clientes no blog.",
+  },
+  kanban: {
+    title: "Kanban interno",
+    subtitle: "Acompanhe tarefas operacionais da equipe.",
+  },
+  calendar: {
+    title: "Calendario operacional",
+    subtitle: "Organize eventos locais e compromissos do time.",
+  },
+};
+
 const api = {
+  content: "/api/admin/content",
   tasks: "/api/tasks",
-  tasksReorder: "/api/tasks/reorder",
-  notes: "/api/notes",
-  notesFeed: "/api/notes/feed",
-  calAll: "/api/calendar",
-  calMy: "/api/calendar/myevents",
+  calendar: "/api/calendar",
+  myCalendar: "/api/calendar/myevents",
+  logout: "/api/auth/logout",
 };
 
-const qs = (s, el = document) => el.querySelector(s);
-const qsa = (s, el = document) => [...el.querySelectorAll(s)];
-
-function readCookie(name){
-  return document.cookie.split("; ").find(row => row.startsWith(name + "="))?.split("=")[1];
+function qs(selector, root = document) {
+  return root.querySelector(selector);
 }
+
+function qsa(selector, root = document) {
+  return [...root.querySelectorAll(selector)];
+}
+
+function readCookie(name) {
+  return document.cookie
+    .split("; ")
+    .find((row) => row.startsWith(`${name}=`))
+    ?.split("=")[1];
+}
+
 function csrf() {
-  try { return decodeURIComponent(readCookie("XSRF-TOKEN") || ""); } catch { return ""; }
-}
-
-/* ---------------- Utils ---------------- */
-async function fetchJSON(url, options = {}){
-  const headers = Object.assign({}, options.headers || {}, { "X-CSRF-Token": csrf() });
-  const res = await fetch(url, {
-    credentials: "same-origin",     // garante envio dos cookies da sessão
-    ...options,
-    headers
-  });
-  const txt = await res.text();
-  if (!res.ok) throw new Error(`HTTP ${res.status} @ ${url}\n${txt.slice(0,500)}`);
-  try { return JSON.parse(txt); } catch { throw new Error(`Resposta não-JSON @ ${url}\n${txt.slice(0,500)}`); }
-}
-function toast(msg, type="ok"){
-  const stack = qs("#toast-stack") || (() => {
-    const d = document.createElement("div"); d.id = "toast-stack"; document.body.appendChild(d); return d;
-  })();
-  const el = document.createElement("div");
-  el.className = `toast ${type}`;
-  el.textContent = msg;
-  stack.appendChild(el);
-  setTimeout(() => el.remove(), 2600);
-}
-function fmtDate(d){
   try {
-    if (!d) return "—";
-    if (d._seconds) return new Date(d._seconds * 1000).toLocaleString();
-    if (typeof d === "string") return new Date(d).toLocaleString();
-    return new Date(d).toLocaleString();
-  } catch { return "—"; }
+    return decodeURIComponent(readCookie("XSRF-TOKEN") || "");
+  } catch {
+    return "";
+  }
 }
 
-/* ---------------- Logout ---------------- */
-qs("#logout")?.addEventListener("click", async () => {
-  try { await fetchJSON("/api/auth/logout", { method:"POST" }); } catch {}
-  window.location.href = "/login";
-});
+async function fetchJSON(url, options = {}) {
+  const headers = new Headers(options.headers || {});
+  const token = csrf();
+  if (token && !headers.has("X-CSRF-Token")) headers.set("X-CSRF-Token", token);
+  if (options.body && !headers.has("Content-Type")) headers.set("Content-Type", "application/json");
 
-/* ---------------- Tabs (left) ---------------- */
-qsa(".nav-btn[data-leftpanel]").forEach(btn => {
-  btn.addEventListener("click", () => {
-    qsa(".nav-btn[data-leftpanel]").forEach(b => b.classList.remove("is-active"));
-    btn.classList.add("is-active");
-    const target = btn.getAttribute("data-leftpanel");
-    qsa(".left-panels .panel").forEach(p => p.classList.remove("is-active"));
-    qs(`#panel-${target}`)?.classList.add("is-active");
+  const response = await fetch(url, {
+    credentials: "same-origin",
+    ...options,
+    headers,
   });
-});
 
-/* ---------------- Kanban ---------------- */
-const els = {
-  lists: { todo: qs("#todo"), doing: qs("#doing"), done: qs("#done") },
-  addTodo: qs("#add-todo"),
-  addDoing: qs("#add-doing"),
-  addDone: qs("#add-done"),
-  quickAdd: qs("#quick-add"),
+  const raw = await response.text();
+  let data = null;
+  try {
+    data = raw ? JSON.parse(raw) : null;
+  } catch {
+    data = raw;
+  }
+
+  if (response.status === 401) {
+    window.location.assign("/login");
+    throw new Error("Sessao expirada.");
+  }
+
+  if (!response.ok) {
+    throw new Error((data && data.error) || raw || `HTTP ${response.status}`);
+  }
+
+  return data;
+}
+
+function toast(message, type = "ok") {
+  const stack = qs("#toast-stack");
+  if (!stack) return;
+
+  const item = document.createElement("div");
+  item.className = `toast ${type}`;
+  item.textContent = message;
+  stack.appendChild(item);
+  window.setTimeout(() => item.remove(), 2600);
+}
+
+function escapeHtml(value) {
+  return String(value || "").replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  })[char]);
+}
+
+function normalize(value) {
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+function splitComma(value) {
+  return String(value || "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function splitLines(value) {
+  return String(value || "")
+    .split(/\r?\n/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function ensureBundleShape(bundle) {
+  return {
+    site: bundle?.site || { hero: {}, about: {}, contact: {} },
+    community: {
+      faqs: bundle?.community?.faqs || [],
+      testimonials: bundle?.community?.testimonials || [],
+    },
+    comments: bundle?.comments || [],
+    projects: bundle?.projects || [],
+  };
+}
+
+function setPanel(panel) {
+  state.panel = panel;
+  qsa(".nav-btn[data-panel]").forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.panel === panel);
+  });
+  qsa(".panel").forEach((item) => {
+    item.classList.toggle("is-active", item.id === `panel-${panel}`);
+  });
+  qs("#panel-title").textContent = PANEL_META[panel]?.title || PANEL_META.dashboard.title;
+  qs("#panel-subtitle").textContent = PANEL_META[panel]?.subtitle || PANEL_META.dashboard.subtitle;
+}
+
+function fillSiteForm() {
+  const site = state.bundle.site || {};
+  qs("#site-hero-title").value = site.hero?.title || "";
+  qs("#site-hero-lead").value = site.hero?.lead || "";
+  qs("#site-hero-cta").value = site.hero?.ctaLabel || "";
+  qs("#site-contact-email").value = site.contact?.email || "";
+  qs("#site-about-title").value = site.about?.title || "";
+  qs("#site-about-text").value = site.about?.text || "";
+  qs("#site-contact-title").value = site.contact?.title || "";
+  qs("#site-contact-text").value = site.contact?.text || "";
+}
+
+function renderStats() {
+  qs("#stat-projects").textContent = String(state.bundle.projects.length);
+  qs("#stat-faqs").textContent = String(state.bundle.community.faqs.length);
+  qs("#stat-testimonials").textContent = String(state.bundle.community.testimonials.length);
+  qs("#stat-comments").textContent = String(state.bundle.comments.length);
+}
+
+function filteredProjects() {
+  const query = normalize(state.projectQuery);
+  return state.bundle.projects.filter((project) => {
+    if (!query) return true;
+    return normalize([project.title, project.client, project.summary, ...(project.tech || [])].join(" ")).includes(query);
+  });
+}
+
+function renderProjectsList() {
+  const host = qs("#projects-list");
+  if (!host) return;
+
+  const items = filteredProjects();
+  host.innerHTML = items.length
+    ? items
+        .map(
+          (project) => `
+            <article class="record-item ${String(project.id) === String(state.selectedProjectId) ? "is-selected" : ""}">
+              <div class="record-copy">
+                <strong>${escapeHtml(project.title)}</strong>
+                <span>${escapeHtml(project.client)} - ${escapeHtml(project.category)}</span>
+              </div>
+              <button class="mini-btn" type="button" data-project-edit="${escapeHtml(project.id)}">Editar</button>
+            </article>
+          `
+        )
+        .join("")
+    : `<div class="empty-list">Nenhum projeto encontrado.</div>`;
+
+  qsa("[data-project-edit]", host).forEach((button) => {
+    button.addEventListener("click", () => {
+      const project = state.bundle.projects.find((item) => String(item.id) === button.dataset.projectEdit);
+      if (project) fillProjectForm(project);
+    });
+  });
+}
+
+function fillProjectForm(project) {
+  state.selectedProjectId = project?.id ? String(project.id) : "";
+  qs("#project-id").value = state.selectedProjectId;
+  qs("#project-title").value = project?.title || "";
+  qs("#project-client").value = project?.client || "";
+  qs("#project-category").value = project?.category || "apps";
+  qs("#project-image").value = project?.image || "";
+  qs("#project-summary").value = project?.summary || "";
+  qs("#project-description").value = project?.description || "";
+  qs("#project-tech").value = (project?.tech || []).join(", ");
+  qs("#project-metrics").value = (project?.metrics || []).join("\n");
+  qs("#project-link").value = project?.link || "/#contato";
+  qs("#project-delete").disabled = !state.selectedProjectId;
+  renderProjectsList();
+}
+
+function resetProjectForm() {
+  fillProjectForm(null);
+}
+
+function renderFaqList() {
+  const host = qs("#faq-admin-list");
+  if (!host) return;
+
+  const items = state.bundle.community.faqs;
+  host.innerHTML = items.length
+    ? items
+        .map(
+          (faq) => `
+            <article class="record-item ${faq.id === state.selectedFaqId ? "is-selected" : ""}">
+              <div class="record-copy">
+                <strong>${escapeHtml(faq.question)}</strong>
+                <span>${escapeHtml(faq.category)}</span>
+              </div>
+              <button class="mini-btn" type="button" data-faq-edit="${escapeHtml(faq.id)}">Editar</button>
+            </article>
+          `
+        )
+        .join("")
+    : `<div class="empty-list">Nenhum FAQ cadastrado.</div>`;
+
+  qsa("[data-faq-edit]", host).forEach((button) => {
+    button.addEventListener("click", () => {
+      const faq = items.find((item) => item.id === button.dataset.faqEdit);
+      if (faq) fillFaqForm(faq);
+    });
+  });
+}
+
+function fillFaqForm(faq) {
+  state.selectedFaqId = faq?.id || "";
+  qs("#faq-id").value = state.selectedFaqId;
+  qs("#faq-category").value = faq?.category || "";
+  qs("#faq-tags").value = (faq?.tags || []).join(", ");
+  qs("#faq-question").value = faq?.question || "";
+  qs("#faq-answer").value = faq?.answer || "";
+  qs("#faq-delete").disabled = !state.selectedFaqId;
+  renderFaqList();
+}
+
+function resetFaqForm() {
+  fillFaqForm(null);
+}
+
+function renderTestimonialList() {
+  const host = qs("#testimonial-admin-list");
+  if (!host) return;
+
+  const items = state.bundle.community.testimonials;
+  host.innerHTML = items.length
+    ? items
+        .map(
+          (testimonial) => `
+            <article class="record-item ${testimonial.id === state.selectedTestimonialId ? "is-selected" : ""}">
+              <div class="record-copy">
+                <strong>${escapeHtml(testimonial.name)}</strong>
+                <span>${escapeHtml(testimonial.company)} - ${escapeHtml(testimonial.score)}</span>
+              </div>
+              <button class="mini-btn" type="button" data-testimonial-edit="${escapeHtml(testimonial.id)}">Editar</button>
+            </article>
+          `
+        )
+        .join("")
+    : `<div class="empty-list">Nenhum depoimento cadastrado.</div>`;
+
+  qsa("[data-testimonial-edit]", host).forEach((button) => {
+    button.addEventListener("click", () => {
+      const testimonial = items.find((item) => item.id === button.dataset.testimonialEdit);
+      if (testimonial) fillTestimonialForm(testimonial);
+    });
+  });
+}
+
+function fillTestimonialForm(testimonial) {
+  state.selectedTestimonialId = testimonial?.id || "";
+  qs("#testimonial-id").value = state.selectedTestimonialId;
+  qs("#testimonial-name").value = testimonial?.name || "";
+  qs("#testimonial-role").value = testimonial?.role || "";
+  qs("#testimonial-company").value = testimonial?.company || "";
+  qs("#testimonial-score").value = testimonial?.score || "";
+  qs("#testimonial-quote").value = testimonial?.quote || "";
+  qs("#testimonial-delete").disabled = !state.selectedTestimonialId;
+  renderTestimonialList();
+}
+
+function resetTestimonialForm() {
+  fillTestimonialForm(null);
+}
+
+function renderCommentsList() {
+  const host = qs("#comments-admin-list");
+  if (!host) return;
+
+  const items = state.bundle.comments;
+  host.innerHTML = items.length
+    ? items
+        .map(
+          (comment) => `
+            <article class="comment-admin-item">
+              <div class="comment-admin-copy">
+                <strong>${escapeHtml(comment.author)}</strong>
+                <span>${escapeHtml(comment.company || "Comunidade EasyMakers")}</span>
+                <p>${escapeHtml(comment.message)}</p>
+                <time>${escapeHtml(new Date(comment.createdAt).toLocaleString("pt-BR"))}</time>
+              </div>
+              <button class="mini-btn mini-btn-danger" type="button" data-comment-delete="${escapeHtml(comment.id)}">Excluir</button>
+            </article>
+          `
+        )
+        .join("")
+    : `<div class="empty-list">Nenhum comentario publicado.</div>`;
+
+  qsa("[data-comment-delete]", host).forEach((button) => {
+    button.addEventListener("click", async () => {
+      if (!window.confirm("Excluir este comentario?")) return;
+      try {
+        await fetchJSON(`${api.content}/comments/${button.dataset.commentDelete}`, { method: "DELETE" });
+        toast("Comentario removido.");
+        await reloadContent();
+      } catch (error) {
+        toast(error.message || "Nao foi possivel excluir o comentario.", "err");
+      }
+    });
+  });
+}
+
+function renderAllContent() {
+  renderStats();
+  fillSiteForm();
+  renderProjectsList();
+  renderFaqList();
+  renderTestimonialList();
+  renderCommentsList();
+}
+
+async function reloadContent() {
+  state.bundle = ensureBundleShape(await fetchJSON(api.content));
+  renderAllContent();
+}
+
+function projectPayload() {
+  return {
+    title: qs("#project-title").value.trim(),
+    client: qs("#project-client").value.trim(),
+    category: qs("#project-category").value,
+    image: qs("#project-image").value.trim() || "painel.jpg",
+    summary: qs("#project-summary").value.trim(),
+    description: qs("#project-description").value.trim(),
+    tech: splitComma(qs("#project-tech").value),
+    metrics: splitLines(qs("#project-metrics").value),
+    link: qs("#project-link").value.trim() || "/#contato",
+  };
+}
+
+function faqPayload() {
+  return {
+    category: qs("#faq-category").value.trim(),
+    tags: splitComma(qs("#faq-tags").value),
+    question: qs("#faq-question").value.trim(),
+    answer: qs("#faq-answer").value.trim(),
+  };
+}
+
+function testimonialPayload() {
+  return {
+    name: qs("#testimonial-name").value.trim(),
+    role: qs("#testimonial-role").value.trim(),
+    company: qs("#testimonial-company").value.trim(),
+    score: qs("#testimonial-score").value.trim(),
+    quote: qs("#testimonial-quote").value.trim(),
+  };
+}
+
+async function handleSiteSubmit(event) {
+  event.preventDefault();
+  const payload = {
+    hero: {
+      title: qs("#site-hero-title").value.trim(),
+      lead: qs("#site-hero-lead").value.trim(),
+      ctaLabel: qs("#site-hero-cta").value.trim(),
+    },
+    about: {
+      title: qs("#site-about-title").value.trim(),
+      text: qs("#site-about-text").value.trim(),
+    },
+    contact: {
+      title: qs("#site-contact-title").value.trim(),
+      text: qs("#site-contact-text").value.trim(),
+      email: qs("#site-contact-email").value.trim(),
+    },
+  };
+
+  try {
+    await fetchJSON(`${api.content}/site`, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    });
+    toast("Informacoes do site salvas.");
+    await reloadContent();
+  } catch (error) {
+    toast(error.message || "Nao foi possivel salvar o site.", "err");
+  }
+}
+
+async function handleProjectSubmit(event) {
+  event.preventDefault();
+  const id = qs("#project-id").value.trim();
+
+  try {
+    await fetchJSON(id ? `${api.content}/projects/${id}` : `${api.content}/projects`, {
+      method: id ? "PATCH" : "POST",
+      body: JSON.stringify(projectPayload()),
+    });
+    toast(id ? "Projeto atualizado." : "Projeto criado.");
+    await reloadContent();
+    if (id) {
+      const project = state.bundle.projects.find((item) => String(item.id) === id);
+      fillProjectForm(project || null);
+    } else {
+      fillProjectForm(state.bundle.projects[0] || null);
+    }
+  } catch (error) {
+    toast(error.message || "Nao foi possivel salvar o projeto.", "err");
+  }
+}
+
+async function handleFaqSubmit(event) {
+  event.preventDefault();
+  const id = qs("#faq-id").value.trim();
+
+  try {
+    await fetchJSON(id ? `${api.content}/faqs/${id}` : `${api.content}/faqs`, {
+      method: id ? "PATCH" : "POST",
+      body: JSON.stringify(faqPayload()),
+    });
+    toast(id ? "FAQ atualizado." : "FAQ criado.");
+    await reloadContent();
+    if (id) {
+      const faq = state.bundle.community.faqs.find((item) => item.id === id);
+      fillFaqForm(faq || null);
+    } else {
+      fillFaqForm(state.bundle.community.faqs[0] || null);
+    }
+  } catch (error) {
+    toast(error.message || "Nao foi possivel salvar o FAQ.", "err");
+  }
+}
+
+async function handleTestimonialSubmit(event) {
+  event.preventDefault();
+  const id = qs("#testimonial-id").value.trim();
+
+  try {
+    await fetchJSON(id ? `${api.content}/testimonials/${id}` : `${api.content}/testimonials`, {
+      method: id ? "PATCH" : "POST",
+      body: JSON.stringify(testimonialPayload()),
+    });
+    toast(id ? "Depoimento atualizado." : "Depoimento criado.");
+    await reloadContent();
+    if (id) {
+      const testimonial = state.bundle.community.testimonials.find((item) => item.id === id);
+      fillTestimonialForm(testimonial || null);
+    } else {
+      fillTestimonialForm(state.bundle.community.testimonials[0] || null);
+    }
+  } catch (error) {
+    toast(error.message || "Nao foi possivel salvar o depoimento.", "err");
+  }
+}
+
+async function handleDeleteProject() {
+  const id = qs("#project-id").value.trim();
+  if (!id || !window.confirm("Excluir este projeto?")) return;
+
+  try {
+    await fetchJSON(`${api.content}/projects/${id}`, { method: "DELETE" });
+    toast("Projeto removido.");
+    await reloadContent();
+    resetProjectForm();
+  } catch (error) {
+    toast(error.message || "Nao foi possivel excluir o projeto.", "err");
+  }
+}
+
+async function handleDeleteFaq() {
+  const id = qs("#faq-id").value.trim();
+  if (!id || !window.confirm("Excluir este FAQ?")) return;
+
+  try {
+    await fetchJSON(`${api.content}/faqs/${id}`, { method: "DELETE" });
+    toast("FAQ removido.");
+    await reloadContent();
+    resetFaqForm();
+  } catch (error) {
+    toast(error.message || "Nao foi possivel excluir o FAQ.", "err");
+  }
+}
+
+async function handleDeleteTestimonial() {
+  const id = qs("#testimonial-id").value.trim();
+  if (!id || !window.confirm("Excluir este depoimento?")) return;
+
+  try {
+    await fetchJSON(`${api.content}/testimonials/${id}`, { method: "DELETE" });
+    toast("Depoimento removido.");
+    await reloadContent();
+    resetTestimonialForm();
+  } catch (error) {
+    toast(error.message || "Nao foi possivel excluir o depoimento.", "err");
+  }
+}
+
+function initPanelNavigation() {
+  qsa(".nav-btn[data-panel]").forEach((button) => {
+    button.addEventListener("click", () => setPanel(button.dataset.panel));
+  });
+}
+
+function initContentHandlers() {
+  qs("#site-form")?.addEventListener("submit", handleSiteSubmit);
+  qs("#project-form")?.addEventListener("submit", handleProjectSubmit);
+  qs("#faq-form")?.addEventListener("submit", handleFaqSubmit);
+  qs("#testimonial-form")?.addEventListener("submit", handleTestimonialSubmit);
+
+  qs("#project-search")?.addEventListener("input", (event) => {
+    state.projectQuery = event.target.value || "";
+    renderProjectsList();
+  });
+
+  qs("#project-new")?.addEventListener("click", resetProjectForm);
+  qs("#faq-new")?.addEventListener("click", resetFaqForm);
+  qs("#testimonial-new")?.addEventListener("click", resetTestimonialForm);
+
+  qs("#project-reset")?.addEventListener("click", resetProjectForm);
+  qs("#faq-reset")?.addEventListener("click", resetFaqForm);
+  qs("#testimonial-reset")?.addEventListener("click", resetTestimonialForm);
+
+  qs("#project-delete")?.addEventListener("click", handleDeleteProject);
+  qs("#faq-delete")?.addEventListener("click", handleDeleteFaq);
+  qs("#testimonial-delete")?.addEventListener("click", handleDeleteTestimonial);
+
+  qs("#refresh-data")?.addEventListener("click", async () => {
+    await Promise.all([reloadContent(), loadTasksSafe(), initCalendarSafe()]);
+    toast("Painel atualizado.");
+  });
+}
+
+function initLogout() {
+  qs("#logout")?.addEventListener("click", async () => {
+    try {
+      await fetchJSON(api.logout, { method: "POST" });
+    } catch {
+      // ignore
+    }
+    window.location.assign("/login");
+  });
+}
+
+function iconButton(label, onClick, variant = "") {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = `mini-btn ${variant}`.trim();
+  button.textContent = label;
+  button.addEventListener("click", onClick);
+  return button;
+}
+
+const taskEls = {
+  todo: () => qs("#todo"),
+  doing: () => qs("#doing"),
+  done: () => qs("#done"),
 };
-
-els.addTodo?.addEventListener("click", () => newTask("todo"));
-els.addDoing?.addEventListener("click", () => newTask("doing"));
-els.addDone?.addEventListener("click", () => newTask("done"));
-els.quickAdd?.addEventListener("click", () => newTask("todo"));
 
 async function loadTasks() {
-  for (const k of ["todo","doing","done"]) {
-    if (els.lists[k]) els.lists[k].innerHTML = `<li class="skel" style="height:44px"></li><li class="skel" style="height:44px"></li>`;
-  }
+  ["todo", "doing", "done"].forEach((key) => {
+    const host = taskEls[key]?.();
+    if (host) host.innerHTML = `<li class="skel" style="height:52px"></li><li class="skel" style="height:52px"></li>`;
+  });
+
   const tasks = await fetchJSON(api.tasks);
-  const by = { todo: [], doing: [], done: [] };
-  for (const t of tasks) (by[t.status] ??= []).push(t);
-  renderTasks(by);
+  const grouped = { todo: [], doing: [], done: [] };
+  tasks.forEach((task) => {
+    const bucket = grouped[task.status] || grouped.todo;
+    bucket.push(task);
+  });
+
+  ["todo", "doing", "done"].forEach((key) => {
+    const host = taskEls[key]?.();
+    if (!host) return;
+    host.innerHTML = "";
+    grouped[key].forEach((task) => host.appendChild(taskItem(task)));
+  });
   enableDnD();
 }
 
-function renderTasks(by){
-  for (const k of ["todo","doing","done"]) if (els.lists[k]) els.lists[k].innerHTML = "";
-  Object.keys(by).forEach(status => by[status].forEach(t => els.lists[status]?.append(taskItem(t))));
-}
-function taskItem(t){
-  const li = document.createElement("li");
-  li.draggable = true; li.dataset.id = t.id; li.dataset.status = t.status;
+function taskItem(task) {
+  const item = document.createElement("li");
+  item.draggable = true;
+  item.dataset.id = task.id;
+  item.dataset.status = task.status;
 
-  const block = document.createElement("div");
-  block.style.display = "flex"; block.style.flexDirection = "column";
-
-  const title = document.createElement("span");
-  title.className = "title"; title.textContent = t.title;
-
-  const meta = document.createElement("span");
-  meta.className = "card-meta";
-  const sd = t.startDate ? new Date(t.startDate).toLocaleDateString() : "—";
-  const dd = t.dueDate   ? new Date(t.dueDate).toLocaleDateString()   : "—";
-  meta.textContent = `Início: ${sd} • Término: ${dd}`;
-
-  const obs = document.createElement("span");
-  obs.className = "card-meta";
-  obs.textContent = t.observation ? `Obs: ${t.observation}` : " ";
-
-  block.append(title, meta, obs);
+  const copy = document.createElement("div");
+  copy.className = "task-copy";
+  copy.innerHTML = `
+    <span class="title">${escapeHtml(task.title)}</span>
+    <span class="card-meta">Inicio: ${task.startDate ? new Date(task.startDate).toLocaleDateString("pt-BR") : "-"}</span>
+    <span class="card-meta">Termino: ${task.dueDate ? new Date(task.dueDate).toLocaleDateString("pt-BR") : "-"}</span>
+  `;
 
   const actions = document.createElement("div");
   actions.className = "card-actions";
   actions.append(
-    iconBtn("✎", "Editar", () => openTaskModal(t)),
-    iconBtn("×", "Excluir", async () => { if(!confirm("Excluir tarefa?")) return; await delTask(t.id); toast("Tarefa excluída"); await loadTasks(); }, "danger")
+    iconButton("Editar", () => openTaskModal(task)),
+    iconButton(
+      "Excluir",
+      async () => {
+        if (!window.confirm("Excluir tarefa?")) return;
+        await fetchJSON(`${api.tasks}/${task.id}`, { method: "DELETE" });
+        toast("Tarefa excluida.");
+        await loadTasksSafe();
+      },
+      "mini-btn-danger"
+    )
   );
 
-  li.append(block, actions);
-  return li;
-}
-function iconBtn(txt, title, onclick, variant){
-  const b = document.createElement("button");
-  b.className = "btn icon" + (variant ? ` ${variant}` : "");
-  b.textContent = txt; b.title = title; b.onclick = onclick; return b;
+  item.append(copy, actions);
+  return item;
 }
 
-async function newTask(status){ openTaskModal({ status, title:"Nova tarefa" }, true); }
-async function createTask(payload){
-  await fetchJSON(api.tasks, { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify(payload) });
-  toast("Tarefa criada");
+async function createTask(payload) {
+  await fetchJSON(api.tasks, { method: "POST", body: JSON.stringify(payload) });
 }
-async function patchTask(id, patch){
-  const data = await fetchJSON(`${api.tasks}/${id}`, { method:"PATCH", headers:{ "Content-Type":"application/json" }, body: JSON.stringify(patch) });
-  return data;
+
+async function patchTask(id, patch) {
+  await fetchJSON(`${api.tasks}/${id}`, { method: "PATCH", body: JSON.stringify(patch) });
 }
-async function delTask(id){ await fetchJSON(`${api.tasks}/${id}`, { method:"DELETE" }); }
 
-/* ---- Modal de Tarefa ---- */
-function openTaskModal(task={}, isCreate=false){
-  const tpl = qs("#task-modal-tpl");
-  const node = tpl.content.cloneNode(true);
-  const backdrop = node.querySelector(".modal-backdrop");
-  const elTitle = node.querySelector("#fm-title");
-  const elObs   = node.querySelector("#fm-observation");
-  const elStart = node.querySelector("#fm-startDate");
-  const elDue   = node.querySelector("#fm-dueDate");
-  const btnSave = node.querySelector("#fm-save");
-  const btnCancel = node.querySelector("#fm-cancel");
-  const btnX = node.querySelector(".modal-x");
-  node.querySelector("#task-modal-title").textContent = isCreate ? "Nova tarefa" : "Editar tarefa";
+function openTaskModal(task = {}, isCreate = false) {
+  const template = qs("#task-modal-tpl");
+  if (!template) return;
 
-  elTitle.value = task.title || "";
-  elObs.value = task.observation || "";
-  elStart.value = task.startDate ? String(task.startDate).slice(0,10) : "";
-  elDue.value   = task.dueDate ? String(task.dueDate).slice(0,10) : "";
+  const fragment = template.content.cloneNode(true);
+  const backdrop = qs(".modal-backdrop", fragment);
+  qs("#task-modal-title", fragment).textContent = isCreate ? "Nova tarefa" : "Editar tarefa";
+  qs("#fm-title", fragment).value = task.title || "";
+  qs("#fm-observation", fragment).value = task.observation || "";
+  qs("#fm-startDate", fragment).value = task.startDate ? String(task.startDate).slice(0, 10) : "";
+  qs("#fm-dueDate", fragment).value = task.dueDate ? String(task.dueDate).slice(0, 10) : "";
 
   const close = () => backdrop.remove();
-  btnCancel.onclick = close; btnX.onclick = close;
-  backdrop.addEventListener("click", e => { if(e.target === backdrop) close(); });
+  qs(".modal-x", fragment).addEventListener("click", close);
+  qs("#fm-cancel", fragment).addEventListener("click", close);
+  backdrop.addEventListener("click", (event) => {
+    if (event.target === backdrop) close();
+  });
 
-  btnSave.onclick = async () => {
+  qs("#fm-save", fragment).addEventListener("click", async () => {
     const payload = {
-      title: elTitle.value.trim() || "Tarefa",
-      observation: elObs.value.trim(),
-      startDate: elStart.value || null,
-      dueDate: elDue.value || null
+      title: qs("#fm-title", fragment).value.trim() || "Tarefa",
+      observation: qs("#fm-observation", fragment).value.trim(),
+      startDate: qs("#fm-startDate", fragment).value || null,
+      dueDate: qs("#fm-dueDate", fragment).value || null,
     };
-    if (isCreate) { payload.status = task.status || "todo"; await createTask(payload); }
-    else { await patchTask(task.id, payload); toast("Tarefa atualizada"); }
-    close(); await loadTasks();
-  };
 
-  document.body.appendChild(node);
-}
-
-/* ---- Drag & Drop ---- */
-function enableDnD(){
-  qsa(".dropzone").forEach(zone => {
-    zone.addEventListener("dragover", e => { e.preventDefault(); zone.classList.add("dragover"); });
-    zone.addEventListener("dragleave", () => zone.classList.remove("dragover"));
-    zone.addEventListener("drop", async e => {
-      e.preventDefault(); zone.classList.remove("dragover");
-      const status = zone.id;
-      const dragging = document.querySelector("li[draggable][data-dragging='1']");
-      if (!dragging) return;
-      const id = dragging.dataset.id;
-      zone.appendChild(dragging);
-      dragging.dataset.status = status;
-      dragging.removeAttribute("data-dragging");
-      await patchTask(id, { status, order: Date.now() });
-      toast("Tarefa movida");
-    });
-  });
-  qsa("li[draggable]").forEach(li => {
-    li.addEventListener("dragstart", () => li.dataset.dragging = "1");
-    li.addEventListener("dragend", () => li.removeAttribute("data-dragging"));
-  });
-}
-
-/* ---------------- Notas ---------------- */
-const notesEl = qs("#notes");
-const notesPreview = qs("#notes-preview");
-const saveNotesBtn = qs("#save-notes");
-const notesStatus = qs("#notes-status");
-
-function escapeHtml(s){ return (s ?? "").replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;" }[m])); }
-function mdToHtml(src){
-  const esc = escapeHtml(src);
-  let out = esc;
-  out = out.replace(/`([^`]+)`/g, "<code>$1</code>");
-  out = out.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
-  out = out.replace(/_([^_]+)_/g, "<em>$1</em>");
-  out = out.replace(/^###\s+(.+)$/gm, "<h3>$1</h3>");
-  out = out.replace(/^##\s+(.+)$/gm, "<h2>$1</h2>");
-  out = out.replace(/^#\s+(.+)$/gm, "<h1>$1</h1>");
-  out = out.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, `<a href="$2" target="_blank" rel="noopener">$1</a>`);
-  out = out.replace(/^\s*-\s+(.+)$/gm, "<li>$1</li>");
-  out = out.replace(/(<li>.*<\/li>\n?)+/g, m => `<ul>${m.replace(/\n/g,"")}</ul>`);
-  out = out.replace(/^(?!<h\d|<ul|<li|<p|<code|<strong|<em|<a)(.+)$/gm, "<p>$1</p>");
-  return out;
-}
-
-async function loadNotesLive(){
-  const data = await fetchJSON(api.notes);
-  const md = data.markdown || data.html || "";
-  if (notesEl) notesEl.value = md;
-  if (notesPreview) notesPreview.innerHTML = mdToHtml(md);
-}
-notesEl?.addEventListener("input", () => {
-  if (notesStatus) notesStatus.className = "status-dot saving";
-  if (notesPreview) notesPreview.innerHTML = mdToHtml(notesEl.value);
-});
-
-saveNotesBtn?.addEventListener("click", async () => {
-  try {
-    const markdown = notesEl?.value || "";
-    await fetchJSON(api.notes, { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ markdown }) });
-    await fetchJSON(api.notesFeed, { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ markdown }) });
-    if (notesStatus) {
-      notesStatus.className = "status-dot saved";
-      setTimeout(() => notesStatus.className = "status-dot", 1500);
+    if (isCreate) {
+      payload.status = task.status || "todo";
+      await createTask(payload);
+      toast("Tarefa criada.");
+    } else {
+      await patchTask(task.id, payload);
+      toast("Tarefa atualizada.");
     }
-    toast("Nota publicada");
-    await loadNotesFeed();
-  } catch (e) {
-    toast("Erro ao salvar nota", "err");
-    console.error(e);
-  }
-});
+    close();
+    await loadTasksSafe();
+  });
 
-const feedEl = qs("#notes-feed");
-async function loadNotesFeed(){
-  if (feedEl) feedEl.innerHTML = `<div class="skel" style="height:72px"></div><div class="skel" style="height:72px"></div>`;
-  const posts = await fetchJSON(api.notesFeed);
-  if (!feedEl) return;
-  feedEl.innerHTML = "";
-  if (!posts.length) { const empty = qs("#notes-empty"); if (empty) empty.hidden = false; return; }
-  const empty = qs("#notes-empty"); if (empty) empty.hidden = true;
-  posts.forEach(p => feedEl.append(noteCard(p)));
+  document.body.appendChild(fragment);
 }
-function noteCard(p){
-  const wrap = document.createElement("div"); wrap.className = "note-card";
-  const header = document.createElement("div"); header.className = "header";
-  const avatar = document.createElement("div"); avatar.className = "avatar";
-  avatar.textContent = (p.title?.trim?.()[0] || "N").toUpperCase();
-  const title = document.createElement("div"); title.className = "title";
-  title.textContent = p.title || "Nota";
-  const meta = document.createElement("div"); meta.className = "meta";
-  meta.textContent = fmtDate(p.createdAt);
-  header.append(avatar, title, meta);
 
-  const body = document.createElement("div"); body.className = "body";
-  body.innerHTML = mdToHtml(p.markdown || "");
-
-  const actions = document.createElement("div"); actions.className = "actions";
-  const edit = iconBtn("✎", "Editar nota", () => openNoteModal(p));
-  const del  = iconBtn("×", "Excluir nota", async () => {
-    if(!confirm("Excluir esta nota?")) return;
-    await fetchJSON(`${api.notesFeed}/${p.id}`, { method:"DELETE" });
-    toast("Nota excluída");
-    await loadNotesFeed();
-  }, "danger");
-  actions.append(edit, del);
-
-  wrap.append(header, body, actions);
-  return wrap;
-}
-function openNoteModal(note){
-  const tpl = qs("#note-modal-tpl");
-  const node = tpl.content.cloneNode(true);
-  const backdrop = node.querySelector(".modal-backdrop");
-  const x = node.querySelector(".modal-x");
-  const title = node.querySelector("#fn-title");
-  const md = node.querySelector("#fn-markdown");
-  const save = node.querySelector("#fn-save");
-  const cancel = node.querySelector("#fn-cancel");
-
-  title.value = note.title || "";
-  md.value = note.markdown || "";
-
-  const close = () => backdrop.remove();
-  x.onclick = close; cancel.onclick = close;
-  backdrop.addEventListener("click", e => { if(e.target === backdrop) close(); });
-
-  save.onclick = async () => {
-    await fetchJSON(`${api.notesFeed}/${note.id}`, {
-      method:"PATCH", headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify({ title: title.value, markdown: md.value })
+function enableDnD() {
+  qsa(".dropzone").forEach((zone) => {
+    zone.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      zone.classList.add("dragover");
     });
-    toast("Nota atualizada");
-    close(); await loadNotesFeed();
-  };
 
-  document.body.appendChild(node);
+    zone.addEventListener("dragleave", () => {
+      zone.classList.remove("dragover");
+    });
+
+    zone.addEventListener("drop", async (event) => {
+      event.preventDefault();
+      zone.classList.remove("dragover");
+      const dragged = document.querySelector("li[draggable][data-dragging='1']");
+      if (!dragged) return;
+      dragged.removeAttribute("data-dragging");
+      zone.appendChild(dragged);
+      await patchTask(dragged.dataset.id, { status: zone.id, order: Date.now() });
+      toast("Tarefa movida.");
+    });
+  });
+
+  qsa("li[draggable]").forEach((item) => {
+    item.addEventListener("dragstart", () => {
+      item.dataset.dragging = "1";
+    });
+    item.addEventListener("dragend", () => {
+      item.removeAttribute("data-dragging");
+    });
+  });
 }
 
-/* ---------------- Calendário ---------------- */
-let calendar;
-async function initCalendar(){
-  const events = await fetchJSON(api.calAll);
-  const el = document.getElementById("calendar");
+function initTaskButtons() {
+  qs("#quick-add")?.addEventListener("click", () => openTaskModal({ status: "todo" }, true));
+  qs("#add-todo")?.addEventListener("click", () => openTaskModal({ status: "todo" }, true));
+  qs("#add-doing")?.addEventListener("click", () => openTaskModal({ status: "doing" }, true));
+  qs("#add-done")?.addEventListener("click", () => openTaskModal({ status: "done" }, true));
+}
+
+let calendar = null;
+
+async function initCalendar() {
+  const el = qs("#calendar");
   if (!el || !window.FullCalendar) return;
+
+  const events = await fetchJSON(api.calendar);
   if (calendar) calendar.destroy();
-  calendar = new FullCalendar.Calendar(el, { initialView:"dayGridMonth", height:700, events });
+
+  calendar = new window.FullCalendar.Calendar(el, {
+    initialView: "dayGridMonth",
+    height: 700,
+    events,
+  });
   calendar.render();
 }
-qs("#add-local-event")?.addEventListener("click", async () => {
-  const title = qs("#evt-title")?.value || "Evento";
-  const start = qs("#evt-start")?.value;
-  const end   = qs("#evt-end")?.value || start;
-  if(!start) return alert("Informe a data/hora inicial");
-  await fetchJSON(api.calMy, { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ title, start, end }) });
-  toast("Evento adicionado");
-  await initCalendar();
-  const t = qs("#evt-title"); if (t) t.value = "";
-});
 
-/* ---------------- Refresh ---------------- */
-qs("#refresh-data")?.addEventListener("click", async () => {
-  await Promise.all([loadTasks(), loadNotesLive(), loadNotesFeed(), initCalendar()]);
-  toast("Atualizado");
-});
+function initCalendarForm() {
+  qs("#add-local-event")?.addEventListener("click", async () => {
+    const start = qs("#evt-start").value;
+    const end = qs("#evt-end").value || start;
+    const title = qs("#evt-title").value.trim() || "Evento";
+    if (!start) {
+      toast("Informe a data inicial.", "err");
+      return;
+    }
 
-/* ---------------- Boot ---------------- */
-(async function(){
-  await Promise.all([loadTasks(), loadNotesLive(), loadNotesFeed(), initCalendar()]);
-})();
+    try {
+      await fetchJSON(api.myCalendar, {
+        method: "POST",
+        body: JSON.stringify({ title, start, end }),
+      });
+      qs("#evt-title").value = "";
+      toast("Evento adicionado.");
+      await initCalendarSafe();
+    } catch (error) {
+      toast(error.message || "Nao foi possivel adicionar o evento.", "err");
+    }
+  });
+}
 
-(() => {
-  const style = 'color:#6f42c1;font-weight:700;font-size:14px';
-  console.log('%cEasyMakers 🦉', style);
-})();
+async function loadTasksSafe() {
+  try {
+    await loadTasks();
+  } catch (error) {
+    console.error(error);
+    ["todo", "doing", "done"].forEach((key) => {
+      const host = taskEls[key]?.();
+      if (host) host.innerHTML = `<li class="empty-list">Nao foi possivel carregar as tarefas.</li>`;
+    });
+  }
+}
+
+async function initCalendarSafe() {
+  try {
+    await initCalendar();
+  } catch (error) {
+    console.error(error);
+    const host = qs("#calendar");
+    if (host) host.innerHTML = `<div class="empty-list">Nao foi possivel carregar o calendario.</div>`;
+  }
+}
+
+function initBootState() {
+  setPanel("dashboard");
+  resetProjectForm();
+  resetFaqForm();
+  resetTestimonialForm();
+}
+
+async function boot() {
+  initPanelNavigation();
+  initContentHandlers();
+  initLogout();
+  initTaskButtons();
+  initCalendarForm();
+  initBootState();
+
+  await Promise.all([reloadContent(), loadTasksSafe(), initCalendarSafe()]);
+}
+
+boot();

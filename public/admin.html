@@ -2,160 +2,419 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
-  <title>EasyMakers — Painel</title>
-  <link rel="shortcut icon" href="logo.ico"/>
+  <title>EasyMakers - Painel</title>
+  <link rel="shortcut icon" href="logo.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/site-shell.css" />
   <link rel="stylesheet" href="/assets/css/admin.css" />
 </head>
-<body>
+<body data-page="admin">
+  <div id="site-shell-nav"></div>
+  <div id="page-transition-layer" class="page-transition-layer" aria-hidden="true"></div>
   <div class="bg-pulse" aria-hidden="true"></div>
+
   <div class="app">
     <aside class="sidebar">
-      <a class="brand" href="/" title="Voltar para a página inicial">
-        <img src="/assets/img/logo.png" alt="Logo" class="brand-logo">
+      <a class="brand" href="/" title="Voltar para a pagina inicial">
+        <img src="/assets/img/logo.png" alt="EasyMakers" class="brand-logo" />
         <span class="brand-name">EasyMakers</span>
       </a>
 
       <nav class="nav">
-        <button class="nav-btn is-active" data-leftpanel="kanban" title="Kanban">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="7" height="16" rx="2"/><rect x="14" y="4" width="7" height="9" rx="2"/></svg>
-          <span>Kanban</span>
-        </button>
-        <button class="nav-btn" data-leftpanel="calendar" title="Calendário">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="3"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
-          <span>Calendário</span>
-        </button>
+        <button class="nav-btn is-active" data-panel="dashboard" type="button"><span>Dashboard</span></button>
+        <button class="nav-btn" data-panel="portfolio" type="button"><span>Portfolio</span></button>
+        <button class="nav-btn" data-panel="community" type="button"><span>Comunidade</span></button>
+        <button class="nav-btn" data-panel="comments" type="button"><span>Comentarios</span></button>
+        <button class="nav-btn" data-panel="kanban" type="button"><span>Kanban</span></button>
+        <button class="nav-btn" data-panel="calendar" type="button"><span>Calendario</span></button>
         <div class="divider"></div>
-        <button class="nav-btn" id="refresh-data" title="Atualizar dados">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg>
-          <span>Atualizar</span>
-        </button>
-        <a class="nav-btn" href="/" title="Início">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" fill="currentColor"/></svg>
-          <span>Início</span>
-        </a>
+        <button class="nav-btn" id="refresh-data" type="button"><span>Atualizar</span></button>
+        <a class="nav-btn" href="/" title="Inicio"><span>Inicio</span></a>
       </nav>
     </aside>
 
     <main class="main">
-      <!-- Topbar -->
       <header class="topbar">
         <div class="topbar-left">
-          <h1>Ativando modo EASY</h1>
-          <p class="subtitle">Kanban • Calendário • Notas</p>
+          <h1 id="panel-title">Central administrativa</h1>
+          <p id="panel-subtitle" class="subtitle">Conteudo do site, comunidade, portfolio e operacao.</p>
         </div>
         <div class="actions">
-          <button id="quick-add" class="btn primary">+ Tarefa</button>
+          <button id="logout" class="btn ghost" type="button">Sair</button>
         </div>
       </header>
 
-      <!-- Onda separadora (quebra visual) -->
-      <div class="wave-sep" aria-hidden="true">
-        <svg viewBox="0 0 1440 96" preserveAspectRatio="none">
-          <path d="M0,64 C240,16 480,16 720,48 C960,80 1200,80 1440,48 L1440,96 L0,96 Z" fill="#faf9ff"/>
-        </svg>
-      </div>
-
       <section class="workspace">
-        <div class="left-panels">
-          <!-- KANBAN -->
-          <section class="panel is-active" id="panel-kanban">
-            <div class="panel-header">
-              <h2>Kanban</h2>
+        <section class="panel is-active" id="panel-dashboard">
+          <div class="stats-grid">
+            <article class="stat-card">
+              <span>Projetos</span>
+              <strong id="stat-projects">0</strong>
+            </article>
+            <article class="stat-card">
+              <span>FAQs</span>
+              <strong id="stat-faqs">0</strong>
+            </article>
+            <article class="stat-card">
+              <span>Depoimentos</span>
+              <strong id="stat-testimonials">0</strong>
+            </article>
+            <article class="stat-card">
+              <span>Comentarios</span>
+              <strong id="stat-comments">0</strong>
+            </article>
+          </div>
+
+          <article class="manager-card">
+            <div class="manager-head">
+              <div>
+                <h2>Informacoes principais do site</h2>
+                <p>Edite os textos simples da home sem perder a abordagem minimalista.</p>
+              </div>
             </div>
+
+            <div class="site-editor-layout">
+              <form id="site-form" class="editor-form site-editor-form">
+                <section class="editor-section">
+                  <div class="editor-section__head">
+                    <h3>Hero inicial</h3>
+                    <p>Edite o bloco principal mantendo a mensagem direta e o tom institucional.</p>
+                  </div>
+
+                  <div class="field-group">
+                    <label for="site-hero-title">Titulo do hero</label>
+                    <textarea id="site-hero-title" rows="3"></textarea>
+                  </div>
+
+                  <div class="field-group">
+                    <label for="site-hero-lead">Texto do hero</label>
+                    <textarea id="site-hero-lead" rows="3"></textarea>
+                  </div>
+
+                  <div class="field-row">
+                    <div class="field-group">
+                      <label for="site-hero-cta">Botao do hero</label>
+                      <input id="site-hero-cta" type="text" />
+                    </div>
+                    <div class="field-group">
+                      <label for="site-contact-email">Email de contato</label>
+                      <input id="site-contact-email" type="email" />
+                    </div>
+                  </div>
+                </section>
+
+                <section class="editor-section">
+                  <div class="editor-section__head">
+                    <h3>Secao sobre</h3>
+                    <p>Use um titulo forte e uma descricao curta para o bloco logo abaixo do hero.</p>
+                  </div>
+
+                  <div class="field-group">
+                    <label for="site-about-title">Titulo da secao sobre</label>
+                    <input id="site-about-title" type="text" />
+                  </div>
+
+                  <div class="field-group">
+                    <label for="site-about-text">Texto da secao sobre</label>
+                    <textarea id="site-about-text" rows="3"></textarea>
+                  </div>
+                </section>
+
+                <section class="editor-section">
+                  <div class="editor-section__head">
+                    <h3>Contato final</h3>
+                    <p>Essa area fecha a pagina. Prefira um convite direto e comercial.</p>
+                  </div>
+
+                  <div class="field-group">
+                    <label for="site-contact-title">Titulo do contato</label>
+                    <input id="site-contact-title" type="text" />
+                  </div>
+
+                  <div class="field-group">
+                    <label for="site-contact-text">Texto do contato</label>
+                    <textarea id="site-contact-text" rows="3"></textarea>
+                  </div>
+                </section>
+
+                <div class="form-actions">
+                  <button class="btn" type="submit">Salvar informacoes</button>
+                </div>
+              </form>
+
+              <aside class="site-editor-guide">
+                <article class="editor-guide-card">
+                  <span class="editor-guide-card__eyebrow">Hero</span>
+                  <h3>Mensagem principal</h3>
+                  <p>O titulo deve ocupar melhor a largura central do layout, sem aumentar a fonte alem do necessario.</p>
+                </article>
+
+                <article class="editor-guide-card">
+                  <span class="editor-guide-card__eyebrow">Sobre</span>
+                  <h3>Bloco institucional</h3>
+                  <p>Prefira textos curtos, claros e com foco em valor operacional, nao em excesso de efeito visual.</p>
+                </article>
+
+                <article class="editor-guide-card">
+                  <span class="editor-guide-card__eyebrow">Contato</span>
+                  <h3>Fechamento comercial</h3>
+                  <p>Use uma chamada simples para incentivar contato, proposta ou conversa inicial.</p>
+                </article>
+              </aside>
+            </div>
+          </article>
+        </section>
+
+        <section class="panel" id="panel-portfolio">
+          <article class="manager-card">
+            <div class="manager-head">
+              <div>
+                <h2>Portfolio</h2>
+                <p>Adicione, edite ou remova projetos visiveis na pagina de portfolio.</p>
+              </div>
+              <button id="project-new" class="btn ghost" type="button">Novo projeto</button>
+            </div>
+
+            <div class="manager-split">
+              <div class="list-pane">
+                <input id="project-search" class="list-search" type="search" placeholder="Buscar projeto..." />
+                <div id="projects-list" class="record-list"></div>
+              </div>
+
+              <form id="project-form" class="editor-form">
+                <input id="project-id" type="hidden" />
+                <div class="field-row">
+                  <div class="field-group">
+                    <label for="project-title">Titulo</label>
+                    <input id="project-title" type="text" required />
+                  </div>
+                  <div class="field-group">
+                    <label for="project-client">Cliente</label>
+                    <input id="project-client" type="text" required />
+                  </div>
+                </div>
+
+                <div class="field-row">
+                  <div class="field-group">
+                    <label for="project-category">Categoria</label>
+                    <select id="project-category">
+                      <option value="apps">Apps</option>
+                      <option value="automation">Automacao</option>
+                      <option value="bi">Dashboards</option>
+                      <option value="mobile">Mobile</option>
+                    </select>
+                  </div>
+                  <div class="field-group">
+                    <label for="project-image">Imagem</label>
+                    <input id="project-image" type="text" placeholder="painel.jpg" />
+                  </div>
+                </div>
+
+                <div class="field-group">
+                  <label for="project-summary">Resumo curto</label>
+                  <textarea id="project-summary" rows="2"></textarea>
+                </div>
+
+                <div class="field-group">
+                  <label for="project-description">Descricao</label>
+                  <textarea id="project-description" rows="5"></textarea>
+                </div>
+
+                <div class="field-group">
+                  <label for="project-tech">Tecnologias (separadas por virgula)</label>
+                  <input id="project-tech" type="text" />
+                </div>
+
+                <div class="field-group">
+                  <label for="project-metrics">Destaques do case (uma linha por item)</label>
+                  <textarea id="project-metrics" rows="4"></textarea>
+                </div>
+
+                <div class="field-group">
+                  <label for="project-link">Link</label>
+                  <input id="project-link" type="text" />
+                </div>
+
+                <div class="form-actions">
+                  <button class="btn" type="submit">Salvar projeto</button>
+                  <button id="project-reset" class="btn ghost" type="button">Limpar</button>
+                  <button id="project-delete" class="btn danger" type="button">Excluir</button>
+                </div>
+              </form>
+            </div>
+          </article>
+        </section>
+
+        <section class="panel" id="panel-community">
+          <div class="community-admin-grid">
+            <article class="manager-card">
+              <div class="manager-head">
+                <div>
+                  <h2>FAQ</h2>
+                  <p>Gerencie perguntas e respostas exibidas no blog.</p>
+                </div>
+                <button id="faq-new" class="btn ghost" type="button">Novo FAQ</button>
+              </div>
+
+              <div class="manager-split">
+                <div id="faq-admin-list" class="record-list"></div>
+
+                <form id="faq-form" class="editor-form">
+                  <input id="faq-id" type="hidden" />
+                  <div class="field-group">
+                    <label for="faq-category">Categoria</label>
+                    <input id="faq-category" type="text" />
+                  </div>
+                  <div class="field-group">
+                    <label for="faq-tags">Tags (separadas por virgula)</label>
+                    <input id="faq-tags" type="text" />
+                  </div>
+                  <div class="field-group">
+                    <label for="faq-question">Pergunta</label>
+                    <textarea id="faq-question" rows="3"></textarea>
+                  </div>
+                  <div class="field-group">
+                    <label for="faq-answer">Resposta</label>
+                    <textarea id="faq-answer" rows="5"></textarea>
+                  </div>
+                  <div class="form-actions">
+                    <button class="btn" type="submit">Salvar FAQ</button>
+                    <button id="faq-reset" class="btn ghost" type="button">Limpar</button>
+                    <button id="faq-delete" class="btn danger" type="button">Excluir</button>
+                  </div>
+                </form>
+              </div>
+            </article>
+
+            <article class="manager-card">
+              <div class="manager-head">
+                <div>
+                  <h2>Depoimentos</h2>
+                  <p>Edite os depoimentos que aparecem no blog e na home.</p>
+                </div>
+                <button id="testimonial-new" class="btn ghost" type="button">Novo depoimento</button>
+              </div>
+
+              <div class="manager-split">
+                <div id="testimonial-admin-list" class="record-list"></div>
+
+                <form id="testimonial-form" class="editor-form">
+                  <input id="testimonial-id" type="hidden" />
+                  <div class="field-row">
+                    <div class="field-group">
+                      <label for="testimonial-name">Nome</label>
+                      <input id="testimonial-name" type="text" />
+                    </div>
+                    <div class="field-group">
+                      <label for="testimonial-role">Cargo</label>
+                      <input id="testimonial-role" type="text" />
+                    </div>
+                  </div>
+                  <div class="field-row">
+                    <div class="field-group">
+                      <label for="testimonial-company">Empresa</label>
+                      <input id="testimonial-company" type="text" />
+                    </div>
+                    <div class="field-group">
+                      <label for="testimonial-score">Destaque</label>
+                      <input id="testimonial-score" type="text" />
+                    </div>
+                  </div>
+                  <div class="field-group">
+                    <label for="testimonial-quote">Depoimento</label>
+                    <textarea id="testimonial-quote" rows="6"></textarea>
+                  </div>
+                  <div class="form-actions">
+                    <button class="btn" type="submit">Salvar depoimento</button>
+                    <button id="testimonial-reset" class="btn ghost" type="button">Limpar</button>
+                    <button id="testimonial-delete" class="btn danger" type="button">Excluir</button>
+                  </div>
+                </form>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-comments">
+          <article class="manager-card">
+            <div class="manager-head">
+              <div>
+                <h2>Comentarios da comunidade</h2>
+                <p>Comentarios enviados livremente pelos clientes na area publica do blog.</p>
+              </div>
+            </div>
+            <div id="comments-admin-list" class="comment-admin-list"></div>
+          </article>
+        </section>
+
+        <section class="panel" id="panel-kanban">
+          <article class="manager-card">
+            <div class="manager-head">
+              <div>
+                <h2>Kanban</h2>
+                <p>Organize tarefas internas da equipe administrativa.</p>
+              </div>
+              <button id="quick-add" class="btn" type="button">Nova tarefa</button>
+            </div>
+
             <div class="kanban">
               <div class="kan-col">
                 <h3>To Do</h3>
                 <ul id="todo" class="dropzone"></ul>
-                <button class="btn ghost" id="add-todo">+ To Do</button>
+                <button class="btn ghost" id="add-todo" type="button">+ To Do</button>
               </div>
               <div class="kan-col">
                 <h3>Doing</h3>
                 <ul id="doing" class="dropzone"></ul>
-                <button class="btn ghost" id="add-doing">+ Doing</button>
+                <button class="btn ghost" id="add-doing" type="button">+ Doing</button>
               </div>
               <div class="kan-col">
                 <h3>Done</h3>
                 <ul id="done" class="dropzone"></ul>
-                <button class="btn ghost" id="add-done">+ Done</button>
+                <button class="btn ghost" id="add-done" type="button">+ Done</button>
               </div>
             </div>
-          </section>
+          </article>
+        </section>
 
-          <!-- CALENDÁRIO -->
-          <section class="panel" id="panel-calendar">
-            <div class="panel-header">
-              <h2>Calendário</h2>
+        <section class="panel" id="panel-calendar">
+          <article class="manager-card">
+            <div class="manager-head manager-head-stack">
+              <div>
+                <h2>Calendario</h2>
+                <p>Gerencie eventos locais da operacao.</p>
+              </div>
               <div class="calendar-inline-form">
                 <input type="datetime-local" id="evt-start" />
                 <input type="datetime-local" id="evt-end" />
-                <input type="text" id="evt-title" placeholder="Título do evento" />
-                <button class="btn" id="add-local-event">Adicionar</button>
+                <input type="text" id="evt-title" placeholder="Titulo do evento" />
+                <button class="btn" id="add-local-event" type="button">Adicionar</button>
               </div>
             </div>
             <div id="calendar"></div>
-          </section>
-        </div>
-
-        <!-- NOTAS -->
-        <aside class="notes-pane">
-          <div class="panel-header">
-            <h2>Notas</h2>
-            <div class="note-actions">
-              <span id="notes-status" class="status-dot" title="Status de sincronização"></span>
-              <button class="btn" id="save-notes">Salvar & Publicar</button>
-            </div>
-          </div>
-
-          <!-- Toolbar Markdown -->
-          <div class="md-toolbar" aria-label="Ferramentas de edição">
-            <button class="md-btn" data-md="h1" title="Título #">H1</button>
-            <button class="md-btn" data-md="h2" title="Título ##">H2</button>
-            <button class="md-btn" data-md="bold" title="Negrito **">B</button>
-            <button class="md-btn" data-md="italic" title="Itálico _">I</button>
-            <button class="md-btn" data-md="code" title="Código `code`"><code>&lt;/&gt;</code></button>
-            <button class="md-btn" data-md="list" title="Lista -">• Lista</button>
-            <button class="md-btn" data-md="link" title="Link [t](url)">🔗 Link</button>
-          </div>
-
-          <div class="notes-split">
-            <textarea id="notes" placeholder="Escreva em Markdown: **negrito**, _itálico_, listas (- item), # Títulos, [link](https://)"></textarea>
-            <div id="notes-preview" class="notes-preview"></div>
-          </div>
-
-          <h3 class="forum-title">Suas notas</h3>
-          <div id="notes-feed" class="notes-feed"></div>
-          <div id="notes-empty" class="empty-state" hidden>
-            <div class="empty-ico">📝</div>
-            <p>Sem posts ainda. Escreva algo e clique “Salvar & Publicar”.</p>
-          </div>
-        </aside>
+          </article>
+        </section>
       </section>
     </main>
   </div>
 
-  <!-- FullCalendar v6 (somente JS) -->
-  <script src="/vendor/fullcalendar/index.global.min.js"></script>
-
-  <!-- Modal de tarefa -->
   <template id="task-modal-tpl">
     <div class="modal-backdrop">
       <div class="modal">
-        <button class="modal-x" aria-label="Fechar">×</button>
+        <button class="modal-x" aria-label="Fechar">&times;</button>
         <h3 id="task-modal-title">Editar tarefa</h3>
-        <label>Título
+        <label>Titulo
           <input type="text" id="fm-title" />
         </label>
-        <label>Observação
+        <label>Observacao
           <textarea id="fm-observation" rows="3"></textarea>
         </label>
         <div class="row">
-          <label>Início
+          <label>Inicio
             <input type="date" id="fm-startDate" />
           </label>
-          <label>Término
+          <label>Termino
             <input type="date" id="fm-dueDate" />
           </label>
         </div>
@@ -167,29 +426,10 @@
     </div>
   </template>
 
-  <!-- Modal de edição de nota -->
-  <template id="note-modal-tpl">
-    <div class="modal-backdrop">
-      <div class="modal">
-        <button class="modal-x" aria-label="Fechar">×</button>
-        <h3>Editar nota</h3>
-        <label>Título (opcional)
-          <input type="text" id="fn-title" />
-        </label>
-        <label>Markdown
-          <textarea id="fn-markdown" rows="8"></textarea>
-        </label>
-        <div class="modal-actions">
-          <button class="btn" id="fn-save">Salvar</button>
-          <button class="btn ghost" id="fn-cancel">Cancelar</button>
-        </div>
-      </div>
-    </div>
-  </template>
-
-  <!-- Toasts -->
   <div id="toast-stack" class="toast-stack" aria-live="polite" aria-atomic="true"></div>
 
+  <script src="/vendor/fullcalendar/index.global.min.js"></script>
+  <script type="module" src="/assets/js/site-shell.js"></script>
   <script src="/assets/js/admin.js"></script>
 </body>
 </html>

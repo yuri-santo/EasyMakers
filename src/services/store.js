@@ -2,8 +2,6 @@ import { firestore, FieldValue } from "../config/firebaseAdmin.js";
 import { v4 as uuid } from "uuid";
 
 const tasksCol     = () => firestore.collection("tasks");
-const notesDoc     = () => firestore.collection("notes").doc("main");  
-const notesFeedCol = () => firestore.collection("note_posts");          
 const eventsCol    = () => firestore.collection("events");              
 
 /** ============= KANBAN ============= */
@@ -58,44 +56,6 @@ export async function reorderColumn(status, orderedIds = []) {
     );
   });
   await batch.commit();
-  return { ok: true };
-}
-export async function getNotes() {
-  const snap = await notesDoc().get();
-  return snap.exists ? snap.data() : { html: "", markdown: "" };
-}
-export async function saveNotes({ html = "", markdown = "" }) {
-  await notesDoc().set(
-    { html, markdown, updatedAt: FieldValue.serverTimestamp() },
-    { merge: true }
-  );
-  const snap = await notesDoc().get();
-  return snap.data();
-}
-export async function listNotePosts() {
-  const snap = await notesFeedCol().orderBy("createdAt", "desc").get();
-  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
-}
-export async function createNotePost({ markdown = "", title = "" }) {
-  const id = uuid();
-  const data = {
-    title: title || markdown.split("\n")[0]?.slice(0, 80) || "Nota",
-    markdown,
-    createdAt: FieldValue.serverTimestamp(),
-    updatedAt: FieldValue.serverTimestamp()
-  };
-  await notesFeedCol().doc(id).set(data);
-  return { id, ...data };
-}
-export async function updateNotePost(id, { markdown = "", title }) {
-  const patch = { markdown, updatedAt: FieldValue.serverTimestamp() };
-  if (title !== undefined) patch.title = title;
-  await notesFeedCol().doc(id).set(patch, { merge: true });
-  const snap = await notesFeedCol().doc(id).get();
-  return { id, ...snap.data() };
-}
-export async function deleteNotePost(id) {
-  await notesFeedCol().doc(id).delete();
   return { ok: true };
 }
 export async function getMyEvents() {
