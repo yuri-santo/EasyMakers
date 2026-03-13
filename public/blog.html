@@ -100,6 +100,19 @@
     </div>
   </footer>
 
+  <div id="testimonial-modal" class="shell-modal" aria-hidden="true">
+    <div class="shell-modal__backdrop" data-close="true"></div>
+    <div class="shell-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="testimonial-modal-title">
+      <button class="shell-modal__close" type="button" aria-label="Fechar" data-close="true">&times;</button>
+      <div class="shell-modal__header">
+        <span id="testimonial-modal-badge" class="shell-modal__badge"></span>
+        <h2 id="testimonial-modal-title"></h2>
+        <div id="testimonial-modal-author" class="shell-modal__author"></div>
+      </div>
+      <div id="testimonial-modal-quote" class="shell-modal__quote"></div>
+    </div>
+  </div>
+
   <script type="module" src="/assets/js/site-shell.js"></script>
   <script type="module" src="/assets/js/blog.js"></script>
 </body>

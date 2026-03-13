@@ -4,6 +4,15 @@ const state = {
   query: "",
 };
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function normalize(value) {
   return String(value || "")
     .toLowerCase()
@@ -96,11 +105,11 @@ function renderTestimonials() {
     ? items
         .map(
           (item, index) => `
-            <article class="premium-card testimonial-card" data-reveal data-reveal-delay="${index * 40}">
-              <span class="testimonial-card__meta">${item.score}</span>
-              <h3>${item.name}</h3>
-              <p>${item.quote}</p>
-              <div class="testimonial-card__author">${item.role} - ${item.company}</div>
+            <article class="premium-card testimonial-card" data-testimonial-id="${escapeHtml(item.id)}" role="button" tabindex="0" data-reveal data-reveal-delay="${index * 40}">
+              <span class="testimonial-card__meta">${escapeHtml(item.score)}</span>
+              <h3>${escapeHtml(item.name)}</h3>
+              <p>${escapeHtml(item.quote)}</p>
+              <div class="testimonial-card__author">${escapeHtml(item.role)} - ${escapeHtml(item.company)}</div>
             </article>
           `
         )
@@ -108,6 +117,77 @@ function renderTestimonials() {
     : `<article class="testimonial-card"><h3>Sem depoimentos publicados</h3><p>Assim que novos depoimentos forem adicionados pelo painel, eles aparecem aqui.</p></article>`;
 
   refreshShell();
+}
+
+function bindTestimonialModal() {
+  const host = qs("#testimonial-list");
+  const modal = qs("#testimonial-modal");
+  if (!host || !modal) return;
+
+  const badge = qs("#testimonial-modal-badge");
+  const title = qs("#testimonial-modal-title");
+  const author = qs("#testimonial-modal-author");
+  const quote = qs("#testimonial-modal-quote");
+  const closeBtn = modal.querySelector(".shell-modal__close");
+
+  if (!badge || !title || !author || !quote || !(closeBtn instanceof HTMLElement)) return;
+
+  function setOpen(next) {
+    const isOpen = modal.getAttribute("aria-hidden") === "false";
+    if (next === isOpen) return;
+
+    if (next) {
+      modal.__lastFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      modal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("is-modal-open");
+      closeBtn.focus();
+    } else {
+      modal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("is-modal-open");
+      modal.__lastFocus?.focus?.();
+      modal.__lastFocus = null;
+    }
+  }
+
+  function openById(id) {
+    const items = state.bundle?.community?.testimonials || [];
+    const item = items.find((entry) => entry.id === id);
+    if (!item) return;
+
+    badge.textContent = item.score || "Depoimento";
+    title.textContent = item.name || "Depoimento";
+    author.textContent = [item.role, item.company].filter(Boolean).join(" - ");
+    quote.textContent = item.quote || "";
+    setOpen(true);
+  }
+
+  host.addEventListener("click", (event) => {
+    const target = event.target instanceof Element ? event.target : null;
+    const card = target?.closest?.("[data-testimonial-id]");
+    if (!(card instanceof HTMLElement) || !host.contains(card)) return;
+    openById(card.dataset.testimonialId || "");
+  });
+
+  host.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    const target = event.target instanceof Element ? event.target : null;
+    const card = target?.closest?.("[data-testimonial-id]");
+    if (!(card instanceof HTMLElement) || !host.contains(card)) return;
+    event.preventDefault();
+    openById(card.dataset.testimonialId || "");
+  });
+
+  modal.addEventListener("click", (event) => {
+    const target = event.target instanceof HTMLElement ? event.target : null;
+    if (!target) return;
+    if (target.dataset.close === "true") setOpen(false);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    if (modal.getAttribute("aria-hidden") !== "false") return;
+    setOpen(false);
+  });
 }
 
 function renderComments() {
@@ -174,6 +254,7 @@ async function boot() {
   renderFaqs();
   renderTestimonials();
   renderComments();
+  bindTestimonialModal();
 
   qs("#faq-search")?.addEventListener("input", (event) => {
     state.query = event.target.value || "";
